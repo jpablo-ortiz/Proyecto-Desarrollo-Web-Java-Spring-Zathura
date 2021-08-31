@@ -17,15 +17,15 @@ public class PlanetaXProducto implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Double PV;
+    private Double precioVenta;
 
-    private Double PC;
+    private Double precioCompra;
 
-    private Double FD;
+    private Double factorDemanda;
 
-    private Double FO;
+    private Double factorOferta;
 
-    private Integer S;
+    private Integer stock;
 
     @ManyToOne
     private Planeta planeta;
@@ -36,12 +36,12 @@ public class PlanetaXProducto implements Serializable {
     public PlanetaXProducto() {
     }
 
-    public PlanetaXProducto(Double PV, Double PC, Double FD, Double FO, Integer S, Planeta planeta, Producto producto) {
-        this.PV = PV;
-        this.PC = PC;
-        this.FD = FD;
-        this.FO = FO;
-        this.S = S;
+    public PlanetaXProducto(Double precioVenta, Double precioCompra, Double factorDemanda, Double factorOferta, Integer stock, Planeta planeta, Producto producto) {
+        this.precioVenta = precioVenta;
+        this.precioCompra = precioCompra;
+        this.factorDemanda = factorDemanda;
+        this.factorOferta = factorOferta;
+        this.stock = stock;
         this.planeta = planeta;
         this.producto = producto;
     }
@@ -54,44 +54,44 @@ public class PlanetaXProducto implements Serializable {
         this.id = id;
     }
 
-    public Double getPV() {
-        return this.PV;
+    public Double getPrecioVenta() {
+        return this.precioVenta;
     }
 
-    public void setPV(Double PV) {
-        this.PV = PV;
+    public void setPrecioVenta(Double precioVenta) {
+        this.precioVenta = precioVenta;
     }
 
-    public Double getPC() {
-        return this.PC;
+    public Double getPrecioCompra() {
+        return this.precioCompra;
     }
 
-    public void setPC(Double PC) {
-        this.PC = PC;
+    public void setPrecioCompra(Double precioCompra) {
+        this.precioCompra = precioCompra;
     }
 
-    public Double getFD() {
-        return this.FD;
+    public Double getFactorDemanda() {
+        return this.factorDemanda;
     }
 
-    public void setFD(Double FD) {
-        this.FD = FD;
+    public void setFactorDemanda(Double factorDemanda) {
+        this.factorDemanda = factorDemanda;
     }
 
-    public Double getFO() {
-        return this.FO;
+    public Double getFactorOferta() {
+        return this.factorOferta;
     }
 
-    public void setFO(Double FO) {
-        this.FO = FO;
+    public void setFactorOferta(Double factorOferta) {
+        this.factorOferta = factorOferta;
     }
 
-    public Integer getS() {
-        return this.S;
+    public Integer getStock() {
+        return this.stock;
     }
 
-    public void setS(Integer S) {
-        this.S = S;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Planeta getPlaneta() {
@@ -115,28 +115,28 @@ public class PlanetaXProducto implements Serializable {
         return this;
     }
 
-    public PlanetaXProducto PV(Double PV) {
-        setPV(PV);
+    public PlanetaXProducto precioVenta(Double precioVenta) {
+        setPrecioVenta(precioVenta);
         return this;
     }
 
-    public PlanetaXProducto PC(Double PC) {
-        setPC(PC);
+    public PlanetaXProducto precioCompra(Double precioCompra) {
+        setPrecioCompra(precioCompra);
         return this;
     }
 
-    public PlanetaXProducto FD(Double FD) {
-        setFD(FD);
+    public PlanetaXProducto factorDemanda(Double factorDemanda) {
+        setFactorDemanda(factorDemanda);
         return this;
     }
 
-    public PlanetaXProducto FO(Double FO) {
-        setFO(FO);
+    public PlanetaXProducto factorOferta(Double factorOferta) {
+        setFactorOferta(factorOferta);
         return this;
     }
 
-    public PlanetaXProducto S(Integer S) {
-        setS(S);
+    public PlanetaXProducto stock(Integer stock) {
+        setStock(stock);
         return this;
     }
 
@@ -158,27 +158,26 @@ public class PlanetaXProducto implements Serializable {
             return false;
         }
         PlanetaXProducto planetaXProducto = (PlanetaXProducto) o;
-        return Objects.equals(id, planetaXProducto.id) && Objects.equals(PV, planetaXProducto.PV) && Objects.equals(PC, planetaXProducto.PC) && Objects.equals(FD, planetaXProducto.FD) && Objects.equals(FO, planetaXProducto.FO) && Objects.equals(S, planetaXProducto.S) && Objects.equals(planeta, planetaXProducto.planeta) && Objects.equals(producto, planetaXProducto.producto);
+        return Objects.equals(id, planetaXProducto.id) && Objects.equals(precioVenta, planetaXProducto.precioVenta) && Objects.equals(precioCompra, planetaXProducto.precioCompra) && Objects.equals(factorDemanda, planetaXProducto.factorDemanda) && Objects.equals(factorOferta, planetaXProducto.factorOferta) && Objects.equals(stock, planetaXProducto.stock) && Objects.equals(planeta, planetaXProducto.planeta) && Objects.equals(producto, planetaXProducto.producto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, PV, PC, FD, FO, S, planeta, producto);
+        return Objects.hash(id, precioVenta, precioCompra, factorDemanda, factorOferta, stock, planeta, producto);
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", PV='" + getPV() + "'" +
-            ", PC='" + getPC() + "'" +
-            ", FD='" + getFD() + "'" +
-            ", FO='" + getFO() + "'" +
-            ", S='" + getS() + "'" +
+            ", precioVenta='" + getPrecioVenta() + "'" +
+            ", precioCompra='" + getPrecioCompra() + "'" +
+            ", factorDemanda='" + getFactorDemanda() + "'" +
+            ", factorOferta='" + getFactorOferta() + "'" +
+            ", stock='" + getStock() + "'" +
             ", planeta='" + getPlaneta() + "'" +
             ", producto='" + getProducto() + "'" +
             "}";
     }
-
 
 }

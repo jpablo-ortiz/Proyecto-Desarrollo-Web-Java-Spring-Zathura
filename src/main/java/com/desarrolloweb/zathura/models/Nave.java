@@ -25,10 +25,6 @@ public class Nave implements Serializable {
 
     private Double cargaActual;
 
-    private Double cargaMax;
-
-    private Double velocidadMax;
-
     private Double cantidadCredito;
 
     @ManyToOne
@@ -40,18 +36,20 @@ public class Nave implements Serializable {
     @OneToMany(mappedBy = "nave")
     List<Tripulante> tripulantes;
 
+    @ManyToOne
+    ModeloNave modeloNave;
+
     public Nave() {
     }
 
-    public Nave( String nombre, Double cargaActual, Double cargaMax, Double velocidadMax, Double cantidadCredito, Planeta planetaActual, List<NaveXProducto> naveXProductos, List<Tripulante> tripulantes) {
+    public Nave(String nombre, Double cargaActual, Double cantidadCredito, Planeta planetaActual, List<NaveXProducto> naveXProductos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
         this.nombre = nombre;
         this.cargaActual = cargaActual;
-        this.cargaMax = cargaMax;
-        this.velocidadMax = velocidadMax;
         this.cantidadCredito = cantidadCredito;
         this.planetaActual = planetaActual;
         this.naveXProductos = naveXProductos;
         this.tripulantes = tripulantes;
+        this.modeloNave = modeloNave;
     }
 
     public Long getId() {
@@ -76,22 +74,6 @@ public class Nave implements Serializable {
 
     public void setCargaActual(Double cargaActual) {
         this.cargaActual = cargaActual;
-    }
-
-    public Double getCargaMax() {
-        return this.cargaMax;
-    }
-
-    public void setCargaMax(Double cargaMax) {
-        this.cargaMax = cargaMax;
-    }
-
-    public Double getVelocidadMax() {
-        return this.velocidadMax;
-    }
-
-    public void setVelocidadMax(Double velocidadMax) {
-        this.velocidadMax = velocidadMax;
     }
 
     public Double getCantidadCredito() {
@@ -126,6 +108,14 @@ public class Nave implements Serializable {
         this.tripulantes = tripulantes;
     }
 
+    public ModeloNave getModeloNave() {
+        return this.modeloNave;
+    }
+
+    public void setModeloNave(ModeloNave modeloNave) {
+        this.modeloNave = modeloNave;
+    }
+
     public Nave id(Long id) {
         setId(id);
         return this;
@@ -138,16 +128,6 @@ public class Nave implements Serializable {
 
     public Nave cargaActual(Double cargaActual) {
         setCargaActual(cargaActual);
-        return this;
-    }
-
-    public Nave cargaMax(Double cargaMax) {
-        setCargaMax(cargaMax);
-        return this;
-    }
-
-    public Nave velocidadMax(Double velocidadMax) {
-        setVelocidadMax(velocidadMax);
         return this;
     }
 
@@ -171,6 +151,11 @@ public class Nave implements Serializable {
         return this;
     }
 
+    public Nave modeloNave(ModeloNave modeloNave) {
+        setModeloNave(modeloNave);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -179,12 +164,12 @@ public class Nave implements Serializable {
             return false;
         }
         Nave nave = (Nave) o;
-        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cargaMax, nave.cargaMax) && Objects.equals(velocidadMax, nave.velocidadMax) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(naveXProductos, nave.naveXProductos) && Objects.equals(tripulantes, nave.tripulantes);
+        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(naveXProductos, nave.naveXProductos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, cargaActual, cargaMax, velocidadMax, cantidadCredito, planetaActual, naveXProductos, tripulantes);
+        return Objects.hash(id, nombre, cargaActual, cantidadCredito, planetaActual, naveXProductos, tripulantes, modeloNave);
     }
 
     @Override
@@ -193,12 +178,11 @@ public class Nave implements Serializable {
             " id='" + getId() + "'" +
             ", nombre='" + getNombre() + "'" +
             ", cargaActual='" + getCargaActual() + "'" +
-            ", cargaMax='" + getCargaMax() + "'" +
-            ", velocidadMax='" + getVelocidadMax() + "'" +
             ", cantidadCredito='" + getCantidadCredito() + "'" +
             ", planetaActual='" + getPlanetaActual() + "'" +
             ", naveXProductos='" + getNaveXProductos() + "'" +
             ", tripulantes='" + getTripulantes() + "'" +
+            ", modeloNave='" + getModeloNave() + "'" +
             "}";
     }
 

@@ -15,9 +15,11 @@ public class NaveXProducto implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Double cantidad;
+    private Double stock;
 
     private Double totalCredito;
+
+    private Double totalVolumen;
 
     @ManyToOne
     Nave nave;
@@ -25,12 +27,14 @@ public class NaveXProducto implements Serializable {
     @ManyToOne
     Producto producto;
 
+
     public NaveXProducto() {
     }
 
-    public NaveXProducto(Double cantidad, Double totalCredito, Nave nave, Producto producto) {
-        this.cantidad = cantidad;
+    public NaveXProducto(Double stock, Double totalCredito, Double totalVolumen, Nave nave, Producto producto) {
+        this.stock = stock;
         this.totalCredito = totalCredito;
+        this.totalVolumen = totalVolumen;
         this.nave = nave;
         this.producto = producto;
     }
@@ -43,12 +47,12 @@ public class NaveXProducto implements Serializable {
         this.id = id;
     }
 
-    public Double getCantidad() {
-        return this.cantidad;
+    public Double getStock() {
+        return this.stock;
     }
 
-    public void setCantidad(Double cantidad) {
-        this.cantidad = cantidad;
+    public void setStock(Double stock) {
+        this.stock = stock;
     }
 
     public Double getTotalCredito() {
@@ -57,6 +61,14 @@ public class NaveXProducto implements Serializable {
 
     public void setTotalCredito(Double totalCredito) {
         this.totalCredito = totalCredito;
+    }
+
+    public Double getTotalVolumen() {
+        return this.totalVolumen;
+    }
+
+    public void setTotalVolumen(Double totalVolumen) {
+        this.totalVolumen = totalVolumen;
     }
 
     public Nave getNave() {
@@ -80,13 +92,18 @@ public class NaveXProducto implements Serializable {
         return this;
     }
 
-    public NaveXProducto cantidad(Double cantidad) {
-        setCantidad(cantidad);
+    public NaveXProducto stock(Double stock) {
+        setStock(stock);
         return this;
     }
 
     public NaveXProducto totalCredito(Double totalCredito) {
         setTotalCredito(totalCredito);
+        return this;
+    }
+
+    public NaveXProducto totalVolumen(Double totalVolumen) {
+        setTotalVolumen(totalVolumen);
         return this;
     }
 
@@ -108,23 +125,24 @@ public class NaveXProducto implements Serializable {
             return false;
         }
         NaveXProducto naveXProducto = (NaveXProducto) o;
-        return Objects.equals(id, naveXProducto.id) && Objects.equals(cantidad, naveXProducto.cantidad) && Objects.equals(totalCredito, naveXProducto.totalCredito) && Objects.equals(nave, naveXProducto.nave) && Objects.equals(producto, naveXProducto.producto);
+        return Objects.equals(id, naveXProducto.id) && Objects.equals(stock, naveXProducto.stock) && Objects.equals(totalCredito, naveXProducto.totalCredito) && Objects.equals(totalVolumen, naveXProducto.totalVolumen) && Objects.equals(nave, naveXProducto.nave) && Objects.equals(producto, naveXProducto.producto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cantidad, totalCredito, nave, producto);
+        return Objects.hash(id, stock, totalCredito, totalVolumen, nave, producto);
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", cantidad='" + getCantidad() + "'" +
+            ", stock='" + getStock() + "'" +
             ", totalCredito='" + getTotalCredito() + "'" +
+            ", totalVolumen='" + getTotalVolumen() + "'" +
             ", nave='" + getNave() + "'" +
             ", producto='" + getProducto() + "'" +
             "}";
     }
-
+    
 }

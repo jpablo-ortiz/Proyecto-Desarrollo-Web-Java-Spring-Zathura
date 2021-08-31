@@ -17,7 +17,7 @@ public class Ruta implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Integer tiempo;
+    private Double distancia;
 
     @ManyToOne
     Estrella estrellaA;
@@ -28,9 +28,8 @@ public class Ruta implements Serializable {
     public Ruta() {
     }
 
-    public Ruta( Integer tiempo, Estrella estrellaA, Estrella estrellaB) {
-        
-        this.tiempo = tiempo;
+    public Ruta(Double distancia, Estrella estrellaA, Estrella estrellaB) {
+        this.distancia = distancia;
         this.estrellaA = estrellaA;
         this.estrellaB = estrellaB;
     }
@@ -43,12 +42,12 @@ public class Ruta implements Serializable {
         this.id = id;
     }
 
-    public Integer getTiempo() {
-        return this.tiempo;
+    public Double getDistancia() {
+        return this.distancia;
     }
 
-    public void setTiempo(Integer tiempo) {
-        this.tiempo = tiempo;
+    public void setDistancia(Double distancia) {
+        this.distancia = distancia;
     }
 
     public Estrella getEstrellaA() {
@@ -72,8 +71,8 @@ public class Ruta implements Serializable {
         return this;
     }
 
-    public Ruta tiempo(Integer tiempo) {
-        setTiempo(tiempo);
+    public Ruta distancia(Double distancia) {
+        setDistancia(distancia);
         return this;
     }
 
@@ -95,23 +94,19 @@ public class Ruta implements Serializable {
             return false;
         }
         Ruta ruta = (Ruta) o;
-        return Objects.equals(id, ruta.id) && Objects.equals(tiempo, ruta.tiempo) && Objects.equals(estrellaA, ruta.estrellaA) && Objects.equals(estrellaB, ruta.estrellaB);
+        return Objects.equals(id, ruta.id) && Objects.equals(distancia, ruta.distancia)
+                && Objects.equals(estrellaA, ruta.estrellaA) && Objects.equals(estrellaB, ruta.estrellaB);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tiempo, estrellaA, estrellaB);
+        return Objects.hash(id, distancia, estrellaA, estrellaB);
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", tiempo='" + getTiempo() + "'" +
-            ", estrellaA='" + getEstrellaA() + "'" +
-            ", estrellaB='" + getEstrellaB() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", distancia='" + getDistancia() + "'" + ", estrellaA='" + getEstrellaA()
+                + "'" + ", estrellaB='" + getEstrellaB() + "'" + "}";
     }
-
 
 }
