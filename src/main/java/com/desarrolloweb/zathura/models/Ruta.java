@@ -20,10 +20,10 @@ public class Ruta implements Serializable {
     private Double distancia;
 
     @ManyToOne
-    Estrella estrellaA;
+    private Estrella estrellaA;
 
     @ManyToOne
-    Estrella estrellaB;
+    private Estrella estrellaB;
 
     public Ruta() {
     }

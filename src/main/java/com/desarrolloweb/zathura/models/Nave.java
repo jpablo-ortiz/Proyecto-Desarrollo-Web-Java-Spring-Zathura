@@ -7,6 +7,9 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -28,26 +31,31 @@ public class Nave implements Serializable {
     private Double cantidadCredito;
 
     @ManyToOne
-    Planeta planetaActual;
+    private Planeta planetaActual;
 
-    @OneToMany(mappedBy = "nave")
-    List<NaveXProducto> naveXProductos;
+    // @OneToMany(mappedBy = "nave")
+    // List<NaveXProducto> naveXProductos;
+
+    @ManyToMany
+    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    private List<Producto> productos;
     
     @OneToMany(mappedBy = "nave")
-    List<Tripulante> tripulantes;
+    private List<Tripulante> tripulantes;
 
     @ManyToOne
-    ModeloNave modeloNave;
+    private ModeloNave modeloNave;
 
     public Nave() {
     }
 
-    public Nave(String nombre, Double cargaActual, Double cantidadCredito, Planeta planetaActual, List<NaveXProducto> naveXProductos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
+    public Nave(Long id, String nombre, Double cargaActual, Double cantidadCredito, Planeta planetaActual, List<Producto> productos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
+        this.id = id;
         this.nombre = nombre;
         this.cargaActual = cargaActual;
         this.cantidadCredito = cantidadCredito;
         this.planetaActual = planetaActual;
-        this.naveXProductos = naveXProductos;
+        this.productos = productos;
         this.tripulantes = tripulantes;
         this.modeloNave = modeloNave;
     }
@@ -92,12 +100,12 @@ public class Nave implements Serializable {
         this.planetaActual = planetaActual;
     }
 
-    public List<NaveXProducto> getNaveXProductos() {
-        return this.naveXProductos;
+    public List<Producto> getProductos() {
+        return this.productos;
     }
 
-    public void setNaveXProductos(List<NaveXProducto> naveXProductos) {
-        this.naveXProductos = naveXProductos;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
     public List<Tripulante> getTripulantes() {
@@ -141,8 +149,8 @@ public class Nave implements Serializable {
         return this;
     }
 
-    public Nave naveXProductos(List<NaveXProducto> naveXProductos) {
-        setNaveXProductos(naveXProductos);
+    public Nave productos(List<Producto> productos) {
+        setProductos(productos);
         return this;
     }
 
@@ -164,12 +172,12 @@ public class Nave implements Serializable {
             return false;
         }
         Nave nave = (Nave) o;
-        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(naveXProductos, nave.naveXProductos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
+        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(productos, nave.productos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, cargaActual, cantidadCredito, planetaActual, naveXProductos, tripulantes, modeloNave);
+        return Objects.hash(id, nombre, cargaActual, cantidadCredito, planetaActual, productos, tripulantes, modeloNave);
     }
 
     @Override
@@ -180,7 +188,7 @@ public class Nave implements Serializable {
             ", cargaActual='" + getCargaActual() + "'" +
             ", cantidadCredito='" + getCantidadCredito() + "'" +
             ", planetaActual='" + getPlanetaActual() + "'" +
-            ", naveXProductos='" + getNaveXProductos() + "'" +
+            ", productos='" + getProductos() + "'" +
             ", tripulantes='" + getTripulantes() + "'" +
             ", modeloNave='" + getModeloNave() + "'" +
             "}";
