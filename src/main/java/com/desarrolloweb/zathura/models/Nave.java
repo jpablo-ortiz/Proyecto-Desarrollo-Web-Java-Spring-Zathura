@@ -1,6 +1,7 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,10 +41,10 @@ public class Nave implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
-    private List<Producto> productos;
+    private List<Producto> productos = new ArrayList<>();
     
     @OneToMany(mappedBy = "nave")
-    private List<Tripulante> tripulantes;
+    private List<Tripulante> tripulantes = new ArrayList<>();
 
     @ManyToOne
     private ModeloNave modeloNave;
