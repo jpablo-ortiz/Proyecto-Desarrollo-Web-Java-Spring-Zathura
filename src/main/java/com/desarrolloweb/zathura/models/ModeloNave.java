@@ -1,14 +1,14 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class ModeloNave implements Serializable {
@@ -25,7 +25,7 @@ public class ModeloNave implements Serializable {
     private String velocidadMax;
 
     @OneToMany(mappedBy = "modeloNave")
-    private List<Nave> naves;
+    private List<Nave> naves = new ArrayList<>();
 
     public ModeloNave() {
     }

@@ -1,15 +1,17 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Planeta implements Serializable {
@@ -24,22 +26,31 @@ public class Planeta implements Serializable {
     private Boolean habitado;
 
     @ManyToOne
-    Estrella estrella;
+    private Estrella estrella;
 
-    @OneToMany(mappedBy = "planeta")
-    List<PlanetaXProducto> planetaXProductos;
+    // @OneToMany(mappedBy = "planeta")
+    // List<PlanetaXProducto> planetaXProductos;
 
-    @OneToMany(mappedBy = "planetaActual")
-    private List<Nave> naves;
+    @ManyToMany
+    @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    private List<Producto> productos = new ArrayList<>();
+
+    // @OneToMany(mappedBy = "planetaActual")
+    // private List<Nave> naves;
+
+    @ManyToMany
+    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    private List<Nave> naves = new ArrayList<>();
 
     public Planeta() {
     }
 
-    public Planeta(String nombre, Boolean habitado, Estrella estrella, List<PlanetaXProducto> planetaXProductos, List<Nave> naves) {
+    public Planeta(Long id, String nombre, Boolean habitado, Estrella estrella, List<Producto> productos, List<Nave> naves) {
+        this.id = id;
         this.nombre = nombre;
         this.habitado = habitado;
         this.estrella = estrella;
-        this.planetaXProductos = planetaXProductos;
+        this.productos = productos;
         this.naves = naves;
     }
 
@@ -79,12 +90,12 @@ public class Planeta implements Serializable {
         this.estrella = estrella;
     }
 
-    public List<PlanetaXProducto> getPlanetaXProductos() {
-        return this.planetaXProductos;
+    public List<Producto> getProductos() {
+        return this.productos;
     }
 
-    public void setPlanetaXProductos(List<PlanetaXProducto> planetaXProductos) {
-        this.planetaXProductos = planetaXProductos;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
     public List<Nave> getNaves() {
@@ -115,8 +126,8 @@ public class Planeta implements Serializable {
         return this;
     }
 
-    public Planeta planetaXProductos(List<PlanetaXProducto> planetaXProductos) {
-        setPlanetaXProductos(planetaXProductos);
+    public Planeta productos(List<Producto> productos) {
+        setProductos(productos);
         return this;
     }
 
@@ -133,12 +144,12 @@ public class Planeta implements Serializable {
             return false;
         }
         Planeta planeta = (Planeta) o;
-        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre) && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella) && Objects.equals(planetaXProductos, planeta.planetaXProductos) && Objects.equals(naves, planeta.naves);
+        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre) && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella) && Objects.equals(productos, planeta.productos) && Objects.equals(naves, planeta.naves);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, habitado, estrella, planetaXProductos, naves);
+        return Objects.hash(id, nombre, habitado, estrella, productos, naves);
     }
 
     @Override
@@ -148,10 +159,9 @@ public class Planeta implements Serializable {
             ", nombre='" + getNombre() + "'" +
             ", habitado='" + isHabitado() + "'" +
             ", estrella='" + getEstrella() + "'" +
-            ", planetaXProductos='" + getPlanetaXProductos() + "'" +
+            ", productos='" + getProductos() + "'" +
             ", naves='" + getNaves() + "'" +
             "}";
     }
-
 
 }

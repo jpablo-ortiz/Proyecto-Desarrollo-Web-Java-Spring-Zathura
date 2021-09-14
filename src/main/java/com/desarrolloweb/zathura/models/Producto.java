@@ -1,14 +1,16 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Producto implements Serializable {
@@ -26,22 +28,31 @@ public class Producto implements Serializable {
 
     private Double peso;
 
-    @OneToMany(mappedBy = "producto")
-    List<PlanetaXProducto> productoXPlanetas;
+    // @OneToMany(mappedBy = "producto")
+    // List<PlanetaXProducto> productoXPlanetas;
 
-    @OneToMany(mappedBy = "producto")
-    List<NaveXProducto> productoXNaves;
+    @ManyToMany
+    @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "planeta_id"))
+    private List<Planeta> planetas = new ArrayList<>();
+
+    // @OneToMany(mappedBy = "producto")
+    // List<NaveXProducto> productoXNaves;
+
+    @ManyToMany
+    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    private List<Nave> naves = new ArrayList<>();
 
     public Producto() {
     }
 
-    public Producto(String nombre, Double costoCredito, Double volumen, Double peso, List<PlanetaXProducto> productoXPlanetas, List<NaveXProducto> productoXNaves) {
+    public Producto(Long id, String nombre, Double costoCredito, Double volumen, Double peso, List<Planeta> planetas, List<Nave> naves) {
+        this.id = id;
         this.nombre = nombre;
         this.costoCredito = costoCredito;
         this.volumen = volumen;
         this.peso = peso;
-        this.productoXPlanetas = productoXPlanetas;
-        this.productoXNaves = productoXNaves;
+        this.planetas = planetas;
+        this.naves = naves;
     }
 
     public Long getId() {
@@ -84,20 +95,20 @@ public class Producto implements Serializable {
         this.peso = peso;
     }
 
-    public List<PlanetaXProducto> getProductoXPlanetas() {
-        return this.productoXPlanetas;
+    public List<Planeta> getPlanetas() {
+        return this.planetas;
     }
 
-    public void setProductoXPlanetas(List<PlanetaXProducto> productoXPlanetas) {
-        this.productoXPlanetas = productoXPlanetas;
+    public void setPlanetas(List<Planeta> planetas) {
+        this.planetas = planetas;
     }
 
-    public List<NaveXProducto> getProductoXNaves() {
-        return this.productoXNaves;
+    public List<Nave> getNaves() {
+        return this.naves;
     }
 
-    public void setProductoXNaves(List<NaveXProducto> productoXNaves) {
-        this.productoXNaves = productoXNaves;
+    public void setNaves(List<Nave> naves) {
+        this.naves = naves;
     }
 
     public Producto id(Long id) {
@@ -125,13 +136,13 @@ public class Producto implements Serializable {
         return this;
     }
 
-    public Producto productoXPlanetas(List<PlanetaXProducto> productoXPlanetas) {
-        setProductoXPlanetas(productoXPlanetas);
+    public Producto planetas(List<Planeta> planetas) {
+        setPlanetas(planetas);
         return this;
     }
 
-    public Producto productoXNaves(List<NaveXProducto> productoXNaves) {
-        setProductoXNaves(productoXNaves);
+    public Producto naves(List<Nave> naves) {
+        setNaves(naves);
         return this;
     }
 
@@ -143,12 +154,12 @@ public class Producto implements Serializable {
             return false;
         }
         Producto producto = (Producto) o;
-        return Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre) && Objects.equals(costoCredito, producto.costoCredito) && Objects.equals(volumen, producto.volumen) && Objects.equals(peso, producto.peso) && Objects.equals(productoXPlanetas, producto.productoXPlanetas) && Objects.equals(productoXNaves, producto.productoXNaves);
+        return Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre) && Objects.equals(costoCredito, producto.costoCredito) && Objects.equals(volumen, producto.volumen) && Objects.equals(peso, producto.peso) && Objects.equals(planetas, producto.planetas) && Objects.equals(naves, producto.naves);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, costoCredito, volumen, peso, productoXPlanetas, productoXNaves);
+        return Objects.hash(id, nombre, costoCredito, volumen, peso, planetas, naves);
     }
 
     @Override
@@ -159,10 +170,9 @@ public class Producto implements Serializable {
             ", costoCredito='" + getCostoCredito() + "'" +
             ", volumen='" + getVolumen() + "'" +
             ", peso='" + getPeso() + "'" +
-            ", productoXPlanetas='" + getProductoXPlanetas() + "'" +
-            ", productoXNaves='" + getProductoXNaves() + "'" +
+            ", planetas='" + getPlanetas() + "'" +
+            ", naves='" + getNaves() + "'" +
             "}";
     }
-
 
 }

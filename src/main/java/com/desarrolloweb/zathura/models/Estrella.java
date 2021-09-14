@@ -1,14 +1,14 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Estrella implements Serializable {
@@ -31,18 +31,19 @@ public class Estrella implements Serializable {
     private Boolean habitado;
 
     @OneToMany(mappedBy = "estrella")
-    private List<Planeta> planetas;
+    private List<Planeta> planetas = new ArrayList<>();
 
     @OneToMany(mappedBy = "estrellaA")
-    private List<Ruta> rutasA;
+    private List<Ruta> rutasA = new ArrayList<>();
 
     @OneToMany(mappedBy = "estrellaB")
-    private List<Ruta> rutasB;
+    private List<Ruta> rutasB = new ArrayList<>();
 
     public Estrella() {
     }
 
-    public Estrella(String nombre, Integer recurso, Double x, Double y, Double z, Boolean habitado, List<Planeta> planetas, List<Ruta> rutasA, List<Ruta> rutasB) {
+    public Estrella(String nombre, Integer recurso, Double x, Double y, Double z, Boolean habitado,
+            List<Planeta> planetas, List<Ruta> rutasA, List<Ruta> rutasB) {
         this.nombre = nombre;
         this.recurso = recurso;
         this.x = x;
@@ -196,7 +197,11 @@ public class Estrella implements Serializable {
             return false;
         }
         Estrella estrella = (Estrella) o;
-        return Objects.equals(id, estrella.id) && Objects.equals(nombre, estrella.nombre) && Objects.equals(recurso, estrella.recurso) && Objects.equals(x, estrella.x) && Objects.equals(y, estrella.y) && Objects.equals(z, estrella.z) && Objects.equals(habitado, estrella.habitado) && Objects.equals(planetas, estrella.planetas) && Objects.equals(rutasA, estrella.rutasA) && Objects.equals(rutasB, estrella.rutasB);
+        return Objects.equals(id, estrella.id) && Objects.equals(nombre, estrella.nombre)
+                && Objects.equals(recurso, estrella.recurso) && Objects.equals(x, estrella.x)
+                && Objects.equals(y, estrella.y) && Objects.equals(z, estrella.z)
+                && Objects.equals(habitado, estrella.habitado) && Objects.equals(planetas, estrella.planetas)
+                && Objects.equals(rutasA, estrella.rutasA) && Objects.equals(rutasB, estrella.rutasB);
     }
 
     @Override
@@ -206,19 +211,10 @@ public class Estrella implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", recurso='" + getRecurso() + "'" +
-            ", x='" + getX() + "'" +
-            ", y='" + getY() + "'" +
-            ", z='" + getZ() + "'" +
-            ", habitado='" + isHabitado() + "'" +
-            ", planetas='" + getPlanetas() + "'" +
-            ", rutasA='" + getRutasA() + "'" +
-            ", rutasB='" + getRutasB() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", recurso='" + getRecurso() + "'"
+                + ", x='" + getX() + "'" + ", y='" + getY() + "'" + ", z='" + getZ() + "'" + ", habitado='"
+                + isHabitado() + "'" + ", planetas='" + getPlanetas() + "'" + ", rutasA='" + getRutasA() + "'"
+                + ", rutasB='" + getRutasB() + "'" + "}";
     }
-
 
 }

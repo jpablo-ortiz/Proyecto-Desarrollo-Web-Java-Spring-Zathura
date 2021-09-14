@@ -5,9 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Ruta implements Serializable {
@@ -20,10 +19,10 @@ public class Ruta implements Serializable {
     private Double distancia;
 
     @ManyToOne
-    Estrella estrellaA;
+    private Estrella estrellaA;
 
     @ManyToOne
-    Estrella estrellaB;
+    private Estrella estrellaB;
 
     public Ruta() {
     }

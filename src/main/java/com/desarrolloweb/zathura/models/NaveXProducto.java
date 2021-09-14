@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Id;
-
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,11 +20,10 @@ public class NaveXProducto implements Serializable {
     private Double totalVolumen;
 
     @ManyToOne
-    Nave nave;
+    private Nave nave;
     
     @ManyToOne
-    Producto producto;
-
+    private Producto producto;
 
     public NaveXProducto() {
     }

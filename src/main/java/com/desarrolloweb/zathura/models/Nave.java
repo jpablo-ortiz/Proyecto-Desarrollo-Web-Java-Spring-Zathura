@@ -1,16 +1,19 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Nave implements Serializable {
@@ -27,27 +30,35 @@ public class Nave implements Serializable {
 
     private Double cantidadCredito;
 
-    @ManyToOne
-    Planeta planetaActual;
+    private Double totalTiempoViaje;
 
-    @OneToMany(mappedBy = "nave")
-    List<NaveXProducto> naveXProductos;
+    @ManyToOne
+    private Planeta planetaActual;
+
+    // @OneToMany(mappedBy = "nave")
+    // List<NaveXProducto> naveXProductos;
+
+    @ManyToMany
+    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    private List<Producto> productos = new ArrayList<>();
     
     @OneToMany(mappedBy = "nave")
-    List<Tripulante> tripulantes;
+    private List<Tripulante> tripulantes = new ArrayList<>();
 
     @ManyToOne
-    ModeloNave modeloNave;
+    private ModeloNave modeloNave;
 
     public Nave() {
     }
 
-    public Nave(String nombre, Double cargaActual, Double cantidadCredito, Planeta planetaActual, List<NaveXProducto> naveXProductos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
+    public Nave(Long id, String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje, Planeta planetaActual, List<Producto> productos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
+        this.id = id;
         this.nombre = nombre;
         this.cargaActual = cargaActual;
         this.cantidadCredito = cantidadCredito;
+        this.totalTiempoViaje = totalTiempoViaje;
         this.planetaActual = planetaActual;
-        this.naveXProductos = naveXProductos;
+        this.productos = productos;
         this.tripulantes = tripulantes;
         this.modeloNave = modeloNave;
     }
@@ -84,6 +95,14 @@ public class Nave implements Serializable {
         this.cantidadCredito = cantidadCredito;
     }
 
+    public Double getTotalTiempoViaje() {
+        return this.totalTiempoViaje;
+    }
+
+    public void setTotalTiempoViaje(Double totalTiempoViaje) {
+        this.totalTiempoViaje = totalTiempoViaje;
+    }
+
     public Planeta getPlanetaActual() {
         return this.planetaActual;
     }
@@ -92,12 +111,12 @@ public class Nave implements Serializable {
         this.planetaActual = planetaActual;
     }
 
-    public List<NaveXProducto> getNaveXProductos() {
-        return this.naveXProductos;
+    public List<Producto> getProductos() {
+        return this.productos;
     }
 
-    public void setNaveXProductos(List<NaveXProducto> naveXProductos) {
-        this.naveXProductos = naveXProductos;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
     public List<Tripulante> getTripulantes() {
@@ -136,13 +155,18 @@ public class Nave implements Serializable {
         return this;
     }
 
+    public Nave totalTiempoViaje(Double totalTiempoViaje) {
+        setTotalTiempoViaje(totalTiempoViaje);
+        return this;
+    }
+
     public Nave planetaActual(Planeta planetaActual) {
         setPlanetaActual(planetaActual);
         return this;
     }
 
-    public Nave naveXProductos(List<NaveXProducto> naveXProductos) {
-        setNaveXProductos(naveXProductos);
+    public Nave productos(List<Producto> productos) {
+        setProductos(productos);
         return this;
     }
 
@@ -164,12 +188,12 @@ public class Nave implements Serializable {
             return false;
         }
         Nave nave = (Nave) o;
-        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(naveXProductos, nave.naveXProductos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
+        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(totalTiempoViaje, nave.totalTiempoViaje) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(productos, nave.productos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, cargaActual, cantidadCredito, planetaActual, naveXProductos, tripulantes, modeloNave);
+        return Objects.hash(id, nombre, cargaActual, cantidadCredito, totalTiempoViaje, planetaActual, productos, tripulantes, modeloNave);
     }
 
     @Override
@@ -179,8 +203,9 @@ public class Nave implements Serializable {
             ", nombre='" + getNombre() + "'" +
             ", cargaActual='" + getCargaActual() + "'" +
             ", cantidadCredito='" + getCantidadCredito() + "'" +
+            ", totalTiempoViaje='" + getTotalTiempoViaje() + "'" +
             ", planetaActual='" + getPlanetaActual() + "'" +
-            ", naveXProductos='" + getNaveXProductos() + "'" +
+            ", productos='" + getProductos() + "'" +
             ", tripulantes='" + getTripulantes() + "'" +
             ", modeloNave='" + getModeloNave() + "'" +
             "}";
