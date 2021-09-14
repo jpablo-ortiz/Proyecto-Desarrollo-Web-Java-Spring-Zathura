@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-@RequestMapping("/Estrella")
+@RequestMapping("/")
 public class EstrellaController {
 
     //Logger log = LoggerFactory.getLogger(getClass());
@@ -63,7 +63,7 @@ public class EstrellaController {
 		System.out.println("eliminarEstrellaById" + id);
 		
 		service.eliminarEstrellaById(id);
-		return "redirect:/Estrella";
+		return "redirect:/";
 	}
 
 	@RequestMapping(path = "/crearEstrella", method = RequestMethod.POST)
@@ -73,7 +73,7 @@ public class EstrellaController {
 		
 		service.crearOactualizarEstrella(estrella);
 		
-		return "redirect:/Estrella";
+		return "redirect:/";
 	}
 
 
