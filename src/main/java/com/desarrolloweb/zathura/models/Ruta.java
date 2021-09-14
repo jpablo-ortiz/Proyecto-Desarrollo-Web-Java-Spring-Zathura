@@ -5,9 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Ruta implements Serializable {

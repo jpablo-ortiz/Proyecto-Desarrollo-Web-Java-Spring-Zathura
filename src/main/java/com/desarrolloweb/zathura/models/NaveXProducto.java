@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Id;
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
 

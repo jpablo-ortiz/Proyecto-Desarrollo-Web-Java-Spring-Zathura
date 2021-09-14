@@ -7,9 +7,8 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Estrella implements Serializable {
