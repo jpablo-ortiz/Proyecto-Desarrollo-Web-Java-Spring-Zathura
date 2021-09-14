@@ -8,15 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
+
 
 
 
 
 @Entity
 @Table(name = "estrella")
-public class Estrella implements Serializable  {
-    private static final long serialVersionUID = 1L;
+public class Estrella  {
+    
 
     @Id
     @GeneratedValue
