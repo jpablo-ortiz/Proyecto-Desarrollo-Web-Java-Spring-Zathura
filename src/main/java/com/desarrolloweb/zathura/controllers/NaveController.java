@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.controllers;
+/*package com.desarrolloweb.zathura.controllers;
 
 import com.desarrolloweb.zathura.repositories.NaveRepository;
 
@@ -17,4 +17,4 @@ public class NaveController {
     @Autowired
     private NaveRepository naveRepository;
     
-}
+}*/

@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.controllers;
+/*package com.desarrolloweb.zathura.controllers;
 
 import com.desarrolloweb.zathura.repositories.RutaRepository;
 
@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/ruta")
 public class RutaController {
-
+ 
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private RutaRepository rutaRepository;
-}
+    
+}*/
