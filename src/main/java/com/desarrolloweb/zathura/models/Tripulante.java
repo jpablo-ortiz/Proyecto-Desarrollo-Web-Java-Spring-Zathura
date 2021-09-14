@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.models;
+/*package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -6,8 +6,7 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Tripulante implements Serializable {
@@ -175,3 +174,4 @@ public class Tripulante implements Serializable {
     }
 
 }
+*/

@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.models;
+/*package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,16 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Ruta implements Serializable {
+   
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
-
+ 
     private Double distancia;
 
     @ManyToOne
@@ -108,5 +109,5 @@ public class Ruta implements Serializable {
         return "{" + " id='" + getId() + "'" + ", distancia='" + getDistancia() + "'" + ", estrellaA='" + getEstrellaA()
                 + "'" + ", estrellaB='" + getEstrellaB() + "'" + "}";
     }
-
-}
+    
+}*/

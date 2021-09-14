@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.models;
+/*package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -146,3 +146,4 @@ public class NaveXProducto implements Serializable {
     }
     
 }
+*/

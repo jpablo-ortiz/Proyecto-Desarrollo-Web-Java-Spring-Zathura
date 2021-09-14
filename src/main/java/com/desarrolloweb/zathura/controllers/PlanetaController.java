@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.controllers;
+/*package com.desarrolloweb.zathura.controllers;
 
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
 
@@ -17,4 +17,4 @@ public class PlanetaController {
     @Autowired
     private PlanetaRepository planetaRepository;
     
-}
+}*/

@@ -1,4 +1,4 @@
-package com.desarrolloweb.zathura.controllers;
+/*package com.desarrolloweb.zathura.controllers;
 
 import com.desarrolloweb.zathura.repositories.ProductoRepository;
 
@@ -16,4 +16,4 @@ public class ProductoController {
 
     @Autowired
     private ProductoRepository productoRepository;
-}
+}*/

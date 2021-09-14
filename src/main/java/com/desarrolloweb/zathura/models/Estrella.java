@@ -1,17 +1,21 @@
 package com.desarrolloweb.zathura.models;
 
-import java.io.Serializable;
+
 import java.util.List;
 import java.util.Objects;
-
+import javax.persistence.Table;
+import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
+
+
 
 @Entity
-public class Estrella implements Serializable {
+@Table(name = "estrella")
+public class Estrella implements Serializable  {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -30,28 +34,19 @@ public class Estrella implements Serializable {
 
     private Boolean habitado;
 
-    @OneToMany(mappedBy = "estrella")
-    private List<Planeta> planetas;
-
-    @OneToMany(mappedBy = "estrellaA")
-    private List<Ruta> rutasA;
-
-    @OneToMany(mappedBy = "estrellaB")
-    private List<Ruta> rutasB;
+    
 
     public Estrella() {
     }
 
-    public Estrella(String nombre, Integer recurso, Double x, Double y, Double z, Boolean habitado, List<Planeta> planetas, List<Ruta> rutasA, List<Ruta> rutasB) {
+    public Estrella(String nombre, Integer recurso, Double x, Double y, Double z, Boolean habitado) {
         this.nombre = nombre;
         this.recurso = recurso;
         this.x = x;
         this.y = y;
         this.z = z;
         this.habitado = habitado;
-        this.planetas = planetas;
-        this.rutasA = rutasA;
-        this.rutasB = rutasB;
+        
     }
 
     public Long getId() {
@@ -114,29 +109,7 @@ public class Estrella implements Serializable {
         this.habitado = habitado;
     }
 
-    public List<Planeta> getPlanetas() {
-        return this.planetas;
-    }
-
-    public void setPlanetas(List<Planeta> planetas) {
-        this.planetas = planetas;
-    }
-
-    public List<Ruta> getRutasA() {
-        return this.rutasA;
-    }
-
-    public void setRutasA(List<Ruta> rutasA) {
-        this.rutasA = rutasA;
-    }
-
-    public List<Ruta> getRutasB() {
-        return this.rutasB;
-    }
-
-    public void setRutasB(List<Ruta> rutasB) {
-        this.rutasB = rutasB;
-    }
+  
 
     public Estrella id(Long id) {
         setId(id);
@@ -173,20 +146,7 @@ public class Estrella implements Serializable {
         return this;
     }
 
-    public Estrella planetas(List<Planeta> planetas) {
-        setPlanetas(planetas);
-        return this;
-    }
-
-    public Estrella rutasA(List<Ruta> rutasA) {
-        setRutasA(rutasA);
-        return this;
-    }
-
-    public Estrella rutasB(List<Ruta> rutasB) {
-        setRutasB(rutasB);
-        return this;
-    }
+ 
 
     @Override
     public boolean equals(Object o) {
@@ -196,12 +156,12 @@ public class Estrella implements Serializable {
             return false;
         }
         Estrella estrella = (Estrella) o;
-        return Objects.equals(id, estrella.id) && Objects.equals(nombre, estrella.nombre) && Objects.equals(recurso, estrella.recurso) && Objects.equals(x, estrella.x) && Objects.equals(y, estrella.y) && Objects.equals(z, estrella.z) && Objects.equals(habitado, estrella.habitado) && Objects.equals(planetas, estrella.planetas) && Objects.equals(rutasA, estrella.rutasA) && Objects.equals(rutasB, estrella.rutasB);
+        return Objects.equals(id, estrella.id) && Objects.equals(nombre, estrella.nombre) && Objects.equals(recurso, estrella.recurso) && Objects.equals(x, estrella.x) && Objects.equals(y, estrella.y) && Objects.equals(z, estrella.z) && Objects.equals(habitado, estrella.habitado) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, recurso, x, y, z, habitado, planetas, rutasA, rutasB);
+        return Objects.hash(id, nombre, recurso, x, y, z, habitado);
     }
 
     @Override
@@ -214,9 +174,6 @@ public class Estrella implements Serializable {
             ", y='" + getY() + "'" +
             ", z='" + getZ() + "'" +
             ", habitado='" + isHabitado() + "'" +
-            ", planetas='" + getPlanetas() + "'" +
-            ", rutasA='" + getRutasA() + "'" +
-            ", rutasB='" + getRutasB() + "'" +
             "}";
     }
 
