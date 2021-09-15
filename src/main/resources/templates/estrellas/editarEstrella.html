@@ -15,7 +15,7 @@
     <!-- Navigation -->
     <nav class="nav">
         <li class="nav-item">
-            <a class="nav-link active" href="/estrella">Estrella</a>
+            <a class="nav-link active" href="/estrellas">Estrella</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Planeta</a>
@@ -40,38 +40,38 @@
         <div class="card">
             <div class="card-body">
                 <div class="col-md-10">
-                    <form th:action='@{/estrella/1}' th:object="${estrella}" method="POST">
+                    <form th:action='@{/estrellas/estrella}' th:object="${estrella}" th:method="POST">
 
                         <div class="row">
 
                             <div class="form-group col-md-8">
                                 <label for="name" class="col-form-label">Nombre Estrella</label>
-                                <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre estrella" />
+                                <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre estrella" th:value="*{nombre}" />
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="recurso" class=" col-form-label ">Recurso Estrella</label>
-                                <input type="number " th:field="*{recurso} " class="form-control " id="recurso " placeholder="Recurso estrella " name="recurso" />
+                                <input type="number " th:field="*{recurso}" class="form-control " id="recurso " placeholder="Recurso estrella " name="recurso" th:value="*{recurso}"/>
                             </div>
                             <div class="form-group col-md-8 ">
                                 <label for="x " class="col-form-label ">Coordenada x</label>
-                                <input type="number " th:field="*{x} " class="form-control " id="x" placeholder="Coordenada x " name="x" />
+                                <input type="number " th:field="*{x}" class="form-control " id="x" placeholder="Coordenada x " name="x" th:value="*{x}"/>
                             </div>
                             <div class="form-group col-md-8 ">
                                 <label for="y" class="col-form-label ">Coordenada y</label>
-                                <input type="number " th:field="*{y} " class="form-control " id="y" placeholder="Coordenada y " name="y" />
+                                <input type="number " th:field="*{y}" class="form-control " id="y" placeholder="Coordenada y " name="y" th:value="*{y}" />
                             </div>
                             <div class="form-group col-md-8 ">
                                 <label for="z" class="col-form-label ">Coordenada z</label>
-                                <input type="number" th:field="*{z} " class="form-control " id="z" placeholder="Coordenada z " name="z" />
+                                <input type="number" th:field="*{z}" class="form-control " id="z" placeholder="Coordenada z " name="z" th:value="*{z}" />
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="habitable">Habitable</label>
-                                <input type="checkbox" name="habitable" value="true" th:field="*{habitado} " id="habitado">
+                                <input type="checkbox" name="habitable" th:field="*{habitado}" id="habitado" th:value="*{habitado}" >
                             </div>
                             <div class="col-md-6">
                                 <input type="submit" class="btn btn-primary" value=" Añadir ">
                             </div>
-                            <input type="hidden" id="id " th:field="*{id} ">
+                            <input type="hidden" id="id " th:field="*{id}" value="*{id}">
                         </div>
                     </form>
                 </div>

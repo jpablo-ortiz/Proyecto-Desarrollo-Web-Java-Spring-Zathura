@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/estrella")
+@RequestMapping("/estrellas")
 public class EstrellaController {
 
 	Logger log = LoggerFactory.getLogger(getClass());
@@ -31,7 +31,7 @@ public class EstrellaController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(path = "/crear", method = RequestMethod.POST)
 	public String crearEstrella(Estrella estrella) {
 		log.info("creando estrella");
 
@@ -44,19 +44,17 @@ public class EstrellaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	//@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	//public String obtenerEstrella(@PathVariable Long id, Model model) {
-	//	log.info("obtener estrella por id");
-	//	try {
-	//		Estrella estrella = estrellaService.obtenerEstrella(id);
-	//		model.addAttribute("estrella", estrella);
-	//		return "MostrarEstrella";
-	//	} catch (RecordNotFoundException e) {
-	//		log.error("No se encontró estrella", e);
-	//		// Implementar Error html page not found
-	//		return "Error";
-	//	}
-	//}
+	@RequestMapping(path = "/estrella/{id}", method = RequestMethod.GET)
+	public Estrella obtenerEstrella(@PathVariable Long id) {
+		log.info("obtener estrella por id");
+		try {
+			Estrella estrella = estrellaService.obtenerEstrella(id);
+			return estrella;
+		} catch (RecordNotFoundException e) {
+			log.error("No se encontró estrella", e);
+			return null;
+		}
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String obtenerEstrellas(Model model) {
@@ -65,7 +63,7 @@ public class EstrellaController {
 		List<Estrella> lista = estrellaService.obtenerEstrellas();
 		model.addAttribute("estrellas", lista);
 
-		return "listaEstrellas";
+		return "estrellas/listaEstrellas";
 
 	}
 
@@ -73,11 +71,11 @@ public class EstrellaController {
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.POST)
-	public String actualizarEstrella(Estrella estrella, @PathVariable("id") Long id) {
+	@RequestMapping(path = "/estrella", method = RequestMethod.POST)
+	public String actualizarEstrella(Estrella estrella) {
 
-		//log.info("editarEstrellaById" + id);
-		//estrellaService.actualizarEstrella(estrella, id);
+		log.info("editarEstrellaById" + estrella.getId());
+		estrellaService.actualizarEstrella(estrella, estrella.getId());
 
 		return "redirect:/estrella";
 	}
@@ -86,8 +84,8 @@ public class EstrellaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/x-www-form-urlencoded")
-	public String eliminarEstrellaById(@PathVariable Long id, Model model){
+	@RequestMapping(path = "/eliminar/{id}", method = RequestMethod.GET)
+	public String eliminarEstrellaById(@PathVariable Long id, Model model) {
 
 		log.info("eliminarEstrellaById" + id);
 		estrellaService.eliminarEstrellaById(id);
@@ -99,19 +97,17 @@ public class EstrellaController {
 	// ------------------------- PANTALLAS ------------------------
 	// ------------------------------------------------------------
 
-
-	@RequestMapping(path = "/edicionOCreacion/{id}")
+	@RequestMapping(path = { "/edicionOCreacion", "/edicionOCreacion/{id}" })
 	public String realizarAccionCreacionOEdicion(@PathVariable Optional<Long> id, Model model)
 			throws RecordNotFoundException {
-
 		if (id.isPresent()) {
 			Estrella estrella = estrellaService.obtenerEstrella(id.get());
 			model.addAttribute("estrella", estrella);
+			return "estrellas/editarEstrella";
 		} else {
 			model.addAttribute("estrella", new Estrella());
+			return "estrellas/crearEstrella";
 		}
-
-		return "crearEstrella";
 	}
 
 }

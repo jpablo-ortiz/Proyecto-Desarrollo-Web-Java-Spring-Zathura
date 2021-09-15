@@ -15,7 +15,7 @@
     <!-- Navigation -->
     <nav class="nav">
         <li class="nav-item">
-            <a class="nav-link active" href="/estrella">Estrella</a>
+            <a class="nav-link active" href="/estrellas">Estrella</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Planeta</a>
@@ -37,8 +37,8 @@
 
             <div th:switch="${estrellas}" class="container my-5">
                 <p class="my-5">
-                    <a href="/estrella/edicionOCreacion" class="btn btn-primary">
-                        <i class="fas fa-user-plus ml-2"> añadir estrella </i>
+                    <a href="/estrellas/edicionOCreacion" class="btn btn-primary">
+                        <i class="fas fa-user-plus ml-2"> Añadir estrella </i>
                     </a>
                 </p>
 
@@ -73,15 +73,16 @@
                                     <td th:text="${estrella.rutasA}"></td>
                                     <td th:text="${estrella.rutasB}"></td> -->
                                     <td>
-                                        <a th:href="@{/estrella/edicionOCreacion/{id}(id=${estrella.id})}"
+                                        <a th:href="@{/estrellas/edicionOCreacion/{id}(id=${estrella.id})}"
                                             class="btn btn-primary">
                                             <i class="fas fa-user-edit ml-2"></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <form method="delete" th:action="@{/estrella/{id}(id=${estrella.id})}">
-                                            <button type="submit" class="link-button">DELETE</button>
-                                        </form>
+                                        <a th:href="@{/estrellas/eliminar/{id}(id=${estrella.id})}"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-user-times ml-2"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
