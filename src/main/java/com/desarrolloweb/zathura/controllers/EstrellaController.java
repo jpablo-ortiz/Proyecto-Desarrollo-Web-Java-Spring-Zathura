@@ -37,7 +37,7 @@ public class EstrellaController {
 
 		estrellaService.crearEstrella(estrella);
 
-		return "redirect:/estrella";
+		return "redirect:/estrellas";
 	}
 
 	// ------------------------------------------------------------
@@ -77,7 +77,7 @@ public class EstrellaController {
 		log.info("editarEstrellaById" + estrella.getId());
 		estrellaService.actualizarEstrella(estrella, estrella.getId());
 
-		return "redirect:/estrella";
+		return "redirect:/estrellas";
 	}
 
 	// ------------------------------------------------------------
@@ -90,7 +90,7 @@ public class EstrellaController {
 		log.info("eliminarEstrellaById" + id);
 		estrellaService.eliminarEstrellaById(id);
 
-		return "redirect:/estrella";
+		return "redirect:/estrellas";
 	}
 
 	// ------------------------------------------------------------
