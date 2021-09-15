@@ -33,10 +33,12 @@ public class EstrellaController {
 
 	@RequestMapping(path = "/crear", method = RequestMethod.POST)
 	public String crearEstrella(Estrella estrella) {
-		log.info("creando estrella");
+		log.info("Creando Estrella");
 
+		// Service crear
 		estrellaService.crearEstrella(estrella);
 
+		// Redireccionar a la lista de estrellas
 		return "redirect:/estrellas";
 	}
 
@@ -44,25 +46,27 @@ public class EstrellaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/estrella/{id}", method = RequestMethod.GET)
-	public Estrella obtenerEstrella(@PathVariable Long id) {
-		log.info("obtener estrella por id");
-		try {
-			Estrella estrella = estrellaService.obtenerEstrella(id);
-			return estrella;
-		} catch (RecordNotFoundException e) {
-			log.error("No se encontró estrella", e);
-			return null;
-		}
-	}
+	// @RequestMapping(path = "/estrella/{id}", method = RequestMethod.GET)
+	// public Estrella obtenerEstrella(@PathVariable Long id) {
+	// 	log.info("Obtener Estrella por ID");
+	// 	try {
+	// 		Estrella estrella = estrellaService.obtenerEstrella(id);
+	// 		return estrella;
+	// 	} catch (RecordNotFoundException e) {
+	// 		log.error("No se encontró estrella", e);
+	// 		return null;
+	// 	}
+	// }
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String obtenerEstrellas(Model model) {
-		log.info("obtener todas LasEstrellas");
+		log.info("Obtener todas las Estrellas");
 
+		// Service obtenerEstrellas
 		List<Estrella> lista = estrellaService.obtenerEstrellas();
-		model.addAttribute("estrellas", lista);
 
+		// Abrimos html listaEstrellas
+		model.addAttribute("estrellas", lista);
 		return "estrellas/listaEstrellas";
 
 	}
@@ -72,11 +76,13 @@ public class EstrellaController {
 	// ------------------------------------------------------------
 
 	@RequestMapping(path = "/estrella", method = RequestMethod.POST)
-	public String actualizarEstrella(Estrella estrella) {
-
-		log.info("editarEstrellaById" + estrella.getId());
+	public String actualizarEstrella(Estrella estrella)  {
+		log.info("Actualizar Estrella : " + estrella.getId());
+		
+		// Service actuaizarEstrella por id
 		estrellaService.actualizarEstrella(estrella, estrella.getId());
 
+		// Redireccionar a la lista de estrellas
 		return "redirect:/estrellas";
 	}
 
@@ -86,10 +92,12 @@ public class EstrellaController {
 
 	@RequestMapping(path = "/eliminar/{id}", method = RequestMethod.GET)
 	public String eliminarEstrellaById(@PathVariable Long id, Model model) {
+		log.info("Eliminar Estrella por id" + id);
 
-		log.info("eliminarEstrellaById" + id);
+		// Service eliminarEstrella por id
 		estrellaService.eliminarEstrellaById(id);
-
+		
+		// Redireccionar a la lista de estrellas
 		return "redirect:/estrellas";
 	}
 
@@ -101,10 +109,14 @@ public class EstrellaController {
 	public String realizarAccionCreacionOEdicion(@PathVariable Optional<Long> id, Model model)
 			throws RecordNotFoundException {
 		if (id.isPresent()) {
+			// Service obtenerEstrella por id
 			Estrella estrella = estrellaService.obtenerEstrella(id.get());
+
+			// Abrimos html editarEstrella
 			model.addAttribute("estrella", estrella);
 			return "estrellas/editarEstrella";
 		} else {
+			// Abrimos html crearEstrella
 			model.addAttribute("estrella", new Estrella());
 			return "estrellas/crearEstrella";
 		}

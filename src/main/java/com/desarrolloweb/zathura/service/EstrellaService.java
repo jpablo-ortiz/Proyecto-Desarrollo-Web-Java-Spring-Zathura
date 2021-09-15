@@ -27,7 +27,6 @@ public class EstrellaService {
 
 	// Post
 	public Estrella crearEstrella(Estrella estrella) {
-		log.info("Creando o actualizando estrella");
 		estrella = estrellaRepository.save(estrella);
 		return estrella;
 	}
@@ -38,7 +37,6 @@ public class EstrellaService {
 
 	// Get
 	public Estrella obtenerEstrella(Long id) throws RecordNotFoundException {
-		log.info("Obtener Estrella");
 		Estrella estrella = estrellaRepository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("No se encontro estrella con id: " + id));
 		return estrella;
@@ -46,7 +44,6 @@ public class EstrellaService {
 
 	// Get
 	public List<Estrella> obtenerEstrellas() {
-		log.info("Obtener todas las Estrellas");
 		List<Estrella> resultado = (List<Estrella>) estrellaRepository.findAll();
 		return resultado;
 	}
@@ -57,7 +54,6 @@ public class EstrellaService {
 
 	// Post
 	public Estrella actualizarEstrella(Estrella plantilla, Long id) {
-		log.info("Actualizar Estrella");
 		return estrellaRepository.findById(id).map(estrella -> {
 			estrella.setNombre(plantilla.getNombre());
 			estrella.setHabitado(plantilla.getHabitado());
@@ -80,9 +76,8 @@ public class EstrellaService {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	// Delete
+	// Delete (Pero usamos GET)
 	public void eliminarEstrellaById(Long id) {
-		log.info("Eliminar Estrella");
 		estrellaRepository.deleteById(id);
 	}
 }
