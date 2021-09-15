@@ -1,6 +1,6 @@
-/*package com.desarrolloweb.zathura.controllers;
+package com.desarrolloweb.zathura.controllers;
 
-import com.desarrolloweb.zathura.repositories.ProductoRepository;
+import com.desarrolloweb.zathura.service.ProductoService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,5 +15,5 @@ public class ProductoController {
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ProductoRepository productoRepository;
-}*/
+    private ProductoService productoService;
+}

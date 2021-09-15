@@ -1,6 +1,6 @@
-/*package com.desarrolloweb.zathura.controllers;
+package com.desarrolloweb.zathura.controllers;
 
-import com.desarrolloweb.zathura.repositories.RutaRepository;
+import com.desarrolloweb.zathura.service.RutaService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,6 @@ public class RutaController {
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private RutaRepository rutaRepository;
+    private RutaService rutaService;
     
-}*/
+}

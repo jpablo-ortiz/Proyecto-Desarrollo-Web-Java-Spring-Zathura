@@ -1,6 +1,6 @@
-/*package com.desarrolloweb.zathura.controllers;
+package com.desarrolloweb.zathura.controllers;
 
-import com.desarrolloweb.zathura.repositories.TripulanteRepository;
+import com.desarrolloweb.zathura.service.TripulanteService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,5 +15,5 @@ public class TripulanteController {
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private TripulanteRepository tripulanteRepository;
-}*/
+    private TripulanteService tripulanteService;
+}

@@ -1,10 +1,8 @@
 package com.desarrolloweb.zathura.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.desarrolloweb.zathura.exception.RecordNotFoundException;
+import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
 
@@ -19,73 +17,72 @@ public class EstrellaService {
 	Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	EstrellaRepository repository;
+	private EstrellaRepository estrellaRepository;
 
-	public List<Estrella> obtenerTodasLasEstrellas() {
-		log.info("obteniendo todas las estrellas");
-		List<Estrella> resultado = (List<Estrella>) repository.findAll();
+	// CRUD - CREATE - READ - UPDATE - DELETE
 
-		if (resultado.size() > 0) {
-			return resultado;
-		} else {
-			return new ArrayList<Estrella>();
-		}
-	}
+	// ------------------------------------------------------------
+	// -------------------------- CREATE --------------------------
+	// ------------------------------------------------------------
 
-	public Estrella getEstrellaById(Long id) throws RecordNotFoundException {
-		log.info("obtener estrella por id");
-		Optional<Estrella> estrella = repository.findById(id);
-
-		if (estrella.isPresent()) {
-			return estrella.get();
-		} else {
-			throw new RecordNotFoundException("No existe la estrella con dicha identificación");
-		}
-	}
-
-	public Estrella crearOactualizarEstrella(Estrella entity) {
+	// Post
+	public Estrella crearEstrella(Estrella estrella) {
 		log.info("Creando o actualizando estrella");
-
-		if (entity.getId() == null) {
-			entity = repository.save(entity);
-
-			return entity;
-		} else {
-			// update existing entry
-			Optional<Estrella> estrella = repository.findById(entity.getId());
-
-			if (estrella.isPresent()) {
-				Estrella nueva = estrella.get();
-				nueva.setNombre(entity.getNombre());
-				nueva.setHabitado(entity.getHabitado());
-				nueva.setRecurso(entity.getRecurso());
-				// nueva.setPlanetas(entity.getPlanetas());
-				// nueva.setRutasA(entity.getRutasA());
-				// nueva.setRutasB(entity.getRutasB());
-				nueva.setX(entity.getX());
-				nueva.setY(entity.getY());
-				nueva.setZ(entity.getZ());
-				// Guardamos la nueva estrella
-				nueva = repository.save(nueva);
-
-				return nueva;
-			} else {
-				entity = repository.save(entity);
-
-				return entity;
-			}
-		}
+		estrella = estrellaRepository.save(estrella);
+		return estrella;
 	}
 
-	public void eliminarEstrellaById(Long id) throws RecordNotFoundException {
-		log.info("Eliminar Estrella por id");
+	// ------------------------------------------------------------
+	// --------------------------- READ ---------------------------
+	// ------------------------------------------------------------
 
-		Optional<Estrella> estrella = repository.findById(id);
+	// Get
+	public Estrella obtenerEstrella(Long id) throws RecordNotFoundException {
+		log.info("Obtener Estrella");
+		Estrella estrella = estrellaRepository.findById(id)
+				.orElseThrow(() -> new RecordNotFoundException("No se encontro estrella con id: " + id));
+		return estrella;
+	}
 
-		if (estrella.isPresent()) {
-			repository.deleteById(id);
-		} else {
-			throw new RecordNotFoundException("No se encontro la estrella con dicho id");
-		}
+	// Get
+	public List<Estrella> obtenerEstrellas() {
+		log.info("Obtener todas las Estrellas");
+		List<Estrella> resultado = (List<Estrella>) estrellaRepository.findAll();
+		return resultado;
+	}
+
+	// ------------------------------------------------------------
+	// -------------------------- UPDATE --------------------------
+	// ------------------------------------------------------------
+
+	// Post
+	public Estrella actualizarEstrella(Estrella plantilla, Long id) {
+		log.info("Actualizar Estrella");
+		return estrellaRepository.findById(id).map(estrella -> {
+			estrella.setNombre(plantilla.getNombre());
+			estrella.setHabitado(plantilla.getHabitado());
+			estrella.setRecurso(plantilla.getRecurso());
+			// nueva.setPlanetas(entity.getPlanetas());
+			// nueva.setRutasA(entity.getRutasA());
+			// nueva.setRutasB(entity.getRutasB());
+			estrella.setX(plantilla.getX());
+			estrella.setY(plantilla.getY());
+			estrella.setZ(plantilla.getZ());
+
+			return estrellaRepository.save(estrella);
+		}).orElseGet(() -> {
+			plantilla.setId(id);
+			return estrellaRepository.save(plantilla);
+		});
+	}
+
+	// ------------------------------------------------------------
+	// -------------------------- DELETE --------------------------
+	// ------------------------------------------------------------
+
+	// Delete
+	public void eliminarEstrellaById(Long id) {
+		log.info("Eliminar Estrella");
+		estrellaRepository.deleteById(id);
 	}
 }

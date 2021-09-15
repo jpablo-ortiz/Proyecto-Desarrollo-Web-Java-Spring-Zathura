@@ -13,23 +13,22 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">Zathura Base de datos</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-		            <span class="navbar-toggler-icon"></span>
-		        </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Crear
-		                        <span class="sr-only">(current)</span>
-		                    </a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
+    <nav class="nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="/estrella">Estrella</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Planeta</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Tripulante</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Recurso</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Tipo Nave</a>
+        </li>
     </nav>
 
 
@@ -41,7 +40,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="col-md-10">
-                    <form th:action="@{/crearEstrella}" th:object="${estrella}" method="post">
+                    <form th:action='@{/estrella/1}' th:object="${estrella}" method="POST">
 
                         <div class="row">
 
