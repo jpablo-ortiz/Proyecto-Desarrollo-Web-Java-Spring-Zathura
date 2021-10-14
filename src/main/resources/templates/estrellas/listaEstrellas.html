@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Lista de estrellas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+
+    <style>
+        .dropdown-menu {
+            width: 100%;
+        }
+
+        .scrollable-menu {
+            height: auto;
+            max-height: 200px;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="/estrellas">Estrella</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Planeta</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Tripulante</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Recurso</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Tipo Nave</a>
+        </li>
+    </nav>
+
+
+    <div class="card" style="padding-top: 50px;">
+        <div class="card-body">
+
+            <div th:switch="${estrellas}" class="container my-5">
+                <p class="my-5">
+                    <a href="/estrellas/edicionOCreacion" class="btn btn-primary">
+                        <i class="fas fa-user-plus ml-2"> Añadir estrella </i>
+                    </a>
+                </p>
+
+                <div class="col-md-10">
+                    <h2 th:case="null">No se encuentra la información !!</h2>
+                    <div th:case="*">
+                        <table class="table table-striped table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Recurso</th>
+                                    <th>X</th>
+                                    <th>Y</th>
+                                    <th>Z</th>
+                                    <th>Habitado</th>
+                                    <th>Planetas</th>
+                                    <!----
+                                    <th>Ruta A</th>
+                                    <th>Ruta B</th> -->
+                                    <th>Editar</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="estrella : ${estrellas}">
+                                    <td th:text="${estrella.nombre}"></td>
+                                    <td th:text="${estrella.recurso}"></td>
+                                    <td th:text="${estrella.x}"></td>
+                                    <td th:text="${estrella.y}"></td>
+                                    <td th:text="${estrella.z}"></td>
+                                    <td th:text="${estrella.habitado}"></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown">
+                                                Scrollable Menu <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu" role="menu">
+                                                <li><a href="#">Action 1</a></li>
+                                                <li><a href="#">Action 2</a></li>
+                                                <li><a href="#">Action 3</a></li>
+                                                <li><a href="#">Action 4</a></li>
+                                                <li><a href="#">Action 5</a></li>
+                                                <li><a href="#">Action 6</a></li>
+                                                <li><a href="#">Action 7</a></li>
+                                                <li><a href="#">Action 8</a></li>
+                                                <li><a href="#">Action 9</a></li>
+                                                <li><a href="#">Action 10</a></li>
+                                                <li><a href="#">Action 11</a></li>
+                                                <li><a href="#">Action 12</a></li>
+                                                <li><a href="#">Action 13</a></li>
+                                                <li><a href="#">Action 14</a></li>
+                                                <li><a href="#">Very very very very very very long action</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <!--<td th:text="${estrella.planetas}"></td>
+                                    <td th:text="${estrella.rutasA}"></td>
+                                    <td th:text="${estrella.rutasB}"></td> -->
+                                    <td>
+                                        <a th:href="@{/estrellas/edicionOCreacion/{id}(id=${estrella.id})}"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-user-edit ml-2"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/estrellas/eliminar/{id}(id=${estrella.id})}"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-user-times ml-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

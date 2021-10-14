@@ -1,6 +1,6 @@
 package com.desarrolloweb.zathura.controllers;
 
-import com.desarrolloweb.zathura.repositories.NaveRepository;
+import com.desarrolloweb.zathura.service.NaveService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,6 @@ public class NaveController {
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private NaveRepository naveRepository;
-    
+    private NaveService naveService;
+
 }

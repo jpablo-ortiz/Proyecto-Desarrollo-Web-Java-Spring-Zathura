@@ -1,6 +1,6 @@
 package com.desarrolloweb.zathura.controllers;
 
-import com.desarrolloweb.zathura.repositories.PlanetaRepository;
+import com.desarrolloweb.zathura.service.PlanetaService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,6 @@ public class PlanetaController {
     Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private PlanetaRepository planetaRepository;
-    
+    private PlanetaService planetaService;
+
 }
