@@ -1,7 +1,6 @@
 package com.desarrolloweb.zathura.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
@@ -10,18 +9,39 @@ import com.desarrolloweb.zathura.service.EstrellaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/estrellas")
+import io.swagger.v3.oas.annotations.Operation;
+
+/**
+ * Esta clase contiene los métodos para el manejo de los servicios rest de la
+ * entidad estrella
+ * 
+ * @author Kenneth Leonel Triana
+ * @author Juan Pablo Ortiz Rubio
+ * @version 2.0.0
+ */
+@RestController
+@RequestMapping("/estrella")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EstrellaController {
 
-	Logger log = LoggerFactory.getLogger(getClass());
+	/**
+	 * Objeto que permite el registro de trazas de la ejecución de las operaciones
+	 * de la clase
+	 */
+	private Logger log = LoggerFactory.getLogger(getClass());
 
+	/**
+	 * Inyección de dependencia del servicio de estrellas
+	 */
 	@Autowired
 	private EstrellaService estrellaService;
 
@@ -31,95 +51,51 @@ public class EstrellaController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/crear", method = RequestMethod.POST)
-	public String crearEstrella(Estrella estrella) {
+	@PostMapping("")
+	@Operation(summary = "Crea una nueva estrella")
+	public Estrella crearEstrella(@RequestBody Estrella estrellaNueva) {
 		log.info("Creando Estrella");
-
-		// Service crear
-		estrellaService.crearEstrella(estrella);
-
-		// Redireccionar a la lista de estrellas
-		return "redirect:/estrellas";
+		return estrellaService.crearEstrella(estrellaNueva);
 	}
 
 	// ------------------------------------------------------------
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	// @RequestMapping(path = "/estrella/{id}", method = RequestMethod.GET)
-	// public Estrella obtenerEstrella(@PathVariable Long id) {
-	// 	log.info("Obtener Estrella por ID");
-	// 	try {
-	// 		Estrella estrella = estrellaService.obtenerEstrella(id);
-	// 		return estrella;
-	// 	} catch (RecordNotFoundException e) {
-	// 		log.error("No se encontró estrella", e);
-	// 		return null;
-	// 	}
-	// }
+	@GetMapping("/{id}")
+	@Operation(summary = "Obtiene una estrella por su id")
+	public Estrella obtenerEstrella(@PathVariable Long id) throws RecordNotFoundException {
+		log.info("Obtener Estrella por ID");
+		return estrellaService.obtenerEstrella(id);
+	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String obtenerEstrellas(Model model) {
+	@GetMapping("")
+	@Operation(summary = "Obtiene todas las estrellas")
+	public List<Estrella> obtenerEstrellas() {
 		log.info("Obtener todas las Estrellas");
-
-		// Service obtenerEstrellas
-		List<Estrella> lista = estrellaService.obtenerEstrellas();
-
-		// Abrimos html listaEstrellas
-		model.addAttribute("estrellas", lista);
-		return "estrellas/listaEstrellas";
-
+		return estrellaService.obtenerEstrellas();
 	}
 
 	// ------------------------------------------------------------
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/estrella", method = RequestMethod.POST)
-	public String actualizarEstrella(Estrella estrella)  {
-		log.info("Actualizar Estrella : " + estrella.getId());
-		
-		// Service actuaizarEstrella por id
-		estrellaService.actualizarEstrella(estrella, estrella.getId());
-
-		// Redireccionar a la lista de estrellas
-		return "redirect:/estrellas";
+	@PostMapping("/{id}")
+	@Operation(summary = "Modifica una estrella")
+	public Estrella modificarEstrella(@RequestBody Estrella estrella, @PathVariable Long id) {
+		log.info("modificar Estrella : " + estrella.getId());
+		return estrellaService.modificarEstrella(estrella, estrella.getId());
 	}
 
 	// ------------------------------------------------------------
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@RequestMapping(path = "/eliminar/{id}", method = RequestMethod.GET)
-	public String eliminarEstrellaById(@PathVariable Long id, Model model) {
+	@DeleteMapping("{id}")
+	@Operation(summary = "Elimina una estrella")
+	public void eliminarEstrellaById(@PathVariable Long id) {
 		log.info("Eliminar Estrella por id" + id);
-
-		// Service eliminarEstrella por id
-		estrellaService.eliminarEstrellaById(id);
-		
-		// Redireccionar a la lista de estrellas
-		return "redirect:/estrellas";
-	}
-
-	// ------------------------------------------------------------
-	// ------------------------- PANTALLAS ------------------------
-	// ------------------------------------------------------------
-
-	@RequestMapping(path = { "/edicionOCreacion", "/edicionOCreacion/{id}" })
-	public String realizarAccionCreacionOEdicion(@PathVariable Optional<Long> id, Model model)
-			throws RecordNotFoundException {
-		if (id.isPresent()) {
-			// Service obtenerEstrella por id
-			Estrella estrella = estrellaService.obtenerEstrella(id.get());
-
-			// Abrimos html editarEstrella
-			model.addAttribute("estrella", estrella);
-			return "estrellas/editarEstrella";
-		} else {
-			// Abrimos html crearEstrella
-			model.addAttribute("estrella", new Estrella());
-			return "estrellas/crearEstrella";
-		}
+		estrellaService.eliminarEstrella(id);
 	}
 
 }
