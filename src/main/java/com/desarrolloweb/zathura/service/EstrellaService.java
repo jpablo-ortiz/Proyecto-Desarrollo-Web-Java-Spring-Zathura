@@ -90,14 +90,14 @@ public class EstrellaService {
 
 	// Post
 	/**
-	 * Método que permite actualizar una entidad Estrella
+	 * Método que permite modificar una entidad Estrella
 	 * 
 	 * @param estrella
 	 *            Objeto de tipo Estrella con la información de la entidad a
-	 *            actualizar
+	 *            modificar
 	 * @return Objeto de tipo Estrella con la información de la entidad actualizada
 	 */
-	public Estrella actualizarEstrella(Estrella plantilla, Long id) {
+	public Estrella modificarEstrella(Estrella plantilla, Long id) {
 		return estrellaRepository.findById(id).map(estrella -> {
 			estrella.setNombre(plantilla.getNombre());
 			estrella.setRecurso(plantilla.getRecurso());
@@ -105,10 +105,6 @@ public class EstrellaService {
 			estrella.setY(plantilla.getY());
 			estrella.setZ(plantilla.getZ());
 			estrella.setHabitado(plantilla.getHabitado());
-			
-			// nueva.setPlanetas(entity.getPlanetas());
-			// nueva.setRutasA(entity.getRutasA());
-			// nueva.setRutasB(entity.getRutasB());
 
 			return estrellaRepository.save(estrella);
 		}).orElseGet(() -> {

@@ -10,18 +10,34 @@ import com.desarrolloweb.zathura.service.EstrellaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/estrellas")
+/**
+ * Esta clase contiene los métodos para el manejo de los servicios rest 
+ * 		de la entidad estrella
+ * 
+ * @author Kenneth Leonel Triana
+ * @author Juan Pablo Ortiz Rubio
+ * @version 2.0.0
+ */
+@RestController
+@RequestMapping("/estrella")
 public class EstrellaController {
 
-	Logger log = LoggerFactory.getLogger(getClass());
+	/**
+	 * Objeto que permite el registro de trazas de la ejecución de las operaciones
+	 * de la clase
+	 */
+	private Logger log = LoggerFactory.getLogger(getClass());
 
+	/**
+	 * Inyección de dependencia del servicio de estrellas
+	 */
 	@Autowired
 	private EstrellaService estrellaService;
 
@@ -46,17 +62,17 @@ public class EstrellaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	// @RequestMapping(path = "/estrella/{id}", method = RequestMethod.GET)
-	// public Estrella obtenerEstrella(@PathVariable Long id) {
-	// 	log.info("Obtener Estrella por ID");
-	// 	try {
-	// 		Estrella estrella = estrellaService.obtenerEstrella(id);
-	// 		return estrella;
-	// 	} catch (RecordNotFoundException e) {
-	// 		log.error("No se encontró estrella", e);
-	// 		return null;
-	// 	}
-	// }
+	@GetMapping("/{id}")
+	public Estrella obtenerEstrella(@PathVariable Long id) {
+		log.info("Obtener Estrella por ID");
+		try {
+			Estrella estrella = estrellaService.obtenerEstrella(id);
+			return estrella;
+		} catch (RecordNotFoundException e) {
+			log.error("No se encontró estrella", e);
+			return null;
+		}
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String obtenerEstrellas(Model model) {
@@ -76,11 +92,11 @@ public class EstrellaController {
 	// ------------------------------------------------------------
 
 	@RequestMapping(path = "/estrella", method = RequestMethod.POST)
-	public String actualizarEstrella(Estrella estrella)  {
-		log.info("Actualizar Estrella : " + estrella.getId());
+	public String modificarEstrella(Estrella estrella)  {
+		log.info("modificar Estrella : " + estrella.getId());
 		
 		// Service actuaizarEstrella por id
-		estrellaService.actualizarEstrella(estrella, estrella.getId());
+		estrellaService.modificarEstrella(estrella, estrella.getId());
 
 		// Redireccionar a la lista de estrellas
 		return "redirect:/estrellas";
@@ -95,7 +111,7 @@ public class EstrellaController {
 		log.info("Eliminar Estrella por id" + id);
 
 		// Service eliminarEstrella por id
-		estrellaService.eliminarEstrellaById(id);
+		estrellaService.eliminarEstrella(id);
 		
 		// Redireccionar a la lista de estrellas
 		return "redirect:/estrellas";

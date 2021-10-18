@@ -48,7 +48,7 @@ public class ModeloNaveService {
 	 * 		      la entidad modelo de nave
 	 * @return Modelo de nave creado
 	 */
-	public ModeloNave create(ModeloNave modeloNave) {
+	public ModeloNave crearModeloNave(ModeloNave modeloNave) {
 		return modeloNaveRepository.save(modeloNave);
 	}
 
@@ -77,7 +77,7 @@ public class ModeloNaveService {
 	 * 
 	 * @return Lista de modelos de nave obtenidos
 	 */
-	public List<ModeloNave> obtenerModeloNave() {
+	public List<ModeloNave> obtenerModeloNaves() {
 		return (List<ModeloNave>) modeloNaveRepository.findAll();
 	}
 
@@ -86,14 +86,14 @@ public class ModeloNaveService {
 	// ------------------------------------------------------------
 
 	/**
-	 * Método que permite actualizar un modelo de nave
+	 * Método que permite modificar un modelo de nave
 	 * 
 	 * @param modeloNave
 	 *            Objeto de tipo ModeloNave que contiene la información de
 	 * 		      la entidad modelo de nave
 	 * @return Modelo de nave actualizado
 	 */
-	public ModeloNave actualizarModeloNave(ModeloNave plantilla, Long id) {
+	public ModeloNave modificarModeloNave(ModeloNave plantilla, Long id) {
 		return modeloNaveRepository.findById(id).map(modeloNave -> {
 			modeloNave.setNombreModelo(plantilla.getNombreModelo());
 			modeloNave.setCargaMax(plantilla.getCargaMax());
