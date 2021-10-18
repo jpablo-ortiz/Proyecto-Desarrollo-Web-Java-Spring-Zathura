@@ -45,7 +45,7 @@ public class ProductoService {
 	 * @param producto Objeto de la entidad Producto que contiene la información del producto a crear
 	 * @return Objeto de la entidad Producto con la información del producto creado
 	 */
-	public Producto crearPlaneta(Producto producto) {
+	public Producto crearProducto(Producto producto) {
 		return productoRepository.save(producto);
 	}
 
@@ -86,7 +86,7 @@ public class ProductoService {
 	 * @param producto Objeto de la entidad Producto con la información del producto a modificar
 	 * @return Objeto de la entidad Producto con la información del producto actualizado
 	 */
-	public Producto modificarNave(Producto plantilla, Long id) {
+	public Producto modificarProducto(Producto plantilla, Long id) {
 		return productoRepository.findById(id).map(producto -> {
 			producto.setNombre(plantilla.getNombre());
 			producto.setCostoCredito(plantilla.getCostoCredito());

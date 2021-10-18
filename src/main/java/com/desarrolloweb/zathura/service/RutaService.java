@@ -121,7 +121,7 @@ public class RutaService {
 	 * @return Objeto de tipo Ruta que contiene la información de la entidad
 	 *         Ruta
 	 */
-	public Ruta modificarNave(Ruta plantilla, Long id) {
+	public Ruta modificarRuta(Ruta plantilla, Long id) {
 		return rutaRepository.findById(id).map(ruta -> {
 			ruta.setDistancia(plantilla.getDistancia());
 

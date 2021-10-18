@@ -107,7 +107,7 @@ public class PlanetaService {
 	 *            Objeto de tipo Planeta con la información del planeta a modificar
 	 * @return Objeto de tipo Planeta con la información del planeta actualizado
 	 */
-	public Planeta modificarNave(Planeta plantilla, Long id) {
+	public Planeta modificarPlaneta(Planeta plantilla, Long id) {
 		return planetaRepository.findById(id).map(planeta -> {
 			planeta.setNombre(plantilla.getNombre());
 			planeta.setHabitado(plantilla.getHabitado());
