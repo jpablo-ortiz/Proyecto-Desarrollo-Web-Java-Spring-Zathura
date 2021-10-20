@@ -6,11 +6,13 @@ import java.util.List;
 import com.desarrolloweb.zathura.controllers.EstrellaController;
 import com.desarrolloweb.zathura.controllers.ModeloNaveController;
 import com.desarrolloweb.zathura.controllers.NaveController;
+import com.desarrolloweb.zathura.controllers.PlanetaController;
 import com.desarrolloweb.zathura.controllers.RutaController;
 import com.desarrolloweb.zathura.controllers.TripulanteController;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.models.Ruta;
 import com.desarrolloweb.zathura.models.Tripulante;
 
@@ -36,6 +38,9 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Autowired
     private RutaController rutaController;
+    
+    @Autowired
+    private PlanetaController planetaController;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -72,25 +77,25 @@ public class DatabaseInit implements ApplicationRunner {
 
         List<Estrella> estrellas = new ArrayList<Estrella>();
         // Crear Estrelllas
-        Estrella estrella = new Estrella("Estrella 1", Double.valueOf(123), Double.valueOf(432), Double.valueOf(575),
+        Estrella estrella1 = new Estrella("Estrella 1", Double.valueOf(123), Double.valueOf(432), Double.valueOf(575),
+                Boolean.valueOf(true));
+        estrella1 = estrellaController.crearEstrella(estrella1);
+        estrellas.add(estrella1);
+
+        Estrella estrella2 = new Estrella("Estrella 2", Double.valueOf(742), Double.valueOf(1), Double.valueOf(999),
+                Boolean.valueOf(false));
+        estrella2 = estrellaController.crearEstrella(estrella2);
+        estrellas.add(estrella2);
+
+        Estrella estrella = new Estrella("Estrella 3", Double.valueOf(543), Double.valueOf(876), Double.valueOf(123),
                 Boolean.valueOf(true));
         estrella = estrellaController.crearEstrella(estrella);
         estrellas.add(estrella);
 
-        estrella = new Estrella("Estrella 2", Double.valueOf(742), Double.valueOf(1), Double.valueOf(999),
+        Estrella estrella3 = new Estrella("Estrella 4", Double.valueOf(111), Double.valueOf(325), Double.valueOf(876),
                 Boolean.valueOf(false));
-        estrella = estrellaController.crearEstrella(estrella);
-        estrellas.add(estrella);
-
-        estrella = new Estrella("Estrella 3", Double.valueOf(543), Double.valueOf(876), Double.valueOf(123),
-                Boolean.valueOf(true));
-        estrella = estrellaController.crearEstrella(estrella);
-        estrellas.add(estrella);
-
-        estrella = new Estrella("Estrella 4", Double.valueOf(111), Double.valueOf(325), Double.valueOf(876),
-                Boolean.valueOf(false));
-        estrella = estrellaController.crearEstrella(estrella);
-        estrellas.add(estrella);
+        estrella3 = estrellaController.crearEstrella(estrella3);
+        estrellas.add(estrella3);
 
         estrella = new Estrella("Estrella 5", Double.valueOf(345), Double.valueOf(897), Double.valueOf(56),
                 Boolean.valueOf(true));
@@ -169,6 +174,34 @@ public class DatabaseInit implements ApplicationRunner {
         //        }
         //    }
         //}
+        
+
+        
+        List<Planeta> planetas = new ArrayList<Planeta>();
+        // Crear Estrelllas
+        Planeta planeta = new Planeta(Long.valueOf(1),"planeta 1",true);
+        planeta.setEstrella(estrella3);
+        planeta = planetaController.crearPlaneta(planeta);
+        planetas.add(planeta);
+        Planeta planeta2 = new Planeta(Long.valueOf(2),"planeta 2",true);
+        planeta2.setEstrella(estrella3);
+        planeta2 = planetaController.crearPlaneta(planeta2);
+        planetas.add(planeta2);
+        Planeta planeta3 = new Planeta(Long.valueOf(3),"planeta 3",true);
+        planeta3.setEstrella(estrella3);
+        planeta3 = planetaController.crearPlaneta(planeta3);
+        planetas.add(planeta3);
+        Planeta planeta4 = new Planeta(Long.valueOf(4),"planeta 4",true);
+        planeta4.setEstrella(estrella3);
+        planeta4 = planetaController.crearPlaneta(planeta4);
+        planetas.add(planeta4);
+        Planeta planeta5 = new Planeta(Long.valueOf(3),"planeta 5",true);
+        planeta5.setEstrella(estrella2);
+        planeta5 = planetaController.crearPlaneta(planeta5);
+        planetas.add(planeta5);
     }
 
+    
+                
+        
 }

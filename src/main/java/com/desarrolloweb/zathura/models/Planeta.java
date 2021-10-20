@@ -56,6 +56,14 @@ public class Planeta implements Serializable {
         this.productos = productos;
         this.naves = naves;
     }
+    public Planeta(Long id, String nombre, Boolean habitado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.habitado = habitado;
+       
+        
+        
+    }
 
     public Long getId() {
         return this.id;

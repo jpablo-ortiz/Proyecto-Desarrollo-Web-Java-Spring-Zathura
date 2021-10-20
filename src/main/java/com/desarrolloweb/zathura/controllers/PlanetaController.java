@@ -98,4 +98,16 @@ public class PlanetaController {
 		planetaService.eliminarPlaneta(id);
 	}
 
+	// ------------------------------------------------------------
+	// --------------------------- OTROS --------------------------
+	// ------------------------------------------------------------
+
+	// Obtener los tripulantes por el id de la nave
+	@GetMapping("/estrella/{id}")
+	@Operation(summary = "Obtiene los planetas por el id de la estrella")
+	public List<Planeta> obtenerPlanetasPorEstrella(@PathVariable Long id) {
+		log.info("Obtener Planetas por ID de la estrella");
+		return planetaService.obtenerPlanetasPorEstrella(id);
+	}
+
 }

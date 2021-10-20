@@ -2,6 +2,8 @@ package com.desarrolloweb.zathura.service;
 
 import java.util.List;
 
+import javax.persistence.Id;
+
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.Planeta;
@@ -142,6 +144,20 @@ public class PlanetaService {
 	public void eliminarPlaneta(Long id) {
 		planetaRepository.deleteById(id);
 	}
+
+	// ------------------------------------------------------------
+	// --------------------------- OTROS --------------------------
+	// ------------------------------------------------------------
+
+	/**
+	 * Método que permite obtener un registro de los planetas por estrella
+	 * 
+	 * @param id Identificador de la estrella
+	 * @return Lista de objetos de la entidad Planeta con la información de los planetas
+	 */
+    public List<Planeta> obtenerPlanetasPorEstrella(Long id) {
+        return planetaRepository.findByEstrellaId(id);
+    }
 
 
 }
