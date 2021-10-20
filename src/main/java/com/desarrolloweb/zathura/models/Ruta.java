@@ -33,6 +33,11 @@ public class Ruta implements Serializable {
         this.estrellaB = estrellaB;
     }
 
+    public Ruta(Estrella estrellaA, Estrella estrellaB) {
+        this.estrellaA = estrellaA;
+        this.estrellaB = estrellaB;
+    }
+
     public Long getId() {
         return this.id;
     }

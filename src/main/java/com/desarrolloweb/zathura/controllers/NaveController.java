@@ -91,7 +91,7 @@ public class NaveController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una nave")
 	public void eliminarNaveById(@PathVariable Long id) {
 		log.info("Eliminar Nave por id" + id);

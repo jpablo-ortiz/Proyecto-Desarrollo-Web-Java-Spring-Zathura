@@ -91,7 +91,7 @@ public class ProductoController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un producto")
 	public void eliminarProductoById(@PathVariable Long id) {
 		log.info("Eliminar Producto por id" + id);

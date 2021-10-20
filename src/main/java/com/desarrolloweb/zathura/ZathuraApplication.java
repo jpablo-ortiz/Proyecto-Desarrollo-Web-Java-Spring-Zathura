@@ -9,5 +9,4 @@ public class ZathuraApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ZathuraApplication.class, args);
 	}
-
 }

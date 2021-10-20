@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Tripulante implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -27,6 +29,7 @@ public class Tripulante implements Serializable {
     private Boolean comerciante;
 
     @ManyToOne
+    @JsonManagedReference
     private Nave nave;
 
     public Tripulante() {
@@ -39,6 +42,14 @@ public class Tripulante implements Serializable {
         this.navegante = navegante;
         this.comerciante = comerciante;
         this.nave = nave;
+    }
+
+    public Tripulante(Long id, String username, String password, Boolean capitan, Boolean navegante, Boolean comerciante) {
+        this.username = username;
+        this.password = password;
+        this.capitan = capitan;
+        this.navegante = navegante;
+        this.comerciante = comerciante;
     }
 
     public Long getId() {

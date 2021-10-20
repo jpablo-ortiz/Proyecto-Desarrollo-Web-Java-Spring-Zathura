@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Planeta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -40,6 +42,7 @@ public class Planeta implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 
     public Planeta() {

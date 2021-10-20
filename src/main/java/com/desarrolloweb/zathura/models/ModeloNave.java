@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class ModeloNave implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,17 +22,26 @@ public class ModeloNave implements Serializable {
 
     private String nombreModelo;
 
-    private String cargaMax;
+    private Double cargaMax;
 
-    private String velocidadMax;
+    private Double velocidadMax;
 
     @OneToMany(mappedBy = "modeloNave")
+    @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 
     public ModeloNave() {
     }
 
-    public ModeloNave(String nombreModelo, String cargaMax, String velocidadMax, List<Nave> naves) {
+    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax) {
+        this.id = id;
+        this.nombreModelo = nombreModelo;
+        this.cargaMax = cargaMax;
+        this.velocidadMax = velocidadMax;
+    }
+
+    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, List<Nave> naves) {
+        this.id = id;
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
         this.velocidadMax = velocidadMax;
@@ -53,19 +64,19 @@ public class ModeloNave implements Serializable {
         this.nombreModelo = nombreModelo;
     }
 
-    public String getCargaMax() {
+    public Double getCargaMax() {
         return this.cargaMax;
     }
 
-    public void setCargaMax(String cargaMax) {
+    public void setCargaMax(Double cargaMax) {
         this.cargaMax = cargaMax;
     }
 
-    public String getVelocidadMax() {
+    public Double getVelocidadMax() {
         return this.velocidadMax;
     }
 
-    public void setVelocidadMax(String velocidadMax) {
+    public void setVelocidadMax(Double velocidadMax) {
         this.velocidadMax = velocidadMax;
     }
 
@@ -87,12 +98,12 @@ public class ModeloNave implements Serializable {
         return this;
     }
 
-    public ModeloNave cargaMax(String cargaMax) {
+    public ModeloNave cargaMax(Double cargaMax) {
         setCargaMax(cargaMax);
         return this;
     }
 
-    public ModeloNave velocidadMax(String velocidadMax) {
+    public ModeloNave velocidadMax(Double velocidadMax) {
         setVelocidadMax(velocidadMax);
         return this;
     }
@@ -128,5 +139,5 @@ public class ModeloNave implements Serializable {
             ", naves='" + getNaves() + "'" +
             "}";
     }
-
+    
 }

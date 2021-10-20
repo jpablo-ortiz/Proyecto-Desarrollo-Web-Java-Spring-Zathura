@@ -146,4 +146,18 @@ public class TripulanteService {
 		tripulanteRepository.deleteById(id);
 	}
 
+	// ------------------------------------------------------------
+	// --------------------------- OTROS --------------------------
+	// ------------------------------------------------------------
+
+	/**
+	 * Método que permite obtener un registro de los tripulantes por nave
+	 * 
+	 * @param id Identificador de la nave
+	 * @return Lista de objetos de la entidad Tripulante con la información de los tripulantes
+	 */
+    public List<Tripulante> obtenerTripulantesPorNave(Long id) {
+        return tripulanteRepository.findByNaveId(id);
+    }
+
 }

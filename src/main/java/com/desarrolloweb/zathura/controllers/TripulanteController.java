@@ -91,10 +91,22 @@ public class TripulanteController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un tripulante")
 	public void eliminarTripulanteById(@PathVariable Long id) {
 		log.info("Eliminar Tripulante por id" + id);
 		tripulanteService.eliminarTripulante(id);
+	}
+
+	// ------------------------------------------------------------
+	// --------------------------- OTROS --------------------------
+	// ------------------------------------------------------------
+
+	// Obtener los tripulantes por el id de la nave
+	@GetMapping("/nave/{id}")
+	@Operation(summary = "Obtiene los tripulantes por el id de la nave")
+	public List<Tripulante> obtenerTripulantesPorNave(@PathVariable Long id) {
+		log.info("Obtener Tripulantes por ID de la nave");
+		return tripulanteService.obtenerTripulantesPorNave(id);
 	}
 }

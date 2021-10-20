@@ -91,7 +91,7 @@ public class PlanetaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un planeta")
 	public void eliminarPlanetaById(@PathVariable Long id) {
 		log.info("Eliminar Planeta por id" + id);

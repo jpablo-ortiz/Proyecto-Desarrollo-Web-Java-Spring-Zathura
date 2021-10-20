@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
+import com.desarrolloweb.zathura.models.POJOs.EstrellaPojo;
 import com.desarrolloweb.zathura.service.EstrellaService;
 
 import org.slf4j.Logger;
@@ -91,11 +92,22 @@ public class EstrellaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una estrella")
 	public void eliminarEstrellaById(@PathVariable Long id) {
 		log.info("Eliminar Estrella por id" + id);
 		estrellaService.eliminarEstrella(id);
+	}
+
+	// ------------------------------------------------------------
+	// -------------------------- OTHER ---------------------------
+	// ------------------------------------------------------------
+
+	@GetMapping("/10nearest/{id}")
+	@Operation(summary = "Obtiene las 10 estrellas más cercanas a la estrella dada")
+	public List<EstrellaPojo> obtener10EstrellasCercanas(@PathVariable Long id) throws RecordNotFoundException {
+		log.info("Obtener las 10 estrellas más cercanas a la estrella dada");
+		return estrellaService.obtenerEstrellasCercanas(id, 10);
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 @Entity
 public class Estrella implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -52,6 +53,14 @@ public class Estrella implements Serializable {
         this.planetas = planetas;
         this.rutasA = rutasA;
         this.rutasB = rutasB;
+    }
+
+    public Estrella(String nombre, Double x, Double y, Double z, Boolean habitado) {
+        this.nombre = nombre;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.habitado = habitado;
     }
 
     public Long getId() {

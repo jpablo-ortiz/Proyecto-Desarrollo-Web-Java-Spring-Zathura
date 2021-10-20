@@ -92,7 +92,7 @@ public class RutaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una ruta")
 	public void eliminarRutaById(@PathVariable Long id) {
 		log.info("Eliminar Ruta por id" + id);
