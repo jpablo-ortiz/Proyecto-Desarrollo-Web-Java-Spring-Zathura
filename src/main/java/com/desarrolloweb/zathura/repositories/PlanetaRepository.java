@@ -15,8 +15,7 @@ public interface PlanetaRepository extends PagingAndSortingRepository<Planeta, L
       @Query("select p from Planeta p where p.estrella.id = ?1")
       List<Planeta> findByEstrellaId(Long id);
 
-      @Query("SELECT p " 
-      + "FROM PlanetaXProducto pxp JOIN pxp.producto p" 
-      + "WHERE pxp.planeta.id = ?1")
+      @Query("SELECT p FROM PlanetaXProducto pxp JOIN pxp.producto p WHERE pxp.planeta.id = ?1")
       List<Producto> findProductosByPlanetaId(Long id);
+      
 }
