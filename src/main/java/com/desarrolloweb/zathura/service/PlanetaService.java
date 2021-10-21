@@ -5,6 +5,7 @@ import java.util.List;
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.Planeta;
+import com.desarrolloweb.zathura.models.PlanetaXProducto;
 import com.desarrolloweb.zathura.models.Producto;
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
 
@@ -161,6 +162,10 @@ public class PlanetaService {
 	public List<Producto> obtenerProductosPorPlaneta(Long id){
 		return planetaRepository.findProductosByPlanetaId(id);
 	}
+
+    public PlanetaXProducto obtenerPlanetaXProducto(Long planetaId, Long productoId) {
+        return planetaRepository.findPlanetaXProductoByIds(planetaId,productoId);
+    }
 
 
 }

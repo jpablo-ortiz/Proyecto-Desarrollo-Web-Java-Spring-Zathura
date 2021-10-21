@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.service.NaveService;
 
 import org.slf4j.Logger;
@@ -109,5 +110,13 @@ public class NaveController {
 		log.info("Cambiar planeta de una nave");
 		return naveService.cambiarPlaneta(idNave, idPlaneta);
 	}
+
+		// Obtener NaveXProducto
+		@GetMapping("/{naveId}/producto/{productoId}")
+		@Operation(summary = "Obtener NaveXProducto")
+		public NaveXProducto obtenerNaveXProducto(@PathVariable Long naveId, @PathVariable Long productoId) throws RecordNotFoundException {
+			log.info("Cambiar planeta de una nave");
+			return naveService.obtenerNaveXProducto(naveId, productoId);
+		}
 
 }

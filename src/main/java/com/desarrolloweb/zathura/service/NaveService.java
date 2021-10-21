@@ -5,6 +5,7 @@ import java.util.List;
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.ModeloNave;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
 
@@ -174,5 +175,9 @@ public class NaveService {
 		nave.setPlanetaActual(planeta);
 		return naveRepository.save(nave);
 	}
+
+    public NaveXProducto obtenerNaveXProducto(Long naveId, Long productoId) {
+        return naveRepository.findNaveXProducto(naveId, productoId);
+    }
 	
 }
