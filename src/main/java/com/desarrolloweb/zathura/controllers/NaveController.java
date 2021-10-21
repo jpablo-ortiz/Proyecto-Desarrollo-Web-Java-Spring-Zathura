@@ -98,4 +98,16 @@ public class NaveController {
 		naveService.eliminarNave(id);
 	}
 
+	// ------------------------------------------------------------
+	// -------------------------- OTHERS --------------------------
+	// ------------------------------------------------------------
+
+	// Cambiar planeta de una nave
+	@GetMapping("/{idNave}/planeta/{idPlaneta}")
+	@Operation(summary = "Cambia el planeta de una nave")
+	public Nave cambiarPlaneta(@PathVariable Long idNave, @PathVariable Long idPlaneta) throws RecordNotFoundException {
+		log.info("Cambiar planeta de una nave");
+		return naveService.cambiarPlaneta(idNave, idPlaneta);
+	}
+
 }

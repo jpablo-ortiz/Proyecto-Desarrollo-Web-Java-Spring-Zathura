@@ -6,6 +6,8 @@ import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,9 +22,11 @@ public class NaveXProducto implements Serializable {
     private Double totalVolumen;
 
     @ManyToOne
+    @JsonManagedReference
     private Nave nave;
     
     @ManyToOne
+    @JsonManagedReference
     private Producto producto;
 
     public NaveXProducto() {
@@ -34,6 +38,14 @@ public class NaveXProducto implements Serializable {
         this.totalVolumen = totalVolumen;
         this.nave = nave;
         this.producto = producto;
+    }
+    
+    public NaveXProducto(Long id ,Double stock, Double totalCredito, Double totalVolumen) {
+        this.id = id;        
+        this.stock = stock;
+        this.totalCredito = totalCredito;
+        this.totalVolumen = totalVolumen;
+      
     }
 
     public Long getId() {

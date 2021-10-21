@@ -3,6 +3,9 @@ package com.desarrolloweb.zathura.controllers;
 import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
+import com.desarrolloweb.zathura.models.Estrella;
+import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.service.TripulanteService;
 
@@ -109,4 +112,29 @@ public class TripulanteController {
 		log.info("Obtener Tripulantes por ID de la nave");
 		return tripulanteService.obtenerTripulantesPorNave(id);
 	}
+
+	// Obtener la estrella actual de la nave del tripulante dado
+	@GetMapping("/{id}/estrella")
+	@Operation(summary = "Obtiene la estrella actual de la nave del tripulante")
+	public Estrella obtenerEstrellaActual(@PathVariable Long id) {
+		log.info("Obtener la estrella actual de la nave del tripulante");
+		return tripulanteService.obtenerEstrellaActual(id);
+	}
+
+	// Obtener el planeta actual de la nave del tripulante dado
+	@GetMapping("/{id}/planeta")
+	@Operation(summary = "Obtiene el planeta actual de la nave del tripulante")
+	public Planeta obtenerPlanetaActual(@PathVariable Long id) {
+		log.info("Obtener el planeta actual de la nave del tripulante");
+		return tripulanteService.obtenerPlanetaActual(id);
+	}
+
+	// Obtener la nave actual del tripulante dado
+	@GetMapping("/{id}/nave")
+	@Operation(summary = "Obtiene la nave actual del tripulante")
+	public Nave obtenerNaveActual(@PathVariable Long id) {
+		log.info("Obtener la nave actual del tripulante");
+		return tripulanteService.obtenerNaveActual(id);
+	}
+
 }

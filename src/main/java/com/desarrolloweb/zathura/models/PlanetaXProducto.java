@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class PlanetaXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -27,15 +29,18 @@ public class PlanetaXProducto implements Serializable {
     private Integer stock;
 
     @ManyToOne
+    @JsonManagedReference
     private Planeta planeta;
 
     @ManyToOne
+    @JsonManagedReference
     private Producto producto;
 
     public PlanetaXProducto() {
     }
 
-    public PlanetaXProducto(Double precioVenta, Double precioCompra, Double factorDemanda, Double factorOferta, Integer stock, Planeta planeta, Producto producto) {
+    public PlanetaXProducto(Double precioVenta, Double precioCompra, Double factorDemanda, Double factorOferta,
+            Integer stock, Planeta planeta, Producto producto) {
         this.precioVenta = precioVenta;
         this.precioCompra = precioCompra;
         this.factorDemanda = factorDemanda;
@@ -43,6 +48,17 @@ public class PlanetaXProducto implements Serializable {
         this.stock = stock;
         this.planeta = planeta;
         this.producto = producto;
+    }
+
+    public PlanetaXProducto(Long id, Double precioVenta, Double precioCompra, Double factorDemanda, Double factorOferta,
+            Integer stock) {
+        this.id = id;
+        this.precioVenta = precioVenta;
+        this.precioCompra = precioCompra;
+        this.factorDemanda = factorDemanda;
+        this.factorOferta = factorOferta;
+        this.stock = stock;
+
     }
 
     public Long getId() {
@@ -157,7 +173,12 @@ public class PlanetaXProducto implements Serializable {
             return false;
         }
         PlanetaXProducto planetaXProducto = (PlanetaXProducto) o;
-        return Objects.equals(id, planetaXProducto.id) && Objects.equals(precioVenta, planetaXProducto.precioVenta) && Objects.equals(precioCompra, planetaXProducto.precioCompra) && Objects.equals(factorDemanda, planetaXProducto.factorDemanda) && Objects.equals(factorOferta, planetaXProducto.factorOferta) && Objects.equals(stock, planetaXProducto.stock) && Objects.equals(planeta, planetaXProducto.planeta) && Objects.equals(producto, planetaXProducto.producto);
+        return Objects.equals(id, planetaXProducto.id) && Objects.equals(precioVenta, planetaXProducto.precioVenta)
+                && Objects.equals(precioCompra, planetaXProducto.precioCompra)
+                && Objects.equals(factorDemanda, planetaXProducto.factorDemanda)
+                && Objects.equals(factorOferta, planetaXProducto.factorOferta)
+                && Objects.equals(stock, planetaXProducto.stock) && Objects.equals(planeta, planetaXProducto.planeta)
+                && Objects.equals(producto, planetaXProducto.producto);
     }
 
     @Override
@@ -167,16 +188,10 @@ public class PlanetaXProducto implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", precioVenta='" + getPrecioVenta() + "'" +
-            ", precioCompra='" + getPrecioCompra() + "'" +
-            ", factorDemanda='" + getFactorDemanda() + "'" +
-            ", factorOferta='" + getFactorOferta() + "'" +
-            ", stock='" + getStock() + "'" +
-            ", planeta='" + getPlaneta() + "'" +
-            ", producto='" + getProducto() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", precioVenta='" + getPrecioVenta() + "'" + ", precioCompra='"
+                + getPrecioCompra() + "'" + ", factorDemanda='" + getFactorDemanda() + "'" + ", factorOferta='"
+                + getFactorOferta() + "'" + ", stock='" + getStock() + "'" + ", planeta='" + getPlaneta() + "'"
+                + ", producto='" + getProducto() + "'" + "}";
     }
 
 }

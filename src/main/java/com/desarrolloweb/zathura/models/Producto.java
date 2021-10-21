@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Producto implements Serializable {
@@ -35,6 +35,7 @@ public class Producto implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "planeta_id"))
+    @JsonBackReference
     private List<Planeta> planetas = new ArrayList<>();
 
     // @OneToMany(mappedBy = "producto")
@@ -42,13 +43,14 @@ public class Producto implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
-    @JsonManagedReference
+    @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, Double costoCredito, Double volumen, Double peso, List<Planeta> planetas, List<Nave> naves) {
+    public Producto(Long id, String nombre, Double costoCredito, Double volumen, Double peso, List<Planeta> planetas,
+            List<Nave> naves) {
         this.id = id;
         this.nombre = nombre;
         this.costoCredito = costoCredito;
@@ -56,6 +58,14 @@ public class Producto implements Serializable {
         this.peso = peso;
         this.planetas = planetas;
         this.naves = naves;
+    }
+
+    public Producto(Long id, String nombre, Double costoCredito, Double volumen, Double peso) {
+        this.id = id;
+        this.nombre = nombre;
+        this.costoCredito = costoCredito;
+        this.volumen = volumen;
+        this.peso = peso;
     }
 
     public Long getId() {
@@ -157,7 +167,10 @@ public class Producto implements Serializable {
             return false;
         }
         Producto producto = (Producto) o;
-        return Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre) && Objects.equals(costoCredito, producto.costoCredito) && Objects.equals(volumen, producto.volumen) && Objects.equals(peso, producto.peso) && Objects.equals(planetas, producto.planetas) && Objects.equals(naves, producto.naves);
+        return Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre)
+                && Objects.equals(costoCredito, producto.costoCredito) && Objects.equals(volumen, producto.volumen)
+                && Objects.equals(peso, producto.peso) && Objects.equals(planetas, producto.planetas)
+                && Objects.equals(naves, producto.naves);
     }
 
     @Override
@@ -167,15 +180,9 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", costoCredito='" + getCostoCredito() + "'" +
-            ", volumen='" + getVolumen() + "'" +
-            ", peso='" + getPeso() + "'" +
-            ", planetas='" + getPlanetas() + "'" +
-            ", naves='" + getNaves() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", costoCredito='" + getCostoCredito()
+                + "'" + ", volumen='" + getVolumen() + "'" + ", peso='" + getPeso() + "'" + ", planetas='"
+                + getPlanetas() + "'" + ", naves='" + getNaves() + "'" + "}";
     }
 
 }

@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Planeta implements Serializable {
@@ -28,6 +29,7 @@ public class Planeta implements Serializable {
     private Boolean habitado;
 
     @ManyToOne
+    @JsonManagedReference
     private Estrella estrella;
 
     // @OneToMany(mappedBy = "planeta")
@@ -35,6 +37,7 @@ public class Planeta implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JsonBackReference
     private List<Producto> productos = new ArrayList<>();
 
     // @OneToMany(mappedBy = "planetaActual")

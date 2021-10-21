@@ -167,4 +167,12 @@ public class NaveService {
 	public void eliminarNave(Long id) {
 		naveRepository.deleteById(id);
 	}
+
+	public Nave cambiarPlaneta(Long idNave, Long idPlaneta) throws RecordNotFoundException {
+		Nave nave = obtenerNave(idNave);
+		Planeta planeta = planetaService.obtenerPlaneta(idPlaneta);
+		nave.setPlanetaActual(planeta);
+		return naveRepository.save(nave);
+	}
+	
 }

@@ -3,7 +3,9 @@ package com.desarrolloweb.zathura.service;
 import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
+import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
@@ -156,8 +158,20 @@ public class TripulanteService {
 	 * @param id Identificador de la nave
 	 * @return Lista de objetos de la entidad Tripulante con la información de los tripulantes
 	 */
-    public List<Tripulante> obtenerTripulantesPorNave(Long id) {
-        return tripulanteRepository.findByNaveId(id);
+	public List<Tripulante> obtenerTripulantesPorNave(Long id) {
+		return tripulanteRepository.findByNaveId(id);
+	}
+
+    public Estrella obtenerEstrellaActual(Long id) {
+        return tripulanteRepository.findEstrellaByIdTripulante(id);
+    }
+
+	public Planeta obtenerPlanetaActual(Long id) {
+		return tripulanteRepository.findPlanetaByIdTripulante(id);
+	}
+
+    public Nave obtenerNaveActual(Long id) {
+        return tripulanteRepository.findNaveByIdTripulante(id);
     }
 
 }
