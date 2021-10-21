@@ -83,8 +83,13 @@ public class DatabaseInit implements ApplicationRunner {
     @Autowired
     private NaveXProductoRepository naveXProductoRepository;
 
+
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
+            
+        
+        //generarEntrega2();
 
     }
 
@@ -109,13 +114,13 @@ public class DatabaseInit implements ApplicationRunner {
      */
     public void creacionEstrellas() {
         Estrella estrella = new Estrella();
-        int totalEstrellas = 40000;
-        Double estrellasHabitadas = totalEstrellas * (0.01);
+        int totalEstrellas = 20;
+        Double estrellasHabitadas = totalEstrellas * (0.5);
         // Se recorren todas las estrellas
         for (int i = 0; i < totalEstrellas; i++) {
             if (random.nextInt(2) == 1 && estrellasHabitadas > 0) {
                 // Guardar Estrella habitable
-                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
+                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10),
                         random.nextDouble(), random.nextDouble(), random.nextDouble(), true));
                 estrellasHabitadas--;
                 // Condición de que en cada estrella esten 3 planetas
@@ -135,7 +140,7 @@ public class DatabaseInit implements ApplicationRunner {
      */
     public void creacionProductos() {
 
-        int maxProducto = 500;
+        int maxProducto = 50;
         ArrayList<Producto> productos = new ArrayList<Producto>();
         // Se recorre todos los productos
         for (int i = 0; i < maxProducto; i++) {
@@ -214,7 +219,7 @@ public class DatabaseInit implements ApplicationRunner {
 
             // Generación de Tripulantes en las naves ya existentes.
 
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 5; j++) {
                 ran = random.nextInt(3);
                 if (ran == 0)
                     tripulanteRepository.save(new Tripulante(randomGen.generate(5, 10), randomGen.generate(5, 10), true,

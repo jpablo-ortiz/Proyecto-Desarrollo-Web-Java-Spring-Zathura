@@ -110,7 +110,7 @@ public class PlanetaController {
 		log.info("Obtener Planetas por ID de la estrella");
 		return planetaService.obtenerPlanetasPorEstrella(id);
 	}
-	// Obtener los tripulantes por el id de la nave
+	// Obtener los productos por el id del PLANETA
 	@GetMapping("/productos/{id}")
 	@Operation(summary = "Obtiene los productos por el id del Planeta")
 	public List<Producto> obtenerProductosPorPlaneta(@PathVariable Long id) {
