@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -27,7 +26,7 @@ public class NaveXProducto implements Serializable {
     @ManyToOne
     @JsonManagedReference
     private Nave nave;
-    
+
     @ManyToOne
     @JsonManagedReference
     private Producto producto;
@@ -42,13 +41,13 @@ public class NaveXProducto implements Serializable {
         this.nave = nave;
         this.producto = producto;
     }
-    
-    public NaveXProducto(Long id ,Double stock, Double totalCredito, Double totalVolumen) {
-        this.id = id;        
+
+    public NaveXProducto(Long id, Double stock, Double totalCredito, Double totalVolumen) {
+        this.id = id;
         this.stock = stock;
         this.totalCredito = totalCredito;
         this.totalVolumen = totalVolumen;
-      
+
     }
 
     public Long getId() {
@@ -137,7 +136,10 @@ public class NaveXProducto implements Serializable {
             return false;
         }
         NaveXProducto naveXProducto = (NaveXProducto) o;
-        return Objects.equals(id, naveXProducto.id) && Objects.equals(stock, naveXProducto.stock) && Objects.equals(totalCredito, naveXProducto.totalCredito) && Objects.equals(totalVolumen, naveXProducto.totalVolumen) && Objects.equals(nave, naveXProducto.nave) && Objects.equals(producto, naveXProducto.producto);
+        return Objects.equals(id, naveXProducto.id) && Objects.equals(stock, naveXProducto.stock)
+                && Objects.equals(totalCredito, naveXProducto.totalCredito)
+                && Objects.equals(totalVolumen, naveXProducto.totalVolumen) && Objects.equals(nave, naveXProducto.nave)
+                && Objects.equals(producto, naveXProducto.producto);
     }
 
     @Override
@@ -147,14 +149,9 @@ public class NaveXProducto implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", stock='" + getStock() + "'" +
-            ", totalCredito='" + getTotalCredito() + "'" +
-            ", totalVolumen='" + getTotalVolumen() + "'" +
-            ", nave='" + getNave() + "'" +
-            ", producto='" + getProducto() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", stock='" + getStock() + "'" + ", totalCredito='" + getTotalCredito()
+                + "'" + ", totalVolumen='" + getTotalVolumen() + "'" + ", nave='" + getNave() + "'" + ", producto='"
+                + getProducto() + "'" + "}";
     }
-    
+
 }

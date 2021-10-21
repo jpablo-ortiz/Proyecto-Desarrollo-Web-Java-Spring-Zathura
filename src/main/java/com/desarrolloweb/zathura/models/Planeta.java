@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -36,15 +37,14 @@ public class Planeta implements Serializable {
     // List<PlanetaXProducto> planetaXProductos;
 
     @ManyToMany
-    @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JoinTable(name = "planetaxproducto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
     @JsonBackReference
     private List<Producto> productos = new ArrayList<>();
 
     // @OneToMany(mappedBy = "planetaActual")
     // private List<Nave> naves;
 
-    @ManyToMany
-    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    @OneToMany(mappedBy = "planetaActual")
     @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 

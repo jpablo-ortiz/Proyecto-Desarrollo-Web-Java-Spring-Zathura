@@ -44,10 +44,10 @@ public class PlanetaController {
 	/**
 	 * Inyección de dependencia del servicio de planeta
 	 */
-    @Autowired
-    private PlanetaService planetaService;
+	@Autowired
+	private PlanetaService planetaService;
 
-    // CRUD - CREATE - READ - UPDATE - DELETE
+	// CRUD - CREATE - READ - UPDATE - DELETE
 
 	// ------------------------------------------------------------
 	// -------------------------- CREATE --------------------------
@@ -111,6 +111,7 @@ public class PlanetaController {
 		log.info("Obtener Planetas por ID de la estrella");
 		return planetaService.obtenerPlanetasPorEstrella(id);
 	}
+
 	// Obtener los productos por el id del PLANETA
 	@GetMapping("/productos/{id}")
 	@Operation(summary = "Obtiene los productos por el id del Planeta")
@@ -123,7 +124,7 @@ public class PlanetaController {
 	@Operation(summary = "Obtiene el PlanetaXProducto por el id del Planeta y del producto")
 	public PlanetaXProducto obtenerPlanetaXProducto(@PathVariable Long planetaId, @PathVariable Long productoId) {
 		log.info("Obtener planetaXProducto por ID del planeta y producto");
-		return planetaService.obtenerPlanetaXProducto(planetaId,productoId);
+		return planetaService.obtenerPlanetaXProducto(planetaId, productoId);
 	}
 
 }

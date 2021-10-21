@@ -34,7 +34,7 @@ public class Producto implements Serializable {
     // List<PlanetaXProducto> productoXPlanetas;
 
     @ManyToMany
-    @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "planeta_id"))
+    @JoinTable(name = "planetaxproducto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "planeta_id"))
     @JsonBackReference
     private List<Planeta> planetas = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class Producto implements Serializable {
     // List<NaveXProducto> productoXNaves;
 
     @ManyToMany
-    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    @JoinTable(name = "navexproducto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
     @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 

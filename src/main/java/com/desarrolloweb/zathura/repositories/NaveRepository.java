@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NaveRepository extends PagingAndSortingRepository<Nave, Long> {
 
-    @Query("SELECT p FROM NaveXProducto pxp JOIN pxp.producto p WHERE pxp.nave.id = ?1 AND pxp.producto.id = ?2 ")
+    @Query("SELECT nxp FROM NaveXProducto nxp WHERE nxp.nave.id = ?1 AND nxp.producto.id = ?2 ")
     NaveXProducto findNaveXProducto(Long naveId, Long productoId);
 
 }

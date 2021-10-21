@@ -43,7 +43,7 @@ public class Nave implements Serializable, Cloneable {
     // List<NaveXProducto> naveXProductos;
 
     @ManyToMany
-    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JoinTable(name = "navexproducto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
     @JsonBackReference
     private List<Producto> productos = new ArrayList<>();
     

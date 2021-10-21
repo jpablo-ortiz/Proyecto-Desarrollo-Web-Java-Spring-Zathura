@@ -33,9 +33,9 @@ public class PlanetaService {
 	/**
 	 * Inyección de dependencia del repositorio de la entidad Planeta
 	 */
-    @Autowired
+	@Autowired
 	private PlanetaRepository planetaRepository;
-	
+
 	/**
 	 * Inyección de dependencia del servicio de la entidad Estrella
 	 */
@@ -51,8 +51,8 @@ public class PlanetaService {
 	/**
 	 * Método que permite crear una entidad Planeta
 	 *
-	 * @param planeta
-	 *            Objeto de tipo Planeta que contiene la información del planeta a crear
+	 * @param planeta Objeto de tipo Planeta que contiene la información del planeta
+	 *                a crear
 	 * @return Objeto de tipo Planeta con la información del planeta creado
 	 */
 	public Planeta crearPlaneta(Planeta planeta) {
@@ -75,11 +75,10 @@ public class PlanetaService {
 	/**
 	 * Método que permite obtener una entidad Planeta por su identificador
 	 *
-	 * @param id
-	 *            Identificador de la entidad Planeta
+	 * @param id Identificador de la entidad Planeta
 	 * @return Objeto de tipo Planeta con la información del planeta obtenido
-	 * @throws RecordNotFoundException
-	 *             Excepción que se arroja cuando no se encuentra el planeta
+	 * @throws RecordNotFoundException Excepción que se arroja cuando no se
+	 *                                 encuentra el planeta
 	 */
 	public Planeta obtenerPlaneta(Long id) throws RecordNotFoundException {
 		Planeta planeta = planetaRepository.findById(id)
@@ -90,7 +89,8 @@ public class PlanetaService {
 	/**
 	 * Método que permite obtener todas las entidades Planeta
 	 *
-	 * @return Lista de objetos de tipo Planeta con la información de todos los planetas
+	 * @return Lista de objetos de tipo Planeta con la información de todos los
+	 *         planetas
 	 */
 	public List<Planeta> obtenerPlanetas() {
 		return (List<Planeta>) planetaRepository.findAll();
@@ -103,10 +103,9 @@ public class PlanetaService {
 	/**
 	 * Método que permite modificar una entidad Planeta
 	 *
-	 * @param id
-	 *            Identificador de la entidad Planeta
-	 * @param planeta
-	 *            Objeto de tipo Planeta con la información del planeta a modificar
+	 * @param id      Identificador de la entidad Planeta
+	 * @param planeta Objeto de tipo Planeta con la información del planeta a
+	 *                modificar
 	 * @return Objeto de tipo Planeta con la información del planeta actualizado
 	 */
 	public Planeta modificarPlaneta(Planeta plantilla, Long id) {
@@ -123,7 +122,7 @@ public class PlanetaService {
 				}
 				planeta.setEstrella(estrellaPlantilla);
 			}
-			
+
 			return planetaRepository.save(planeta);
 		}).orElseGet(() -> {
 			plantilla.setId(id);
@@ -138,8 +137,7 @@ public class PlanetaService {
 	/**
 	 * Método que permite eliminar una entidad Planeta
 	 *
-	 * @param id
-	 *            Identificador de la entidad Planeta
+	 * @param id Identificador de la entidad Planeta
 	 */
 	public void eliminarPlaneta(Long id) {
 		planetaRepository.deleteById(id);
@@ -153,19 +151,19 @@ public class PlanetaService {
 	 * Método que permite obtener un registro de los planetas por estrella
 	 * 
 	 * @param id Identificador de la estrella
-	 * @return Lista de objetos de la entidad Planeta con la información de los planetas
+	 * @return Lista de objetos de la entidad Planeta con la información de los
+	 *         planetas
 	 */
-    public List<Planeta> obtenerPlanetasPorEstrella(Long id) {
-        return planetaRepository.findByEstrellaId(id);
-    }
+	public List<Planeta> obtenerPlanetasPorEstrella(Long id) {
+		return planetaRepository.findByEstrellaId(id);
+	}
 
-	public List<Producto> obtenerProductosPorPlaneta(Long id){
+	public List<Producto> obtenerProductosPorPlaneta(Long id) {
 		return planetaRepository.findProductosByPlanetaId(id);
 	}
 
-    public PlanetaXProducto obtenerPlanetaXProducto(Long planetaId, Long productoId) {
-        return planetaRepository.findPlanetaXProductoByIds(planetaId,productoId);
-    }
-
+	public PlanetaXProducto obtenerPlanetaXProducto(Long planetaId, Long productoId) {
+		return planetaRepository.findPlanetaXProductoByIds(planetaId, productoId);
+	}
 
 }

@@ -7,9 +7,11 @@ import com.desarrolloweb.zathura.models.Nave;
 import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.service.NaveService;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +40,15 @@ public class NaveController {
 	 * Objeto que permite el registro de trazas de la ejecución de las operaciones
 	 * de la clase
 	 */
-    private Logger log = LoggerFactory.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-    /**
+	/**
 	 * Inyección de dependencia del servicio de la entidad Nave
 	 */
-    @Autowired
-    private NaveService naveService;
+	@Autowired
+	private NaveService naveService;
 
-    // CRUD - CREATE - READ - UPDATE - DELETE
+	// CRUD - CREATE - READ - UPDATE - DELETE
 
 	// ------------------------------------------------------------
 	// -------------------------- CREATE --------------------------
@@ -111,12 +113,28 @@ public class NaveController {
 		return naveService.cambiarPlaneta(idNave, idPlaneta);
 	}
 
-		// Obtener NaveXProducto
-		@GetMapping("/{naveId}/producto/{productoId}")
-		@Operation(summary = "Obtener NaveXProducto")
-		public NaveXProducto obtenerNaveXProducto(@PathVariable Long naveId, @PathVariable Long productoId) throws RecordNotFoundException {
-			log.info("Cambiar planeta de una nave");
-			return naveService.obtenerNaveXProducto(naveId, productoId);
-		}
+	// Obtener NaveXProducto
+	@GetMapping("/{naveId}/producto/{productoId}")
+	@Operation(summary = "Obtener NaveXProducto")
+	public NaveXProducto obtenerNaveXProducto(@PathVariable Long naveId, @PathVariable Long productoId)
+			throws RecordNotFoundException {
+		log.info("Cambiar planeta de una nave");
+		return naveService.obtenerNaveXProducto(naveId, productoId);
+	}
+
+	// Realiza una compra de un producto en una nave
+	@PostMapping(path = "/comprar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Realiza una compra de un producto")
+	public String comprarProducto(@RequestBody String json) {
+		log.info("Comprar producto");
+
+		JSONObject mensaje = new JSONObject(json);
+		Long idPlaneta = mensaje.getLong("idPlaneta");
+		Long idProducto = mensaje.getLong("idProducto");
+		Long idNave = mensaje.getLong("idNave");
+		int cantidad = mensaje.getInt("cantidad");
+
+		return naveService.comprarProducto(idPlaneta, idProducto, idNave, cantidad).toString();
+	}
 
 }

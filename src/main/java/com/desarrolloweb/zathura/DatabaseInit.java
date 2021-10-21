@@ -83,14 +83,9 @@ public class DatabaseInit implements ApplicationRunner {
     @Autowired
     private NaveXProductoRepository naveXProductoRepository;
 
-
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
-            
-        
-        //generarEntrega2();
-
+        // generarEntrega2();
     }
 
     Random random = new Random();
@@ -120,8 +115,8 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < totalEstrellas; i++) {
             if (random.nextInt(2) == 1 && estrellasHabitadas > 0) {
                 // Guardar Estrella habitable
-                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10),
-                        random.nextDouble(), random.nextDouble(), random.nextDouble(), true));
+                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextDouble(),
+                        random.nextDouble(), random.nextDouble(), true));
                 estrellasHabitadas--;
                 // Condición de que en cada estrella esten 3 planetas
                 int ran = random.nextInt(3);
