@@ -67,6 +67,13 @@ public class Producto implements Serializable {
         this.volumen = volumen;
         this.peso = peso;
     }
+    public Producto(String nombre, Double costoCredito, Double volumen, Double peso) {
+      
+        this.nombre = nombre;
+        this.costoCredito = costoCredito;
+        this.volumen = volumen;
+        this.peso = peso;
+    }
 
     public Long getId() {
         return this.id;

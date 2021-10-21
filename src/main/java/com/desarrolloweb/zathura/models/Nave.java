@@ -77,6 +77,14 @@ public class Nave implements Serializable, Cloneable {
         this.cantidadCredito = cantidadCredito;
         this.totalTiempoViaje = totalTiempoViaje;
     }
+    public Nave( String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje,Planeta planetaActual,ModeloNave modeloNave) {
+        this.nombre = nombre;
+        this.cargaActual = cargaActual;
+        this.cantidadCredito = cantidadCredito;
+        this.totalTiempoViaje = totalTiempoViaje;
+        this.planetaActual = planetaActual;
+        this.modeloNave = modeloNave;
+    }
 
     public Long getId() {
         return this.id;

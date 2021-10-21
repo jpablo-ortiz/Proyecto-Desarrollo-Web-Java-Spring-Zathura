@@ -60,6 +60,14 @@ public class Estrella implements Serializable {
         this.rutasB = rutasB;
     }
 
+    public Estrella(String nombre,Integer recurso, Double x, Double y, Double z, Boolean habitado) {
+        this.nombre = nombre;
+        this.recurso = recurso;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.habitado = habitado;
+    }
     public Estrella(String nombre, Double x, Double y, Double z, Boolean habitado) {
         this.nombre = nombre;
         this.x = x;

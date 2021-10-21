@@ -166,7 +166,7 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
             modeloNave = modeloNaveRepository
-                    .save(new ModeloNave(randomGen.generate(5, 10), random.nextInt(5000), random.nextInt(5000)));
+                    .save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(), random.nextDouble()));
             modelosnaves.add(modeloNave.getId());
         }
 

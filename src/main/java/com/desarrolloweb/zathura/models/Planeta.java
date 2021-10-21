@@ -62,10 +62,13 @@ public class Planeta implements Serializable {
     public Planeta(Long id, String nombre, Boolean habitado) {
         this.id = id;
         this.nombre = nombre;
-        this.habitado = habitado;
-       
-        
-        
+        this.habitado = habitado;  
+    }
+    public Planeta( String nombre, Boolean habitado,Estrella estrella) {
+ 
+        this.nombre = nombre;
+        this.habitado = habitado; 
+        this.estrella = estrella; 
     }
 
     public Long getId() {
