@@ -26,6 +26,8 @@ public class ModeloNave implements Serializable {
 
     private Double velocidadMax;
 
+    private Double tiempoLimite;
+
     @OneToMany(mappedBy = "modeloNave")
     @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
@@ -33,11 +35,12 @@ public class ModeloNave implements Serializable {
     public ModeloNave() {
     }
 
-    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax) {
+    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite) {
         this.id = id;
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
         this.velocidadMax = velocidadMax;
+        this.tiempoLimite = tiempoLimite;
     }
 
     public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, List<Nave> naves) {
@@ -47,12 +50,20 @@ public class ModeloNave implements Serializable {
         this.velocidadMax = velocidadMax;
         this.naves = naves;
     }
-    public ModeloNave( String nombreModelo, Double cargaMax, Double velocidadMax) {
-     
+
+    public ModeloNave(String nombreModelo, Double cargaMax, Double velocidadMax) {
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
         this.velocidadMax = velocidadMax;
-       
+    }
+    
+    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite, List<Nave> naves) {
+        this.id = id;
+        this.nombreModelo = nombreModelo;
+        this.cargaMax = cargaMax;
+        this.velocidadMax = velocidadMax;
+        this.tiempoLimite = tiempoLimite;
+        this.naves = naves;
     }
 
     public Long getId() {
@@ -87,6 +98,14 @@ public class ModeloNave implements Serializable {
         this.velocidadMax = velocidadMax;
     }
 
+    public Double getTiempoLimite() {
+        return this.tiempoLimite;
+    }
+
+    public void setTiempoLimite(Double tiempoLimite) {
+        this.tiempoLimite = tiempoLimite;
+    }
+
     public List<Nave> getNaves() {
         return this.naves;
     }
@@ -115,6 +134,11 @@ public class ModeloNave implements Serializable {
         return this;
     }
 
+    public ModeloNave tiempoLimite(Double tiempoLimite) {
+        setTiempoLimite(tiempoLimite);
+        return this;
+    }
+
     public ModeloNave naves(List<Nave> naves) {
         setNaves(naves);
         return this;
@@ -128,12 +152,12 @@ public class ModeloNave implements Serializable {
             return false;
         }
         ModeloNave modeloNave = (ModeloNave) o;
-        return Objects.equals(id, modeloNave.id) && Objects.equals(nombreModelo, modeloNave.nombreModelo) && Objects.equals(cargaMax, modeloNave.cargaMax) && Objects.equals(velocidadMax, modeloNave.velocidadMax) && Objects.equals(naves, modeloNave.naves);
+        return Objects.equals(id, modeloNave.id) && Objects.equals(nombreModelo, modeloNave.nombreModelo) && Objects.equals(cargaMax, modeloNave.cargaMax) && Objects.equals(velocidadMax, modeloNave.velocidadMax) && Objects.equals(tiempoLimite, modeloNave.tiempoLimite) && Objects.equals(naves, modeloNave.naves);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombreModelo, cargaMax, velocidadMax, naves);
+        return Objects.hash(id, nombreModelo, cargaMax, velocidadMax, tiempoLimite, naves);
     }
 
     @Override
@@ -143,8 +167,10 @@ public class ModeloNave implements Serializable {
             ", nombreModelo='" + getNombreModelo() + "'" +
             ", cargaMax='" + getCargaMax() + "'" +
             ", velocidadMax='" + getVelocidadMax() + "'" +
+            ", tiempoLimite='" + getTiempoLimite() + "'" +
             ", naves='" + getNaves() + "'" +
             "}";
     }
+
     
 }

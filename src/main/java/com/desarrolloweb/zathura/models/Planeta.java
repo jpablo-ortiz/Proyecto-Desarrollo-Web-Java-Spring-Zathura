@@ -51,7 +51,8 @@ public class Planeta implements Serializable {
     public Planeta() {
     }
 
-    public Planeta(Long id, String nombre, Boolean habitado, Estrella estrella, List<Producto> productos, List<Nave> naves) {
+    public Planeta(Long id, String nombre, Boolean habitado, Estrella estrella, List<Producto> productos,
+            List<Nave> naves) {
         this.id = id;
         this.nombre = nombre;
         this.habitado = habitado;
@@ -59,16 +60,17 @@ public class Planeta implements Serializable {
         this.productos = productos;
         this.naves = naves;
     }
+
     public Planeta(Long id, String nombre, Boolean habitado) {
         this.id = id;
         this.nombre = nombre;
-        this.habitado = habitado;  
+        this.habitado = habitado;
     }
-    public Planeta( String nombre, Boolean habitado,Estrella estrella) {
- 
+
+    public Planeta(String nombre, Boolean habitado, Estrella estrella) {
         this.nombre = nombre;
-        this.habitado = habitado; 
-        this.estrella = estrella; 
+        this.habitado = habitado;
+        this.estrella = estrella;
     }
 
     public Long getId() {
@@ -161,7 +163,9 @@ public class Planeta implements Serializable {
             return false;
         }
         Planeta planeta = (Planeta) o;
-        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre) && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella) && Objects.equals(productos, planeta.productos) && Objects.equals(naves, planeta.naves);
+        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre)
+                && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella)
+                && Objects.equals(productos, planeta.productos) && Objects.equals(naves, planeta.naves);
     }
 
     @Override
@@ -171,14 +175,9 @@ public class Planeta implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", habitado='" + isHabitado() + "'" +
-            ", estrella='" + getEstrella() + "'" +
-            ", productos='" + getProductos() + "'" +
-            ", naves='" + getNaves() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", habitado='" + isHabitado() + "'"
+                + ", estrella='" + getEstrella() + "'" + ", productos='" + getProductos() + "'" + ", naves='"
+                + getNaves() + "'" + "}";
     }
 
 }

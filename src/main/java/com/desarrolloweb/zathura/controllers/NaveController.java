@@ -137,4 +137,19 @@ public class NaveController {
 		return naveService.comprarProducto(idPlaneta, idProducto, idNave, cantidad).toString();
 	}
 
+	// Realiza una venta de un producto en una nave
+	@PostMapping(path = "/vender", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Realiza una venta de un producto")
+	public String venderProducto(@RequestBody String json) {
+		log.info("Vender producto");
+
+		JSONObject mensaje = new JSONObject(json);
+		Long idPlaneta = mensaje.getLong("idPlaneta");
+		Long idProducto = mensaje.getLong("idProducto");
+		Long idNave = mensaje.getLong("idNave");
+		int cantidad = mensaje.getInt("cantidad");
+
+		return naveService.venderProducto(idPlaneta, idProducto, idNave, cantidad).toString();
+	}
+
 }

@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
+import com.desarrolloweb.zathura.models.Nave;
 import com.desarrolloweb.zathura.models.Ruta;
 import com.desarrolloweb.zathura.models.POJOs.EstrellaPojo;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
+import com.desarrolloweb.zathura.repositories.NaveRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EstrellaService {
+
+	public static final int DIAS_DEL_ANO = 365;
 
 	/**
 	 * Objeto que permite el registro de trazas de la ejecución de las operaciones
@@ -42,6 +46,18 @@ public class EstrellaService {
 	 */
 	@Autowired
 	private RutaService rutaService;
+
+	/**
+	 * Inyección de dependencia del service de la entidad Tripulante
+	 */
+	@Autowired
+	private TripulanteService tripulanteService;
+
+	/**
+	 * Inyección de dependencia del repositorio de la entidad Nave
+	 */
+	@Autowired
+	private NaveRepository naveRepository;
 
 	// CRUD - CREATE - READ - UPDATE - DELETE
 
@@ -165,7 +181,7 @@ public class EstrellaService {
 				estrellaTemp.distancia = ruta.getDistancia();
 				resultado.add(estrellaTemp);
 			}
-			if(resultado.size() == cantidad) {
+			if (resultado.size() == cantidad) {
 				break;
 			}
 		}
@@ -173,5 +189,31 @@ public class EstrellaService {
 		return resultado;
 	}
 
+    public boolean verificarViaje(Long idEstrellaO, Long idEstrellaD, Long idTripulante) throws RecordNotFoundException {
+		Ruta ruta = rutaService.obtenerRutaDeEstrellaAEstrella(idEstrellaO, idEstrellaD);
+		Nave nave = tripulanteService.obtenerNaveActualByTripulante(idTripulante);
+
+		double calculoTiempo = (ruta.getDistancia()) / ((nave.getModeloNave().getVelocidadMax()) * DIAS_DEL_ANO);
+
+		if (calculoTiempo > nave.getModeloNave().getTiempoLimite()) {
+			return false;
+		}
+		return true;
+    }
+
+	public boolean viajar(Long idEstrellaO, Long idEstrellaD, Long idTripulante) {
+		Ruta ruta = rutaService.obtenerRutaDeEstrellaAEstrella(idEstrellaO, idEstrellaD);
+		Nave nave = tripulanteService.obtenerNaveActualByTripulante(idTripulante);
+
+		double calculoTiempo = (ruta.getDistancia()) / ((nave.getModeloNave().getVelocidadMax()) * DIAS_DEL_ANO);
+
+		if (calculoTiempo > nave.getModeloNave().getTiempoLimite()) {
+			return false;
+		}
+		
+		nave.setTotalTiempoViaje(nave.getTotalTiempoViaje() + calculoTiempo);
+		naveRepository.save(nave);
+		return true;
+	}
 
 }

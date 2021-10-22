@@ -176,4 +176,8 @@ public class RutaService {
 		return rutas;
 	}
 
+    public Ruta obtenerRutaDeEstrellaAEstrella(Long idEstrellaO, Long idEstrellaD) {
+		return rutaRepository.obtenerRutaDeEstrellaAEstrella(idEstrellaO, idEstrellaD);	
+    }
+
 }

@@ -110,4 +110,19 @@ public class EstrellaController {
 		return estrellaService.obtenerEstrellasCercanas(id, 10);
 	}
 
+	@GetMapping("/{idEstrellaO}/verificar-viaje/{idEstrellaD}/tripulante/{idTripulante}")
+	@Operation(summary = "Verifica si un viaje entre dos estrellas es posible dado un tripulante")
+	public boolean verificarViaje(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,
+			@PathVariable Long idTripulante) throws RecordNotFoundException {
+		log.info("Verificar viaje entre dos estrellas");
+		return estrellaService.verificarViaje(idEstrellaO, idEstrellaD, idTripulante);
+	}
+
+	@GetMapping("/{idEstrellaO}/viajar/{idEstrellaD}/tripulante/{idTripulante}")
+	@Operation(summary = "Realiza un viaje entre dos estrellas dado un tripulante")
+	public boolean viajar(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,
+			@PathVariable Long idTripulante) throws RecordNotFoundException {
+		log.info("Realizar viaje entre dos estrellas");
+		return estrellaService.viajar(idEstrellaO, idEstrellaD, idTripulante);
+	}
 }

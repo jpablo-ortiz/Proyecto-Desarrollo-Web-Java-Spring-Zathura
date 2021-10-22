@@ -134,7 +134,7 @@ public class TripulanteController {
 	@Operation(summary = "Obtiene la nave actual del tripulante")
 	public Nave obtenerNaveActual(@PathVariable Long id) {
 		log.info("Obtener la nave actual del tripulante");
-		return tripulanteService.obtenerNaveActual(id);
+		return tripulanteService.obtenerNaveActualByTripulante(id);
 	}
 
 }

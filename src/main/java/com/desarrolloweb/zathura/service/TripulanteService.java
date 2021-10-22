@@ -170,7 +170,7 @@ public class TripulanteService {
 		return tripulanteRepository.findPlanetaByIdTripulante(id);
 	}
 
-    public Nave obtenerNaveActual(Long id) {
+    public Nave obtenerNaveActualByTripulante(Long id) {
         return tripulanteRepository.findNaveByIdTripulante(id);
     }
 

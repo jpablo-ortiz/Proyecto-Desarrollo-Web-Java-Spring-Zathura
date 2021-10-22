@@ -85,7 +85,7 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // generarEntrega2();
+        //generarEntrega2();
     }
 
     Random random = new Random();
@@ -242,7 +242,7 @@ public class DatabaseInit implements ApplicationRunner {
         estrellas.add(estrella1);
 
         Estrella estrella2 = new Estrella("Estrella 2", Double.valueOf(742), Double.valueOf(1), Double.valueOf(999),
-                Boolean.valueOf(false));
+                Boolean.valueOf(true));
         estrella2 = estrellaController.crearEstrella(estrella2);
         estrellas.add(estrella2);
 
@@ -271,7 +271,7 @@ public class DatabaseInit implements ApplicationRunner {
         estrella = estrellaController.crearEstrella(estrella);
         estrellas.add(estrella);
 
-        estrella = new Estrella("Estrella 8", Double.valueOf(111), Double.valueOf(325), Double.valueOf(876),
+        estrella = new Estrella("Estrella 8", Double.valueOf(11), Double.valueOf(5), Double.valueOf(6),
                 Boolean.valueOf(false));
         estrella = estrellaController.crearEstrella(estrella);
         estrellas.add(estrella);
@@ -351,11 +351,10 @@ public class DatabaseInit implements ApplicationRunner {
         planeta5 = planetaController.crearPlaneta(planeta5);
         planetas.add(planeta5);
 
-        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500));
+        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500), (double) 50);
         modeloNave = modeloNaveController.crearModeloNave(modeloNave);
 
-        Nave nave = new Nave(Long.valueOf(1), "Nave de Kenneth", Double.valueOf(100), Double.valueOf(1500),
-                Double.valueOf(500));
+        Nave nave = new Nave(Long.valueOf(1), "Nave de Kenneth", Double.valueOf(100), Double.valueOf(1500), (double) 0);
         nave.setPlanetaActual(planeta);
         nave.setModeloNave(modeloNave);
         nave = naveController.crearNave(nave);

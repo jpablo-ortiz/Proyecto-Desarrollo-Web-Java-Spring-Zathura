@@ -104,7 +104,7 @@ public class PlanetaController {
 	// --------------------------- OTROS --------------------------
 	// ------------------------------------------------------------
 
-	// Obtener los tripulantes por el id de la nave
+	// Obtener los planetas por el id de la nave
 	@GetMapping("/estrella/{id}")
 	@Operation(summary = "Obtiene los planetas por el id de la estrella")
 	public List<Planeta> obtenerPlanetasPorEstrella(@PathVariable Long id) {
