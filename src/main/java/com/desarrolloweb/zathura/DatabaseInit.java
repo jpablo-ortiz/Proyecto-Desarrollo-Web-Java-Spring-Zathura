@@ -111,7 +111,7 @@ public class DatabaseInit implements ApplicationRunner {
     public void creacionEstrellas() {
         List<Estrella> estrellas = new ArrayList<Estrella>();
         Estrella estrella = new Estrella();
-        int totalEstrellas = 200;
+        int totalEstrellas = 20;
         Double estrellasHabitadas = totalEstrellas * (0.5);
         // Se recorren todas las estrellas
         for (int i = 0; i < totalEstrellas; i++) {
@@ -178,8 +178,7 @@ public class DatabaseInit implements ApplicationRunner {
         ArrayList<Long> modelosnaves = new ArrayList<Long>();
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
-            modeloNave = modeloNaveRepository
-                    .save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(), random.nextDouble()));
+            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(), random.nextDouble(), random.nextDouble()));
             modelosnaves.add(modeloNave.getId());
         }
 
@@ -187,7 +186,7 @@ public class DatabaseInit implements ApplicationRunner {
 
         Nave nave = new Nave();
         int ran = 0, ranPlaneta = 0;
-        Double costoR = random.nextDouble() * 5000;
+        Double costoR = random.nextDouble() ;
         for (int i = 0; i < 10; i++) {
             String nombreNave = randomGen.generate(5, 10);
             ran = random.nextInt(20);

@@ -51,10 +51,11 @@ public class ModeloNave implements Serializable {
         this.naves = naves;
     }
 
-    public ModeloNave(String nombreModelo, Double cargaMax, Double velocidadMax) {
+    public ModeloNave(String nombreModelo, Double cargaMax, Double velocidadMax,Double tiempoLimite) {
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
         this.velocidadMax = velocidadMax;
+        this.tiempoLimite = tiempoLimite;
     }
     
     public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite, List<Nave> naves) {
