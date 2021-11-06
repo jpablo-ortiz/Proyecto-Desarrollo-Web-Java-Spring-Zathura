@@ -85,6 +85,7 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        IniciarDatosAleatoriosBatch();
         //generarEntrega2();
     }
 
@@ -108,8 +109,9 @@ public class DatabaseInit implements ApplicationRunner {
      * Crea estrellas aleatorias
      */
     public void creacionEstrellas() {
+        List<Estrella> estrellas = new ArrayList<Estrella>();
         Estrella estrella = new Estrella();
-        int totalEstrellas = 20;
+        int totalEstrellas = 200;
         Double estrellasHabitadas = totalEstrellas * (0.5);
         // Se recorren todas las estrellas
         for (int i = 0; i < totalEstrellas; i++) {
@@ -118,16 +120,27 @@ public class DatabaseInit implements ApplicationRunner {
                 estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextDouble(),
                         random.nextDouble(), random.nextDouble(), true));
                 estrellasHabitadas--;
+                estrellas.add(estrella);
                 // Condición de que en cada estrella esten 3 planetas
                 int ran = random.nextInt(3);
                 for (int j = 0; j <= ran; j++)
                     // Guardar planeta
                     planetaRepository.save(new Planeta(randomGen.generate(5, 10), true, estrella));
-            } else
-                // Guardar Estrella no habitable
-                estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
-                        random.nextDouble(), random.nextDouble(), random.nextDouble(), false));
+            } else{
+                 // Guardar Estrella no habitable
+               estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
+               random.nextDouble(), random.nextDouble(), random.nextDouble(), false));
+               estrellas.add(estrella);
+            }
+               
         }
+        // Crear Rutas de todas las estrellas con todas las estrellas
+        for (int i = 0; i < estrellas.size(); i++) {
+                for (int j = i + 1; j < estrellas.size(); j++) {
+                    Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
+                    rutaController.crearRuta(ruta);
+                }
+            }
     }
 
     /**
@@ -214,7 +227,7 @@ public class DatabaseInit implements ApplicationRunner {
 
             // Generación de Tripulantes en las naves ya existentes.
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 3; j++) {
                 ran = random.nextInt(3);
                 if (ran == 0)
                     tripulanteRepository.save(new Tripulante(randomGen.generate(5, 10), randomGen.generate(5, 10), true,
