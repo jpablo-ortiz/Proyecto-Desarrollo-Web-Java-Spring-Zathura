@@ -27,4 +27,7 @@ public interface TripulanteRepository extends PagingAndSortingRepository<Tripula
     @Query("select n from Tripulante t join t.nave n where t.id = ?1")
     Nave findNaveByIdTripulante(Long id);
 
+    @Query("select t from Tripulante t where t.username = ?1")
+    Tripulante findByUsername(String username);
+
 }

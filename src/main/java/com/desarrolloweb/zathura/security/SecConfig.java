@@ -83,6 +83,4 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 		return userDetailsService;
 	}
 
-
-	
 }

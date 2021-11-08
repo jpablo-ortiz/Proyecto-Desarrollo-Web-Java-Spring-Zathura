@@ -217,4 +217,8 @@ public class TripulanteService {
         return mensaje;
     }
 
+    public Tripulante obtenerTripulanteByUserName(String username) {
+        return tripulanteRepository.findByUsername(username);
+    }
+
 }
