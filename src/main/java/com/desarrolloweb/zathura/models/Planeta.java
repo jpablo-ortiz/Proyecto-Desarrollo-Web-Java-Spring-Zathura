@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Planeta implements Serializable {
@@ -26,32 +30,47 @@ public class Planeta implements Serializable {
     private Boolean habitado;
 
     @ManyToOne
+    @JsonManagedReference
     private Estrella estrella;
 
     // @OneToMany(mappedBy = "planeta")
     // List<PlanetaXProducto> planetaXProductos;
 
     @ManyToMany
-    @JoinTable(name = "planeta_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JoinTable(name = "planetaxproducto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JsonBackReference
     private List<Producto> productos = new ArrayList<>();
 
     // @OneToMany(mappedBy = "planetaActual")
     // private List<Nave> naves;
 
-    @ManyToMany
-    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
+    @OneToMany(mappedBy = "planetaActual")
+    @JsonBackReference
     private List<Nave> naves = new ArrayList<>();
 
     public Planeta() {
     }
 
-    public Planeta(Long id, String nombre, Boolean habitado, Estrella estrella, List<Producto> productos, List<Nave> naves) {
+    public Planeta(Long id, String nombre, Boolean habitado, Estrella estrella, List<Producto> productos,
+            List<Nave> naves) {
         this.id = id;
         this.nombre = nombre;
         this.habitado = habitado;
         this.estrella = estrella;
         this.productos = productos;
         this.naves = naves;
+    }
+
+    public Planeta(Long id, String nombre, Boolean habitado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.habitado = habitado;
+    }
+
+    public Planeta(String nombre, Boolean habitado, Estrella estrella) {
+        this.nombre = nombre;
+        this.habitado = habitado;
+        this.estrella = estrella;
     }
 
     public Long getId() {
@@ -144,7 +163,9 @@ public class Planeta implements Serializable {
             return false;
         }
         Planeta planeta = (Planeta) o;
-        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre) && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella) && Objects.equals(productos, planeta.productos) && Objects.equals(naves, planeta.naves);
+        return Objects.equals(id, planeta.id) && Objects.equals(nombre, planeta.nombre)
+                && Objects.equals(habitado, planeta.habitado) && Objects.equals(estrella, planeta.estrella)
+                && Objects.equals(productos, planeta.productos) && Objects.equals(naves, planeta.naves);
     }
 
     @Override
@@ -154,14 +175,9 @@ public class Planeta implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", habitado='" + isHabitado() + "'" +
-            ", estrella='" + getEstrella() + "'" +
-            ", productos='" + getProductos() + "'" +
-            ", naves='" + getNaves() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", habitado='" + isHabitado() + "'"
+                + ", estrella='" + getEstrella() + "'" + ", productos='" + getProductos() + "'" + ", naves='"
+                + getNaves() + "'" + "}";
     }
 
 }

@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Estrella implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -30,12 +33,15 @@ public class Estrella implements Serializable {
     private Boolean habitado;
 
     @OneToMany(mappedBy = "estrella")
+    @JsonBackReference
     private List<Planeta> planetas = new ArrayList<>();
 
     @OneToMany(mappedBy = "estrellaA")
+    @JsonBackReference
     private List<Ruta> rutasA = new ArrayList<>();
 
     @OneToMany(mappedBy = "estrellaB")
+    @JsonBackReference
     private List<Ruta> rutasB = new ArrayList<>();
 
     public Estrella() {
@@ -52,6 +58,22 @@ public class Estrella implements Serializable {
         this.planetas = planetas;
         this.rutasA = rutasA;
         this.rutasB = rutasB;
+    }
+
+    public Estrella(String nombre,Integer recurso, Double x, Double y, Double z, Boolean habitado) {
+        this.nombre = nombre;
+        this.recurso = recurso;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.habitado = habitado;
+    }
+    public Estrella(String nombre, Double x, Double y, Double z, Boolean habitado) {
+        this.nombre = nombre;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.habitado = habitado;
     }
 
     public Long getId() {

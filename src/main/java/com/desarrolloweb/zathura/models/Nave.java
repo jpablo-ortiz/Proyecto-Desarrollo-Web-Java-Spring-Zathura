@@ -15,8 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
-public class Nave implements Serializable {
+public class Nave implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -33,19 +36,23 @@ public class Nave implements Serializable {
     private Double totalTiempoViaje;
 
     @ManyToOne
+    @JsonManagedReference
     private Planeta planetaActual;
 
     // @OneToMany(mappedBy = "nave")
     // List<NaveXProducto> naveXProductos;
 
     @ManyToMany
-    @JoinTable(name = "nave_x_producto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JoinTable(name = "navexproducto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JsonBackReference
     private List<Producto> productos = new ArrayList<>();
     
     @OneToMany(mappedBy = "nave")
+    @JsonBackReference
     private List<Tripulante> tripulantes = new ArrayList<>();
 
     @ManyToOne
+    @JsonManagedReference
     private ModeloNave modeloNave;
 
     public Nave() {
@@ -60,6 +67,22 @@ public class Nave implements Serializable {
         this.planetaActual = planetaActual;
         this.productos = productos;
         this.tripulantes = tripulantes;
+        this.modeloNave = modeloNave;
+    }
+
+    public Nave(Long id, String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje) {
+        this.id = id;
+        this.nombre = nombre;
+        this.cargaActual = cargaActual;
+        this.cantidadCredito = cantidadCredito;
+        this.totalTiempoViaje = totalTiempoViaje;
+    }
+    public Nave( String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje,Planeta planetaActual,ModeloNave modeloNave) {
+        this.nombre = nombre;
+        this.cargaActual = cargaActual;
+        this.cantidadCredito = cantidadCredito;
+        this.totalTiempoViaje = totalTiempoViaje;
+        this.planetaActual = planetaActual;
         this.modeloNave = modeloNave;
     }
 

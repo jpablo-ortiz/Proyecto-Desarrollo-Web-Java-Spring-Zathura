@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Ruta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -19,9 +21,11 @@ public class Ruta implements Serializable {
     private Double distancia;
 
     @ManyToOne
+    @JsonManagedReference
     private Estrella estrellaA;
 
     @ManyToOne
+    @JsonManagedReference
     private Estrella estrellaB;
 
     public Ruta() {
@@ -29,6 +33,11 @@ public class Ruta implements Serializable {
 
     public Ruta(Double distancia, Estrella estrellaA, Estrella estrellaB) {
         this.distancia = distancia;
+        this.estrellaA = estrellaA;
+        this.estrellaB = estrellaB;
+    }
+
+    public Ruta(Estrella estrellaA, Estrella estrellaB) {
         this.estrellaA = estrellaA;
         this.estrellaB = estrellaB;
     }
