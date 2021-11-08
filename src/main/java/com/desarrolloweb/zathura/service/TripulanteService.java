@@ -1,14 +1,18 @@
 package com.desarrolloweb.zathura.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
+import com.desarrolloweb.zathura.models.PlanetaXProducto;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +45,12 @@ public class TripulanteService {
 	 */
 	@Autowired
 	private NaveService naveService;
+
+	/**
+	 * Inyección de dependencia del servicio de la entidad Planeta
+	 */
+	@Autowired
+	private PlanetaService planetaService;
 
 	// CRUD - CREATE - READ - UPDATE - DELETE
 
@@ -162,16 +172,49 @@ public class TripulanteService {
 		return tripulanteRepository.findByNaveId(id);
 	}
 
-    public Estrella obtenerEstrellaActual(Long id) {
+    public Estrella obtenerEstrellaActualPorTripulante(Long id) {
         return tripulanteRepository.findEstrellaByIdTripulante(id);
     }
 
-	public Planeta obtenerPlanetaActual(Long id) {
+	public Planeta obtenerPlanetaActualPorTripulante(Long id) {
 		return tripulanteRepository.findPlanetaByIdTripulante(id);
 	}
 
     public Nave obtenerNaveActualByTripulante(Long id) {
         return tripulanteRepository.findNaveByIdTripulante(id);
+    }
+
+	public JSONObject obtenerProductosVendibles(Long idTripulante, Long idPlaneta) throws RecordNotFoundException {
+		JSONObject mensaje = new JSONObject();
+		List<PlanetaXProducto> productos_permitidos = new ArrayList<>();
+		List<PlanetaXProducto> productos_no_permitidos = new ArrayList<>();
+
+		Nave nave = this.obtenerNaveActualByTripulante(idTripulante);
+
+		List<PlanetaXProducto> planetaXProducto = planetaService.obtenerPlanetaXProductos(idPlaneta);
+		List<NaveXProducto> naveXProducto = naveService.obtenerNaveXProductos(nave.getId());
+
+		for (PlanetaXProducto pxp : planetaXProducto) {
+			boolean permitido = false;
+
+			for (NaveXProducto nxp : naveXProducto) {
+				if (pxp.getProducto().getId().compareTo(nxp.getProducto().getId()) == 0) {
+					productos_permitidos.add(pxp);
+					permitido = true;
+					break;
+				}
+			}
+
+			if (!permitido) {
+				productos_no_permitidos.add(pxp);
+			}
+
+		}
+
+		mensaje.put("productos_permitidos", productos_permitidos);
+		mensaje.put("productos_no_permitidos", productos_no_permitidos);
+
+        return mensaje;
     }
 
 }

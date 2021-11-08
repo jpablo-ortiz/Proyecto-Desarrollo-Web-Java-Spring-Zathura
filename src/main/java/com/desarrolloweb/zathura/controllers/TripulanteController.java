@@ -12,6 +12,7 @@ import com.desarrolloweb.zathura.service.TripulanteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +46,10 @@ public class TripulanteController {
 	/**
 	 * Inyección de dependencia del servicio de tripulante
 	 */
-    @Autowired
-    private TripulanteService tripulanteService;
+	@Autowired
+	private TripulanteService tripulanteService;
 
-    // CRUD - CREATE - READ - UPDATE - DELETE
+	// CRUD - CREATE - READ - UPDATE - DELETE
 
 	// ------------------------------------------------------------
 	// -------------------------- CREATE --------------------------
@@ -118,7 +119,7 @@ public class TripulanteController {
 	@Operation(summary = "Obtiene la estrella actual de la nave del tripulante")
 	public Estrella obtenerEstrellaActual(@PathVariable Long id) {
 		log.info("Obtener la estrella actual de la nave del tripulante");
-		return tripulanteService.obtenerEstrellaActual(id);
+		return tripulanteService.obtenerEstrellaActualPorTripulante(id);
 	}
 
 	// Obtener el planeta actual de la nave del tripulante dado
@@ -126,7 +127,7 @@ public class TripulanteController {
 	@Operation(summary = "Obtiene el planeta actual de la nave del tripulante")
 	public Planeta obtenerPlanetaActual(@PathVariable Long id) {
 		log.info("Obtener el planeta actual de la nave del tripulante");
-		return tripulanteService.obtenerPlanetaActual(id);
+		return tripulanteService.obtenerPlanetaActualPorTripulante(id);
 	}
 
 	// Obtener la nave actual del tripulante dado
@@ -135,6 +136,14 @@ public class TripulanteController {
 	public Nave obtenerNaveActual(@PathVariable Long id) {
 		log.info("Obtener la nave actual del tripulante");
 		return tripulanteService.obtenerNaveActualByTripulante(id);
+	}
+
+	// Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta
+	@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Obtiene los productos que se pueden vender dado la nave de un tripulante y un planeta")
+	public String obtenerProductosVendibles(@PathVariable Long idTripulante, @PathVariable Long idPlaneta) throws RecordNotFoundException {
+		log.info("Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta");
+		return tripulanteService.obtenerProductosVendibles(idTripulante, idPlaneta).toString();
 	}
 
 }

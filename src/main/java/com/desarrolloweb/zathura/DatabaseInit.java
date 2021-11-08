@@ -85,8 +85,8 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        IniciarDatosAleatoriosBatch();
-        //generarEntrega2();
+        //IniciarDatosAleatoriosBatch();
+        // generarEntrega2();
     }
 
     Random random = new Random();
@@ -126,21 +126,21 @@ public class DatabaseInit implements ApplicationRunner {
                 for (int j = 0; j <= ran; j++)
                     // Guardar planeta
                     planetaRepository.save(new Planeta(randomGen.generate(5, 10), true, estrella));
-            } else{
-                 // Guardar Estrella no habitable
-               estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
-               random.nextDouble(), random.nextDouble(), random.nextDouble(), false));
-               estrellas.add(estrella);
+            } else {
+                // Guardar Estrella no habitable
+                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
+                        random.nextDouble(), random.nextDouble(), random.nextDouble(), false));
+                estrellas.add(estrella);
             }
-               
+
         }
         // Crear Rutas de todas las estrellas con todas las estrellas
         for (int i = 0; i < estrellas.size(); i++) {
-                for (int j = i + 1; j < estrellas.size(); j++) {
-                    Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
-                    rutaController.crearRuta(ruta);
-                }
+            for (int j = i + 1; j < estrellas.size(); j++) {
+                Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
+                rutaController.crearRuta(ruta);
             }
+        }
     }
 
     /**
@@ -178,7 +178,8 @@ public class DatabaseInit implements ApplicationRunner {
         ArrayList<Long> modelosnaves = new ArrayList<Long>();
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
-            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(), random.nextDouble(), random.nextDouble()));
+            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(),
+                    random.nextDouble(), random.nextDouble()));
             modelosnaves.add(modeloNave.getId());
         }
 
@@ -186,7 +187,7 @@ public class DatabaseInit implements ApplicationRunner {
 
         Nave nave = new Nave();
         int ran = 0, ranPlaneta = 0;
-        Double costoR = random.nextDouble() ;
+        Double costoR = random.nextDouble();
         for (int i = 0; i < 10; i++) {
             String nombreNave = randomGen.generate(5, 10);
             ran = random.nextInt(20);
@@ -363,7 +364,8 @@ public class DatabaseInit implements ApplicationRunner {
         planeta5 = planetaController.crearPlaneta(planeta5);
         planetas.add(planeta5);
 
-        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500), (double) 50);
+        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500),
+                (double) 50);
         modeloNave = modeloNaveController.crearModeloNave(modeloNave);
 
         Nave nave = new Nave(Long.valueOf(1), "Nave de Kenneth", Double.valueOf(100), Double.valueOf(1500), (double) 0);

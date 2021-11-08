@@ -204,8 +204,6 @@ public class NaveService {
 		return naveRepository.findNaveXProducto(naveId, productoId);
 	}
 
-
-
 	public JSONObject comprarProducto(Long idPlaneta, Long idProducto, Long idNave, int cantidad) {
 		JSONObject mensaje = new JSONObject();
 
@@ -426,6 +424,10 @@ public class NaveService {
 		mensaje.put("mensaje", "Venta realizada con éxito");
 		mensaje.put("error", false);
 		return mensaje;
+	}
+
+	public List<NaveXProducto> obtenerNaveXProductos(Long idNave) {
+		return naveRepository.findNaveXProductoByNaveId(idNave);
 	}
 
 }

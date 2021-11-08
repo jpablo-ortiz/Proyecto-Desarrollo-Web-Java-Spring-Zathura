@@ -166,4 +166,8 @@ public class PlanetaService {
 		return planetaRepository.findPlanetaXProductoByIds(planetaId, productoId);
 	}
 
+    public List<PlanetaXProducto> obtenerPlanetaXProductos(Long idPlaneta) {
+        return planetaRepository.findPlanetaXProductoByIdPlaneta(idPlaneta);
+    }
+
 }
