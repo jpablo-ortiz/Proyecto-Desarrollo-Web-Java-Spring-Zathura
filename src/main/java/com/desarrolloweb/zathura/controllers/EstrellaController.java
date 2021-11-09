@@ -64,7 +64,7 @@ public class EstrellaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	@PreAuthorize("hasRole('USER') or hasRole('MOD') or hasRole('ADMIN')")
+	
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene una estrella por su id")
 	public Estrella obtenerEstrella(@PathVariable Long id) throws RecordNotFoundException {
@@ -104,14 +104,14 @@ public class EstrellaController {
 	// ------------------------------------------------------------
 	// -------------------------- OTHER ---------------------------
 	// ------------------------------------------------------------
-
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/10nearest/{id}")
 	@Operation(summary = "Obtiene las 10 estrellas más cercanas a la estrella dada")
 	public List<EstrellaPojo> obtener10EstrellasCercanas(@PathVariable Long id) throws RecordNotFoundException {
 		log.info("Obtener las 10 estrellas más cercanas a la estrella dada");
 		return estrellaService.obtenerEstrellasCercanas(id, 10);
 	}
-
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/verificar-viaje/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Verifica si un viaje entre dos estrellas es posible dado un tripulante")
 	public boolean verificarViaje(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,
@@ -119,7 +119,7 @@ public class EstrellaController {
 		log.info("Verificar viaje entre dos estrellas");
 		return estrellaService.verificarViaje(idEstrellaO, idEstrellaD, idTripulante);
 	}
-
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/viajar/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Realiza un viaje entre dos estrellas dado un tripulante")
 	public boolean viajar(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,

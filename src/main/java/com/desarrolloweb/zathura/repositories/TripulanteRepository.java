@@ -30,4 +30,7 @@ public interface TripulanteRepository extends PagingAndSortingRepository<Tripula
     @Query("select t from Tripulante t where t.username = ?1")
     Tripulante findByUsername(String username);
 
+    @Query("select t from Tripulante t where t.username = ?1 and t.password = ?2")
+    Tripulante findByUserAndPassword(String user, String password);
+
 }

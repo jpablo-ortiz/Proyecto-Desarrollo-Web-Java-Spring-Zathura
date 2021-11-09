@@ -11,6 +11,7 @@ import com.desarrolloweb.zathura.service.PlanetaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -103,7 +104,8 @@ public class PlanetaController {
 	// ------------------------------------------------------------
 	// --------------------------- OTROS --------------------------
 	// ------------------------------------------------------------
-
+	//Mirar
+	//@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	// Obtener los planetas por el id de la nave
 	@GetMapping("/estrella/{id}")
 	@Operation(summary = "Obtiene los planetas por el id de la estrella")
@@ -113,13 +115,16 @@ public class PlanetaController {
 	}
 
 	// Obtener los productos por el id del PLANETA
+	//Mirar
+	//@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	@GetMapping("/productos/{id}")
 	@Operation(summary = "Obtiene los productos por el id del Planeta")
 	public List<Producto> obtenerProductosPorPlaneta(@PathVariable Long id) {
 		log.info("Obtener productos por ID del planeta");
 		return planetaService.obtenerProductosPorPlaneta(id);
 	}
-
+	//Mirar
+	//@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	@GetMapping("/{planetaId}/producto/{productoId}")
 	@Operation(summary = "Obtiene el PlanetaXProducto por el id del Planeta y del producto")
 	public PlanetaXProducto obtenerPlanetaXProducto(@PathVariable Long planetaId, @PathVariable Long productoId) {

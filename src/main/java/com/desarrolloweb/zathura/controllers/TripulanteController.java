@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -137,7 +138,8 @@ public class TripulanteController {
 		log.info("Obtener la nave actual del tripulante");
 		return tripulanteService.obtenerNaveActualByTripulante(id);
 	}
-
+	//Mirar
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	// Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta
 	@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Obtiene los productos que se pueden vender dado la nave de un tripulante y un planeta")
@@ -145,5 +147,18 @@ public class TripulanteController {
 		log.info("Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta");
 		return tripulanteService.obtenerProductosVendibles(idTripulante, idPlaneta).toString();
 	}
+
+	// Mirar
+	//@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE') or hasRole('NAVEGANTE')")
+    @GetMapping("/{usuario}/login/{password}")
+    public Tripulante getTripulanteLogin(@PathVariable("usuario") String usuario, @PathVariable("password") String password) {
+		log.info("Obtener el Tripulante por username y contraseña");
+		return tripulanteService.findByUserAndPassword(usuario, password);
+    }
+
+
+
+
+
 
 }

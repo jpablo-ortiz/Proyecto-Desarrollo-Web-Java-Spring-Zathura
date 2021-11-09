@@ -221,4 +221,8 @@ public class TripulanteService {
         return tripulanteRepository.findByUsername(username);
     }
 
+    public Tripulante findByUserAndPassword(String user, String password) {
+        return tripulanteRepository.findByUserAndPassword(user, password);
+    }
+
 }

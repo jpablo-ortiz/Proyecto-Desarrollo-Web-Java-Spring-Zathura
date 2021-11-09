@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -105,6 +106,8 @@ public class NaveController {
 	// -------------------------- OTHERS --------------------------
 	// ------------------------------------------------------------
 
+// PUEDE SER EL CAPITAN O EL NAVEGANTE 
+//	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	// Cambiar planeta de una nave
 	@GetMapping("/{idNave}/planeta/{idPlaneta}")
 	@Operation(summary = "Cambia el planeta de una nave")
@@ -123,6 +126,7 @@ public class NaveController {
 	}
 
 	// Realiza una compra de un producto en una nave
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	@PostMapping(path = "/comprar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Realiza una compra de un producto")
 	public String comprarProducto(@RequestBody String json) {
@@ -138,6 +142,7 @@ public class NaveController {
 	}
 
 	// Realiza una venta de un producto en una nave
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	@PostMapping(path = "/vender", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Realiza una venta de un producto")
 	public String venderProducto(@RequestBody String json) {
