@@ -45,8 +45,10 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(authenticationEntryPoint)
 			.and()
 				.authorizeRequests()
-					.antMatchers("/public/**", "/login/**", "/h2/**").permitAll()
-					.anyRequest().authenticated()
+					//.antMatchers("/h2/**", "/console/**", "/public/**", "/login/**", "/nave/**", "/modelo-nave/**").permitAll()
+					//.anyRequest().authenticated()
+					//
+					.anyRequest().permitAll()
 			.and()
 				.formLogin()
 					.successHandler(authenticationSuccessHandler)
@@ -57,7 +59,8 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 				
 		
 		http.addFilterAfter(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-		
+		http.csrf().disable();
+        http.headers().frameOptions().disable();
 	}
 
 	@Bean

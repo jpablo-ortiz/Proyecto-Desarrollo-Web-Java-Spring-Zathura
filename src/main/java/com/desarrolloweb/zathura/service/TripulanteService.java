@@ -38,7 +38,7 @@ public class TripulanteService {
 	 * Inyección de dependencia del repositorio de la entidad Tripulante
 	 */
 	@Autowired
-	private TripulanteRepository tripulanteRepository;
+	public TripulanteRepository tripulanteRepository;
 
 	/**
 	 * Inyección de dependencia del servicio de la entidad Nave
@@ -65,8 +65,15 @@ public class TripulanteService {
 	 *                   del tripulante a crear
 	 * @return Objeto de la entidad Tripulante con la información del tripulante
 	 *         creado
+	 * @throws RecordNotFoundException
 	 */
-	public Tripulante crearTripulante(Tripulante tripulante) {
+	public Tripulante crearTripulante(Tripulante tripulante) throws RecordNotFoundException {
+		Tripulante trip = this.findByUserAndPassword(tripulante.getUsername(), tripulante.getPassword());
+
+		if (trip != null) {
+			throw new RecordNotFoundException("El tripulante ya existe");
+		}
+
 		Nave navePlantilla = tripulante.getNave();
 		if (navePlantilla != null) {
 			try {
@@ -92,6 +99,7 @@ public class TripulanteService {
 	 * @throws RecordNotFoundException Si no existe el tripulante con el
 	 *                                 identificador dado
 	 */
+	 
 	public Tripulante obtenerTripulante(Long id) throws RecordNotFoundException {
 		Tripulante tripulante = tripulanteRepository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("No se encontro tripulante con id: " + id));
@@ -133,7 +141,11 @@ public class TripulanteService {
 				try {
 					navePlantilla = naveService.obtenerNave(navePlantilla.getId());
 				} catch (RecordNotFoundException e) {
-					navePlantilla = naveService.crearNave(navePlantilla);
+					try {
+						navePlantilla = naveService.crearNave(navePlantilla);
+					} catch (RecordNotFoundException e1) {
+						log.error("No se encontro nave con id: " + navePlantilla.getId());
+					}
 				}
 				tripulante.setNave(navePlantilla);
 			}

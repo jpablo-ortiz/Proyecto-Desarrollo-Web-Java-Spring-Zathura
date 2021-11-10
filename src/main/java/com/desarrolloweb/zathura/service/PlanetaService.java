@@ -170,4 +170,14 @@ public class PlanetaService {
         return planetaRepository.findPlanetaXProductoByIdPlaneta(idPlaneta);
     }
 
+    public Planeta obtenerPlanetaAleatorioHabitado() {
+		List<Planeta> planetas = this.obtenerPlanetas();
+		for (Planeta planeta : planetas) {
+			if (planeta.getHabitado()) {
+				return planeta;
+			}
+		}
+		return null;
+    }
+
 }

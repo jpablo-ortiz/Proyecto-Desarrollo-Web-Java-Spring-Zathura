@@ -120,41 +120,6 @@ public class Tripulante implements Serializable {
         this.nave = nave;
     }
 
-    public Tripulante id(Long id) {
-        setId(id);
-        return this;
-    }
-
-    public Tripulante username(String username) {
-        setUsername(username);
-        return this;
-    }
-
-    public Tripulante password(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    public Tripulante capitan(Boolean capitan) {
-        setCapitan(capitan);
-        return this;
-    }
-
-    public Tripulante navegante(Boolean navegante) {
-        setNavegante(navegante);
-        return this;
-    }
-
-    public Tripulante comerciante(Boolean comerciante) {
-        setComerciante(comerciante);
-        return this;
-    }
-
-    public Tripulante nave(Nave nave) {
-        setNave(nave);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)

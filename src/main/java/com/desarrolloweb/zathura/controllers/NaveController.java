@@ -5,6 +5,7 @@ import java.util.List;
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Nave;
 import com.desarrolloweb.zathura.models.NaveXProducto;
+import com.desarrolloweb.zathura.models.POJOs.NavePojo;
 import com.desarrolloweb.zathura.service.NaveService;
 
 import org.json.JSONObject;
@@ -57,9 +58,9 @@ public class NaveController {
 
 	@PostMapping("")
 	@Operation(summary = "Crea una nueva nave")
-	public Nave crearNave(@RequestBody Nave naveNueva) {
+	public Nave crearNave(@RequestBody NavePojo navePojo) throws RecordNotFoundException {
 		log.info("Creando Nave");
-		return naveService.crearNave(naveNueva);
+		return naveService.crearNave(navePojo.navePojoToNave());
 	}
 
 	// ------------------------------------------------------------

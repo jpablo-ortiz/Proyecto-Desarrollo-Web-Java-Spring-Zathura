@@ -9,6 +9,7 @@ import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.models.PlanetaXProducto;
 import com.desarrolloweb.zathura.models.Producto;
+import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
 import com.desarrolloweb.zathura.repositories.NaveXProductoRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
@@ -67,11 +68,14 @@ public class NaveService {
 	@Autowired
 	private PlanetaXProductoRepository planetaXProductoRepository;
 
-		/**
+	/**
 	 * Inyección de dependencia del repositorio de la entidad NaveXProducto
 	 */
 	@Autowired
 	private NaveXProductoRepository naveXProductoRepository;
+
+	@Autowired
+	private TripulanteService tripulanteService;
 
 	// CRUD - CREATE - READ - UPDATE - DELETE
 
@@ -84,8 +88,9 @@ public class NaveService {
 	 *
 	 * @param nave Objeto de tipo Nave que contiene los datos de la nave a crear
 	 * @return Objeto de tipo Nave que contiene los datos de la nave creada
+	 * @throws RecordNotFoundException
 	 */
-	public Nave crearNave(Nave nave) {
+	public Nave crearNave(Nave nave) throws RecordNotFoundException {
 		Planeta planetaPlantilla = nave.getPlanetaActual();
 		if (planetaPlantilla != null) {
 			try {
@@ -100,12 +105,32 @@ public class NaveService {
 		if (modeloNavePlantilla != null) {
 			try {
 				modeloNavePlantilla = modeloNaveService.obtenerModeloNave(modeloNavePlantilla.getId());
+				nave.setCantidadCredito((double) 50000);
+				nave.setCargaActual(modeloNavePlantilla.getCargaMax());
+				nave.setTotalTiempoViaje((double) 0);
+				nave.setPlanetaActual(planetaService.obtenerPlanetaAleatorioHabitado());
 			} catch (RecordNotFoundException e) {
 				modeloNavePlantilla = modeloNaveService.crearModeloNave(modeloNavePlantilla);
 			}
 			nave.setModeloNave(modeloNavePlantilla);
 		}
-		return naveRepository.save(nave);
+
+		nave = naveRepository.save(nave);
+
+		List<Tripulante> tripulantes = nave.getTripulantes();
+		if (tripulantes != null) {
+			if (tripulantes.size() == 1) {
+
+				Tripulante tripulante = tripulanteService.obtenerTripulante(tripulantes.get(0).getId());
+				if (tripulante != null) {
+					tripulante.setNave(nave);
+					tripulanteService.tripulanteRepository.save(tripulante);
+				}
+
+			}
+		}
+
+		return nave;
 	}
 
 	// ------------------------------------------------------------
@@ -173,7 +198,26 @@ public class NaveService {
 				nave.setModeloNave(modeloNavePlantilla);
 			}
 
-			return naveRepository.save(nave);
+			nave = naveRepository.save(nave);
+
+			try {
+				List<Tripulante> tripulantes = nave.getTripulantes();
+				if (tripulantes != null) {
+					if (tripulantes.size() == 1) {
+
+						Tripulante tripulante = tripulanteService.obtenerTripulante(tripulantes.get(0).getId());
+						if (tripulante != null) {
+							tripulante.setNave(nave);
+							tripulanteService.tripulanteRepository.save(tripulante);
+						}
+
+					}
+				}
+			} catch (Exception e) {
+				log.error("Error al actualizar tripulantes de la nave: " + nave.getNombre());
+			}
+
+			return nave;
 		}).orElseGet(() -> {
 			plantilla.setId(id);
 			return naveRepository.save(plantilla);
@@ -250,7 +294,8 @@ public class NaveService {
 		NaveXProducto naveXProducto = new NaveXProducto();
 
 		// - Llenar los datos stock (cantidad de producto comprado), el totalCredito
-		// (total a pagar) totalVolumen (total volumen del producto comprado), y nave y producto
+		// (total a pagar) totalVolumen (total volumen del producto comprado), y nave y
+		// producto
 
 		naveXProducto.setStock((double) cantidad);
 		naveXProducto.setTotalCredito(cantidad * planetaXProducto.getPrecioCompra());
@@ -262,7 +307,7 @@ public class NaveService {
 
 		// - si el totalCredito es menor al credito disponible de la nave (continuar)
 		// (Se hace el else para soltar solo el error en caso contrario)
-		if (nave.getCantidadCredito() <= naveXProducto.getTotalCredito()) {
+		if (nave.getCantidadCredito() < naveXProducto.getTotalCredito()) {
 			mensaje.put("mensaje", "La nave no tiene suficiente credito para hacer la compra");
 			mensaje.put("error", true);
 			return mensaje;
@@ -270,7 +315,7 @@ public class NaveService {
 
 		// - si el totalVolumen es menor al volumen disponible de la nave (continuar)
 		// (Se hace el else para soltar solo el error en caso contrario)
-		if (nave.getCargaActual() <= naveXProducto.getTotalVolumen()) {
+		if (nave.getCargaActual() < naveXProducto.getTotalVolumen()) {
 			mensaje.put("mensaje", "La nave no tiene suficiente volumen para hacer la compra");
 			mensaje.put("error", true);
 			return mensaje;
@@ -340,7 +385,7 @@ public class NaveService {
 		Nave nave;
 		Planeta planeta;
 		Producto producto;
-		
+
 		try {
 			nave = obtenerNave(idNave);
 		} catch (RecordNotFoundException e) {
@@ -377,7 +422,7 @@ public class NaveService {
 			mensaje.put("error", true);
 			return mensaje;
 		}
-		
+
 		if (naveXProductoActual == null) {
 			// 2. El planeta necesita el producto x y yo no lo tengo
 			mensaje.put("mensaje", "La nave no tiene el producto ingresado");
@@ -399,8 +444,18 @@ public class NaveService {
 
 		// En el caso que el stock a vender sea menor al stock actual, entonces:
 		naveXProductoActual.setStock(naveXProductoActual.getStock() - cantidad);
-		naveXProductoActual.setTotalCredito(naveXProductoActual.getTotalCredito() + (cantidad * planetaXProducto.getPrecioVenta()));
-		naveXProductoActual.setTotalVolumen(naveXProductoActual.getTotalVolumen() + (cantidad * producto.getVolumen()));
+		naveXProductoActual.setTotalCredito(
+				naveXProductoActual.getTotalCredito() - (cantidad * planetaXProducto.getPrecioVenta()));
+		naveXProductoActual.setTotalVolumen(naveXProductoActual.getTotalVolumen() - (cantidad * producto.getVolumen()));
+
+		// - restar los creditos de la nave de acuerto al total de compra
+		nave.setCantidadCredito(nave.getCantidadCredito() + (cantidad * planetaXProducto.getPrecioVenta()));
+
+		// - restar el volumen-total de la nave
+		nave.setCargaActual(nave.getCargaActual() + (cantidad * producto.getVolumen()));
+
+		// - guardar la nave
+		nave = naveRepository.save(nave);
 
 		if (naveXProductoActual.getStock() == 0) {
 			naveXProductoRepository.delete(naveXProductoActual);
@@ -417,7 +472,7 @@ public class NaveService {
 
 		// - Actualizar el PC (PC = FO/(1+S))
 		planetaXProducto.setPrecioCompra(planetaXProducto.getFactorOferta() / (1 + planetaXProducto.getStock()));
-	
+
 		// - guardar el planetaXProducto
 		planetaXProducto = planetaXProductoRepository.save(planetaXProducto);
 

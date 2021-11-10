@@ -9,6 +9,7 @@ import com.desarrolloweb.zathura.models.Planeta;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.service.TripulanteService;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +57,33 @@ public class TripulanteController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
-	@PostMapping("")
+	@PostMapping(path="", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Crea un nuevo tripulante")
-	public Tripulante crearTripulante(@RequestBody Tripulante tripulanteNueva) {
+	public Tripulante crearTripulante(@RequestBody String json) throws RecordNotFoundException {
+		JSONObject respuesta = new JSONObject(json);
+		String username = respuesta.getString("username");
+		String password = respuesta.getString("password");
+		boolean capitan = respuesta.getBoolean("capitan");
+		boolean navegante = respuesta.getBoolean("navegante");
+		boolean comerciante = respuesta.getBoolean("comerciante");
+
+		Tripulante tripulanteNuevo = new Tripulante();
+		tripulanteNuevo.setUsername(username);
+		tripulanteNuevo.setPassword(password);
+		tripulanteNuevo.setCapitan(capitan);
+		tripulanteNuevo.setNavegante(navegante);
+		tripulanteNuevo.setComerciante(comerciante);
+
+
 		log.info("Creando Tripulante");
-		return tripulanteService.crearTripulante(tripulanteNueva);
+		return tripulanteService.crearTripulante(tripulanteNuevo);
 	}
 
 	// ------------------------------------------------------------
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
+	//TODO - No lleva roles y no debe estar autenticado
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene un tripulante por su id")
 	public Tripulante obtenerTripulante(@PathVariable Long id) throws RecordNotFoundException {
