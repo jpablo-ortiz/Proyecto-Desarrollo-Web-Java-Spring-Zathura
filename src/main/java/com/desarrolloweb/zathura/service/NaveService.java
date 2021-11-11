@@ -485,4 +485,12 @@ public class NaveService {
 		return naveRepository.findNaveXProductoByNaveId(idNave);
 	}
 
+    public void ingresarTripulanteANave(Long idTripulante, Long idNave) throws RecordNotFoundException {
+		Nave nave = this.obtenerNave(idNave);
+		Tripulante tripulante = tripulanteService.obtenerTripulante(idTripulante);
+		
+		tripulante.setNave(nave);
+		tripulante = tripulanteService.guardarTripulante(tripulante);
+    }
+
 }

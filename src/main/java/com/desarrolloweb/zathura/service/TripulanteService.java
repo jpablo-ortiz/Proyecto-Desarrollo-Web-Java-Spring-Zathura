@@ -237,4 +237,8 @@ public class TripulanteService {
         return tripulanteRepository.findByUserAndPassword(user, password);
     }
 
+    public Tripulante guardarTripulante(Tripulante tripulante) {
+        return tripulanteRepository.save(tripulante);
+    }
+
 }
