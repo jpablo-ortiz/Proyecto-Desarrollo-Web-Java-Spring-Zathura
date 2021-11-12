@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Tripulante implements Serializable {
@@ -29,7 +29,8 @@ public class Tripulante implements Serializable {
     private Boolean comerciante;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    //@JsonManagedReference(value= "nave_tripulante")
     private Nave nave;
 
     public Tripulante() {

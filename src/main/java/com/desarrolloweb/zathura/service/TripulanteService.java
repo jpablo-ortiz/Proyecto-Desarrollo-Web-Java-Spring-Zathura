@@ -222,6 +222,16 @@ public class TripulanteService {
 			}
 
 		}
+		productos_no_permitidos.stream().forEach(producto -> {
+			producto.setPlaneta(null);
+			producto.getProducto().setPlanetas(null);
+			producto.getProducto().setNaves(null);
+		});
+		productos_permitidos.stream().forEach(producto -> {
+			producto.setPlaneta(null);
+			producto.getProducto().setPlanetas(null);
+			producto.getProducto().setNaves(null);
+		});
 
 		mensaje.put("productos_permitidos", productos_permitidos);
 		mensaje.put("productos_no_permitidos", productos_no_permitidos);

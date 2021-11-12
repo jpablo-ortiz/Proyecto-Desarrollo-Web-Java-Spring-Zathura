@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Ruta implements Serializable {
@@ -21,11 +21,13 @@ public class Ruta implements Serializable {
     private Double distancia;
 
     @ManyToOne
-    @JsonManagedReference
+   // @JsonManagedReference(value = "estrella_a")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Estrella estrellaA;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value = "estrella_b")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Estrella estrellaB;
 
     public Ruta() {

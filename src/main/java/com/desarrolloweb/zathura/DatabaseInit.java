@@ -236,7 +236,7 @@ public class DatabaseInit implements ApplicationRunner {
             planeta = planetaRepository.findById((long) ranPlaneta).orElse(null);
             nave = naveRepository.save(new Nave(
                             nombreNave, 
-                            0.0, 
+                            mod.getCargaMax(), 
                             5000.0, 
                             0.0, 
                             planeta, 

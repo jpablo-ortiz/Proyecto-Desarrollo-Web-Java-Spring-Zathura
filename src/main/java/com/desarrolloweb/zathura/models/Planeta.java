@@ -14,8 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Planeta implements Serializable {
@@ -30,22 +30,19 @@ public class Planeta implements Serializable {
     private Boolean habitado;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    //@JsonManagedReference(value = "estrella")
     private Estrella estrella;
-
-    // @OneToMany(mappedBy = "planeta")
-    // List<PlanetaXProducto> planetaXProductos;
 
     @ManyToMany
     @JoinTable(name = "planetaxproducto", joinColumns = @JoinColumn(name = "planeta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
-    @JsonBackReference
+    //@JsonBackReference(value = "productos_planeta")
+    @JsonIgnore
     private List<Producto> productos = new ArrayList<>();
 
-    // @OneToMany(mappedBy = "planetaActual")
-    // private List<Nave> naves;
-
     @OneToMany(mappedBy = "planetaActual")
-    @JsonBackReference
+    //@JsonBackReference(value = "naves_planeta")
+    @JsonIgnore
     private List<Nave> naves = new ArrayList<>();
 
     public Planeta() {

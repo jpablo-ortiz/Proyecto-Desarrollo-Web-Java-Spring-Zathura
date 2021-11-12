@@ -111,6 +111,7 @@ public class EstrellaController {
 		log.info("Obtener las 10 estrellas más cercanas a la estrella dada");
 		return estrellaService.obtenerEstrellasCercanas(id, 10);
 	}
+
 	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/verificar-viaje/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Verifica si un viaje entre dos estrellas es posible dado un tripulante")
@@ -119,6 +120,7 @@ public class EstrellaController {
 		log.info("Verificar viaje entre dos estrellas");
 		return estrellaService.verificarViaje(idEstrellaO, idEstrellaD, idTripulante);
 	}
+	
 	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/viajar/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Realiza un viaje entre dos estrellas dado un tripulante")

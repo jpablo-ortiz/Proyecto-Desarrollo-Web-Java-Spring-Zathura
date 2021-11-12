@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class PlanetaXProducto implements Serializable {
@@ -29,11 +29,13 @@ public class PlanetaXProducto implements Serializable {
     private Integer stock;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value= "planeta_pxp")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Planeta planeta;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value= "producto_pxp")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Producto producto;
 
     public PlanetaXProducto() {
