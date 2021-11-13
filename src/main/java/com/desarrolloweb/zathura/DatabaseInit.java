@@ -7,11 +7,9 @@ import java.util.Random;
 
 import com.desarrolloweb.zathura.controllers.EstrellaController;
 import com.desarrolloweb.zathura.controllers.ModeloNaveController;
-import com.desarrolloweb.zathura.controllers.NaveController;
 import com.desarrolloweb.zathura.controllers.PlanetaController;
 import com.desarrolloweb.zathura.controllers.ProductoController;
 import com.desarrolloweb.zathura.controllers.RutaController;
-import com.desarrolloweb.zathura.controllers.TripulanteController;
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
@@ -25,7 +23,6 @@ import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
 import com.desarrolloweb.zathura.repositories.ModeloNaveRepository;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
-import com.desarrolloweb.zathura.repositories.NaveXProductoRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
 import com.desarrolloweb.zathura.repositories.ProductoRepository;
@@ -50,12 +47,6 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Autowired
     private RutaController rutaController;
-
-    @Autowired
-    private NaveController naveController;
-
-    @Autowired
-    private TripulanteController tripulanteController;
 
     @Autowired
     private ProductoController productoController;
@@ -83,9 +74,6 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Autowired
     private NaveRepository naveRepository;
-
-    @Autowired
-    private NaveXProductoRepository naveXProductoRepository;
 
     @Autowired
     private NaveService naveService;
@@ -138,14 +126,9 @@ public class DatabaseInit implements ApplicationRunner {
                     planetaRepository.save(new Planeta(randomGen.generate(5, 10), true, estrella));
             } else {
                 // Guardar Estrella no habitable
-                estrella = estrellaRepository.save(new Estrella(
-                        randomGen.generate(5, 10),
-                        random.nextInt(2000) ,
-                        random.nextDouble() * 1000000 + 1, 
-                        random.nextDouble() * 1000000 + 1, 
-                        random.nextDouble() * 1000000 + 1, 
-                        false
-                        ));
+                estrella = estrellaRepository.save(
+                        new Estrella(randomGen.generate(5, 10), random.nextInt(2000), random.nextDouble() * 1000000 + 1,
+                                random.nextDouble() * 1000000 + 1, random.nextDouble() * 1000000 + 1, false));
                 estrellas.add(estrella);
             }
 
@@ -197,17 +180,12 @@ public class DatabaseInit implements ApplicationRunner {
      */
     public void creacionModelosNave() {
         ModeloNave modeloNave;
-        
+
         ArrayList<Long> modelosnaves = new ArrayList<Long>();
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
-            modeloNave = modeloNaveRepository.save(
-                new ModeloNave(
-                        randomGen.generate(5, 10), 
-                        random.nextDouble() * 2000 + 1,
-                        random.nextDouble() * 400 + 1,
-                        (double) random.nextInt(200) + 100
-                    ));
+            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10),
+                    random.nextDouble() * 2000 + 1, random.nextDouble() * 400 + 1, (double) random.nextInt(200) + 100));
             modelosnaves.add(modeloNave.getId());
         }
 
@@ -215,7 +193,7 @@ public class DatabaseInit implements ApplicationRunner {
 
         Nave nave = new Nave();
         int ran = 0, ranPlaneta = 0;
-        Double costoR = random.nextDouble();
+        random.nextDouble();
         for (int i = 0; i < 10; i++) {
             String nombreNave = randomGen.generate(5, 10);
             ran = random.nextInt(20);
@@ -234,14 +212,7 @@ public class DatabaseInit implements ApplicationRunner {
             // Se guarda el modeloNave
             ModeloNave mod = modeloNaveRepository.findById(modelosnaves.get(ran)).get();
             planeta = planetaRepository.findById((long) ranPlaneta).orElse(null);
-            nave = naveRepository.save(new Nave(
-                            nombreNave, 
-                            mod.getCargaMax(), 
-                            5000.0, 
-                            0.0, 
-                            planeta, 
-                            mod
-                        ));
+            nave = naveRepository.save(new Nave(nombreNave, mod.getCargaMax(), 5000.0, 0.0, planeta, mod));
             for (int j = 0; j < random.nextInt(10); j++) {
                 int ranPro = random.nextInt(50000);
                 correcto = true;
@@ -253,19 +224,19 @@ public class DatabaseInit implements ApplicationRunner {
                         correcto = false;
                     }
                 }
-                //prod = productoRepository.findById((long) ranPro).orElse(null);
+                // prod = productoRepository.findById((long) ranPro).orElse(null);
                 // Se guarda la relacion muchos a mucho en la tabla intermedia NaveXproducto.
-                //Double stock = (double) (random.nextInt(10) + 1);
-                //double totalCredito = stock * prod.getCostoCredito();
-                //double totalVolumen = stock * prod.getVolumen();
-                //naveXProductoRepository.save(
-                //        new NaveXProducto(
-                //                stock,
-                //                totalCredito,
-                //                totalVolumen,
-                //                nave, 
-                //                prod
-                //            ));
+                // Double stock = (double) (random.nextInt(10) + 1);
+                // double totalCredito = stock * prod.getCostoCredito();
+                // double totalVolumen = stock * prod.getVolumen();
+                // naveXProductoRepository.save(
+                // new NaveXProducto(
+                // stock,
+                // totalCredito,
+                // totalVolumen,
+                // nave,
+                // prod
+                // ));
             }
 
             // Generación de Tripulantes en las naves ya existentes.
@@ -407,7 +378,8 @@ public class DatabaseInit implements ApplicationRunner {
         planeta5 = planetaController.crearPlaneta(planeta5);
         planetas.add(planeta5);
 
-        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500), (double) 50);
+        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500),
+                (double) 50);
         modeloNave = modeloNaveController.crearModeloNave(modeloNave);
 
         Nave nave = new Nave(Long.valueOf(1), "Nave de Kenneth", Double.valueOf(100), Double.valueOf(1500), (double) 0);

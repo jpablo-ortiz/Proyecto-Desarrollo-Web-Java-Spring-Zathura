@@ -22,8 +22,6 @@ import com.desarrolloweb.zathura.repositories.PlanetaRepository;
 import com.desarrolloweb.zathura.repositories.ProductoRepository;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,33 +71,11 @@ public class NaveControllerIntegrationTest {
     @Autowired
     private NaveXProductoRepository naveXProductoRepository;
 
-        private static boolean inicializado;
-
-    private static boolean finalizado;
+    private static boolean inicializado;
 
     @BeforeAll
     public static void beforeAll() {
         inicializado = false;
-        finalizado = false;
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        finalizado = true;
-    }
-
-    @AfterEach
-    public void end() {
-        if (finalizado) {
-            this.naveXProductoRepository.deleteAll();
-            this.productoRepository.deleteAll();
-            this.tripulanteRepository.deleteAll();
-            this.planetaRepository.deleteAll();
-            this.naveRepository.deleteAll();
-            this.modeloNaveRepository.deleteAll();
-            this.rutaController.deleteAll();
-            this.estrellaRepository.deleteAll();
-        }
     }
 
     @BeforeEach
@@ -177,10 +153,8 @@ public class NaveControllerIntegrationTest {
                     rutaController.crearRuta(ruta);
                 }
             }
-
             inicializado = true;
         }
-
     }
 
     @Test
