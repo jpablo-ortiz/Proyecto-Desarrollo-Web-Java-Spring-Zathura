@@ -2,6 +2,7 @@ package com.desarrolloweb.zathura.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 // Ver http://www.baeldung.com/securing-a-restful-web-service-with-spring-security
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
+@Profile(value = "default")
 public class SecConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -45,10 +46,9 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(authenticationEntryPoint)
 			.and()
 				.authorizeRequests()
-					//.antMatchers("/h2/**", "/console/**", "/public/**", "/login/**", "/nave/**", "/modelo-nave/**").permitAll()
-					//.anyRequest().authenticated()
-					//
-					.anyRequest().permitAll()
+					.antMatchers("/h2/**", "/console/**", "/public/**", "/login/**", "/nave/**", "/modelo-nave/**").permitAll()
+					.anyRequest().authenticated()
+					//.anyRequest().permitAll()
 			.and()
 				.formLogin()
 					.successHandler(authenticationSuccessHandler)
@@ -76,6 +76,11 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 		return new CorsFilter(source);
 	}
 
+	//@Resource
+	//public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	//	auth.inMemoryAuthentication().withUser("usuario1").password("1234").roles("ROL_CAPITAN");
+	//}
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
