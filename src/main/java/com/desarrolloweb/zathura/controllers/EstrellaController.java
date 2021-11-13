@@ -33,7 +33,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/estrella")
 @CrossOrigin(origins = "http://localhost:4200")
-public class EstrellaController {
+public class EstrellaController 
+{
 
 	/**
 	 * Objeto que permite el registro de trazas de la ejecución de las operaciones

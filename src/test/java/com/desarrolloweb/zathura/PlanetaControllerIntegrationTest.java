@@ -1,5 +1,9 @@
 package com.desarrolloweb.zathura;
 
+
+
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -9,14 +13,20 @@ import com.desarrolloweb.zathura.controllers.RutaController;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
+import com.desarrolloweb.zathura.models.PlanetaXProducto;
+import com.desarrolloweb.zathura.models.Producto;
 import com.desarrolloweb.zathura.models.Ruta;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.models.POJOs.EstrellaPojo;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
 import com.desarrolloweb.zathura.repositories.ModeloNaveRepository;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
+import com.desarrolloweb.zathura.repositories.NaveXProductoRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
+import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
+import com.desarrolloweb.zathura.repositories.ProductoRepository;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +47,9 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class EstrellaControllerIntegrationTest {
+public class PlanetaControllerIntegrationTest {
 
+    
     @LocalServerPort
     private int port;
 
@@ -62,6 +73,17 @@ public class EstrellaControllerIntegrationTest {
 
     @Autowired
     private TripulanteRepository tripulanteRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private NaveXProductoRepository naveXProductoRepository;
+
+    @Autowired
+    private PlanetaXProductoRepository planetaXProductoRepository;
+
+
 
     @BeforeEach
     void init() {
@@ -100,17 +122,27 @@ public class EstrellaControllerIntegrationTest {
         estrellas.add(estrella10);
         Planeta planeta1 = new Planeta("planeta1", true, estrella1);
         planetaRepository.save(planeta1); // id11
+        Planeta planeta2 = new Planeta("planeta2", true, estrella1);
+        planetaRepository.save(planeta2); //id12
         // Crear modelo nave
         ModeloNave modeloNave1 = new ModeloNave("modeloNave1", Double.valueOf(100), Double.valueOf(100), Double.valueOf(100));
-        modeloNaveRepository.save(modeloNave1); // id12
+        modeloNaveRepository.save(modeloNave1); // id13
         //crear Nave
         Nave nave1 = new Nave("nave1", Double.valueOf(100), Double.valueOf(100), Double.valueOf(100), planeta1, modeloNave1);
-        naveRepository.save(nave1); // id13
+        naveRepository.save(nave1); // id14
         // Crear Tripulantes
         Tripulante tripulante = new Tripulante ("usuario1", "1234",true,false,false, nave1);
-        tripulanteRepository.save(tripulante); // id14  
+        tripulanteRepository.save(tripulante); // id15 
 
+        Producto producto1 = new Producto ("pera",Double.valueOf(247),Double.valueOf(100),Double.valueOf(100));
+        productoRepository.save(producto1); //id16
 
+        NaveXProducto naveXProducto1 = new NaveXProducto(Double.valueOf(100),Double.valueOf(100),Double.valueOf(100),nave1,producto1);
+        naveXProductoRepository.save(naveXProducto1); //id17
+
+        PlanetaXProducto planetaXProducto1 = new PlanetaXProducto(Double.valueOf(100),Double.valueOf(100),Double.valueOf(100),Double.valueOf(100), Integer.valueOf(100), planeta1,producto1);
+        planetaXProductoRepository.save(planetaXProducto1);//id18
+        
          // Crear Rutas de todas las estrellas con todas las estrellas
              for (int i = 0; i < estrellas.size(); i++) {
                 for (int j = i + 1; j < estrellas.size(); j++) {
@@ -118,44 +150,36 @@ public class EstrellaControllerIntegrationTest {
                     rutaController.crearRuta(ruta);
                 }
             }
+    }
+    @Test
+    void obtenerPlaneta(){
+        Planeta planeta = rest.getForObject("http://localhost:" + port + "/planeta/11", Planeta.class);
+        assertEquals(11,planeta.getId());
+    }
 
+
+    @Test
+    void obtenerPlanetas() {
+        List<Planeta> planetas = rest.getForObject("http://localhost:" + port + "/planeta", ArrayList.class);
+        assertEquals(2, planetas.size());
     }
 
     @Test
-    void buscarEstrella() {
-        Estrella estrella = rest.getForObject("http://localhost:" + port + "/estrella/1", Estrella.class);
-        assertEquals(1, estrella.getId());
+    void obtenerPlanetasPorEstrella() {
+        List<Planeta> planetas = rest.getForObject("http://localhost:" + port + "/planeta/estrella/1", ArrayList.class);
+        assertEquals(2, planetas.size());
     }
 
     @Test
-    void buscarEstrellas() {
-        List<Estrella> estrellas = rest.getForObject("http://localhost:" + port + "/estrella", ArrayList.class);
-        assertEquals(10, estrellas.size());
+    void obtenerProductosPorPlaneta() {
+        List<Producto> productos = rest.getForObject("http://localhost:" + port + "/planeta/productos/11", ArrayList.class);
+        assertEquals(1, productos.size());
     }
 
-    //////revisar
     @Test
-    void verificarViaje() {
-        boolean viaje = rest.getForObject("http://localhost:" + port + "/estrella/1/verificar-viaje/2/tripulante/14",
-                Boolean.class);
-        assertEquals(true, viaje);
+    void obtenerPlanetaXProducto() {
+        PlanetaXProducto pxp = rest.getForObject("http://localhost:" + port + "/planeta/11/producto/16", PlanetaXProducto.class);
+        assertEquals(18, pxp.getId());
     }
-    //////revisar
-    @Test
-    void viajar() {
-        boolean viaje = rest.getForObject("http://localhost:" + port + "/estrella/1/viajar/2/tripulante/14",
-                Boolean.class);
-        assertEquals(true, viaje);
-    }
-
-  
-    //////revisar
-    @Test
-    void obtener10EstrellasCercanas() {
-        List<EstrellaPojo> estrellas = rest.getForObject("http://localhost:" + port + "/estrella/10nearest/1", ArrayList.class);
-        assertEquals(10, estrellas.size());
-    }
-
- 
 
 }
