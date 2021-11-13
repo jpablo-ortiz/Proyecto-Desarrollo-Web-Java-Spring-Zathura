@@ -15,8 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Nave implements Serializable, Cloneable {
@@ -36,29 +36,31 @@ public class Nave implements Serializable, Cloneable {
     private Double totalTiempoViaje;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value = "planeta_actual")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Planeta planetaActual;
-
-    // @OneToMany(mappedBy = "nave")
-    // List<NaveXProducto> naveXProductos;
 
     @ManyToMany
     @JoinTable(name = "navexproducto", joinColumns = @JoinColumn(name = "nave_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
-    @JsonBackReference
+    //@JsonBackReference(value = "productos_nave")
+    @JsonIgnore
     private List<Producto> productos = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "nave")
-    @JsonBackReference
+    //@JsonBackReference(value = "tripulantes")
+    @JsonIgnore
     private List<Tripulante> tripulantes = new ArrayList<>();
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value = "modelo_nave")
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private ModeloNave modeloNave;
 
     public Nave() {
     }
 
-    public Nave(Long id, String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje, Planeta planetaActual, List<Producto> productos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
+    public Nave(Long id, String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje,
+            Planeta planetaActual, List<Producto> productos, List<Tripulante> tripulantes, ModeloNave modeloNave) {
         this.id = id;
         this.nombre = nombre;
         this.cargaActual = cargaActual;
@@ -77,7 +79,9 @@ public class Nave implements Serializable, Cloneable {
         this.cantidadCredito = cantidadCredito;
         this.totalTiempoViaje = totalTiempoViaje;
     }
-    public Nave( String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje,Planeta planetaActual,ModeloNave modeloNave) {
+
+    public Nave(String nombre, Double cargaActual, Double cantidadCredito, Double totalTiempoViaje,
+            Planeta planetaActual, ModeloNave modeloNave) {
         this.nombre = nombre;
         this.cargaActual = cargaActual;
         this.cantidadCredito = cantidadCredito;
@@ -211,27 +215,27 @@ public class Nave implements Serializable, Cloneable {
             return false;
         }
         Nave nave = (Nave) o;
-        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre) && Objects.equals(cargaActual, nave.cargaActual) && Objects.equals(cantidadCredito, nave.cantidadCredito) && Objects.equals(totalTiempoViaje, nave.totalTiempoViaje) && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(productos, nave.productos) && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
+        return Objects.equals(id, nave.id) && Objects.equals(nombre, nave.nombre)
+                && Objects.equals(cargaActual, nave.cargaActual)
+                && Objects.equals(cantidadCredito, nave.cantidadCredito)
+                && Objects.equals(totalTiempoViaje, nave.totalTiempoViaje)
+                && Objects.equals(planetaActual, nave.planetaActual) && Objects.equals(productos, nave.productos)
+                && Objects.equals(tripulantes, nave.tripulantes) && Objects.equals(modeloNave, nave.modeloNave);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, cargaActual, cantidadCredito, totalTiempoViaje, planetaActual, productos, tripulantes, modeloNave);
+        return Objects.hash(id, nombre, cargaActual, cantidadCredito, totalTiempoViaje, planetaActual, productos,
+                tripulantes, modeloNave);
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", cargaActual='" + getCargaActual() + "'" +
-            ", cantidadCredito='" + getCantidadCredito() + "'" +
-            ", totalTiempoViaje='" + getTotalTiempoViaje() + "'" +
-            ", planetaActual='" + getPlanetaActual() + "'" +
-            ", productos='" + getProductos() + "'" +
-            ", tripulantes='" + getTripulantes() + "'" +
-            ", modeloNave='" + getModeloNave() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", cargaActual='" + getCargaActual()
+                + "'" + ", cantidadCredito='" + getCantidadCredito() + "'" + ", totalTiempoViaje='"
+                + getTotalTiempoViaje() + "'" + ", planetaActual='" + getPlanetaActual() + "'" + ", productos='"
+                + getProductos() + "'" + ", tripulantes='" + getTripulantes() + "'" + ", modeloNave='" + getModeloNave()
+                + "'" + "}";
     }
 
 }

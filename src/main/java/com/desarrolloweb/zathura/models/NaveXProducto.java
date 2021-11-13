@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class NaveXProducto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -24,11 +24,13 @@ public class NaveXProducto implements Serializable {
     private Double totalVolumen;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value = "nave_nave_x_producto")
+    @JsonIgnore
     private Nave nave;
 
     @ManyToOne
-    @JsonManagedReference
+    //@JsonManagedReference(value = "producto_nave_x_producto")
+    @JsonIgnore
     private Producto producto;
 
     public NaveXProducto() {
