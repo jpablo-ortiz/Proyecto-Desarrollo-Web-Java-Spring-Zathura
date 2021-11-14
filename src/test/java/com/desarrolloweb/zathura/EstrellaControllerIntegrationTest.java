@@ -34,7 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
-@ActiveProfiles("test")
+@ActiveProfiles("integration-test")
 @DirtiesContext
 public class EstrellaControllerIntegrationTest {
 
@@ -142,14 +142,14 @@ public class EstrellaControllerIntegrationTest {
 
     @Test
     void buscarEstrella() {
-        Estrella estrella = rest.withBasicAuth("usuario1", "1234").withBasicAuth("usuario1", "1234")
+        Estrella estrella = rest.withBasicAuth("usuario1", "1234")
                 .getForObject("http://localhost:" + port + "/estrella/1", Estrella.class);
         assertEquals(1, estrella.getId());
     }
 
     @Test
     void buscarEstrellas() {
-        List<Estrella> estrellas = rest.withBasicAuth("usuario1", "1234").withBasicAuth("usuario1", "1234")
+        List<Estrella> estrellas = rest.withBasicAuth("usuario1", "1234")
                 .getForObject("http://localhost:" + port + "/estrella", ArrayList.class);
         assertEquals(10, estrellas.size());
     }
@@ -160,7 +160,7 @@ public class EstrellaControllerIntegrationTest {
         // ResponseEntity<String> res = rest.withBasicAuth("usuario1",
         // "1234").withBasicAuth("usuario1", "1234").exchange("http://localhost:" + port
         // + "/estrella/1", HttpMethod.GET, null, String.class);
-        boolean viaje = rest.withBasicAuth("usuario1", "1234").withBasicAuth("usuario1", "1234").getForObject(
+        boolean viaje = rest.withBasicAuth("usuario1", "1234").getForObject(
                 "http://localhost:" + port + "/estrella/1/verificar-viaje/2/tripulante/14", Boolean.class);
         assertEquals(true, viaje);
     }
@@ -168,7 +168,7 @@ public class EstrellaControllerIntegrationTest {
     ////// revisar
     @Test
     void viajar() {
-        boolean viaje = rest.withBasicAuth("usuario1", "1234").withBasicAuth("usuario1", "1234")
+        boolean viaje = rest.withBasicAuth("usuario1", "1234")
                 .getForObject("http://localhost:" + port + "/estrella/1/viajar/2/tripulante/14", Boolean.class);
         assertEquals(true, viaje);
     }
@@ -176,7 +176,7 @@ public class EstrellaControllerIntegrationTest {
     ////// revisar
     @Test
     void obtener10EstrellasCercanas() {
-        List<EstrellaPojo> estrellas = rest.withBasicAuth("usuario1", "1234").withBasicAuth("usuario1", "1234")
+        List<EstrellaPojo> estrellas = rest.withBasicAuth("usuario1", "1234")
                 .getForObject("http://localhost:" + port + "/estrella/10nearest/1", ArrayList.class);
         assertEquals(9, estrellas.size());
     }

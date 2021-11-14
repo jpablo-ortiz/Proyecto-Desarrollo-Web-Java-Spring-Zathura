@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
-@ActiveProfiles("test")
+@ActiveProfiles("integration-test")
 @DirtiesContext
 public class ModeloNaveControllerIntegrationTest {
 

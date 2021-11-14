@@ -90,7 +90,6 @@ public class TripulanteController {
 		return tripulanteService.obtenerTripulante(id);
 	}
 
-	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todos los tripulantes")
 	public List<Tripulante> obtenerTripulantes() {
@@ -157,14 +156,16 @@ public class TripulanteController {
 		return tripulanteService.obtenerNaveActualByTripulante(id);
 	}
 	
-	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
+	@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Obtiene los productos que se pueden vender dado la nave de un tripulante y un planeta")
 	public String obtenerProductosVendibles(@PathVariable Long idTripulante, @PathVariable Long idPlaneta) throws RecordNotFoundException {
 		log.info("Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta");
 		return tripulanteService.obtenerProductosVendibles(idTripulante, idPlaneta).toString();
 	}
 
-	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")@GetMapping("/{usuario}/login/{password}")
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
+	@GetMapping("/{usuario}/login/{password}")
     public Tripulante getTripulanteLogin(@PathVariable("usuario") String usuario, @PathVariable("password") String password) {
 		log.info("Obtener el Tripulante por username y contraseña");
 		return tripulanteService.findByUserAndPassword(usuario, password);

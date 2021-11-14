@@ -10,13 +10,19 @@ import com.desarrolloweb.zathura.controllers.RutaController;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
+import com.desarrolloweb.zathura.models.PlanetaXProducto;
+import com.desarrolloweb.zathura.models.Producto;
 import com.desarrolloweb.zathura.models.Ruta;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
 import com.desarrolloweb.zathura.repositories.ModeloNaveRepository;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
+import com.desarrolloweb.zathura.repositories.NaveXProductoRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
+import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
+import com.desarrolloweb.zathura.repositories.ProductoRepository;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
-@ActiveProfiles("test")
+@ActiveProfiles("integration-test")
 @DirtiesContext
 public class TripulanteControllerIntegrationTest {
 
@@ -61,6 +67,15 @@ public class TripulanteControllerIntegrationTest {
 
     @Autowired
     private TripulanteRepository tripulanteRepository;
+
+    @Autowired
+    private PlanetaXProductoRepository planetaXProductoRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private NaveXProductoRepository naveXProductoRepository;
 
     private static boolean inicializado;
 
@@ -130,6 +145,16 @@ public class TripulanteControllerIntegrationTest {
             // Crear Tripulantes
             Tripulante tripulante = new Tripulante("usuario1", "1234", true, false, false, nave1);
             tripulanteRepository.save(tripulante); // id14
+
+            Producto producto1 = new Producto("pera", Double.valueOf(247), Double.valueOf(100), Double.valueOf(100));
+            productoRepository.save(producto1); // id15
+
+            PlanetaXProducto planetaXProducto1 = new PlanetaXProducto(Double.valueOf(100), Double.valueOf(100),
+                    Double.valueOf(100), Double.valueOf(100), Integer.valueOf(100), planeta1, producto1);
+            planetaXProductoRepository.save(planetaXProducto1);// id16
+
+            NaveXProducto naveXProducto1 = new NaveXProducto(Double.valueOf(100), Double.valueOf(100), Double.valueOf(100), nave1, producto1);
+            naveXProductoRepository.save(naveXProducto1);// id17
 
             // Crear Rutas de todas las estrellas con todas las estrellas
             for (int i = 0; i < estrellas.size(); i++) {
@@ -205,7 +230,5 @@ public class TripulanteControllerIntegrationTest {
                 .getForObject("http://localhost:" + port + "/tripulante/14/nave", Nave.class);
         assertNotEquals(11, nave.getId());
     }
-
-    // faltan dos pruebas
 
 }
