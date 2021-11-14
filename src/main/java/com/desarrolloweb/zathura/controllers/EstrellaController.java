@@ -54,6 +54,7 @@ public class EstrellaController
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("")
 	@Operation(summary = "Crea una nueva estrella")
 	public Estrella crearEstrella(@RequestBody Estrella estrellaNueva) {
@@ -65,7 +66,7 @@ public class EstrellaController
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene una estrella por su id")
 	public Estrella obtenerEstrella(@PathVariable Long id) throws RecordNotFoundException {
@@ -73,6 +74,7 @@ public class EstrellaController
 		return estrellaService.obtenerEstrella(id);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todas las estrellas")
 	public List<Estrella> obtenerEstrellas() {
@@ -84,6 +86,7 @@ public class EstrellaController
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("/{id}")
 	@Operation(summary = "Modifica una estrella")
 	public Estrella modificarEstrella(@RequestBody Estrella estrella, @PathVariable Long id) {
@@ -95,6 +98,7 @@ public class EstrellaController
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una estrella")
 	public void eliminarEstrellaById(@PathVariable Long id) {
@@ -105,6 +109,7 @@ public class EstrellaController
 	// ------------------------------------------------------------
 	// -------------------------- OTHER ---------------------------
 	// ------------------------------------------------------------
+	
 	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/10nearest/{id}")
 	@Operation(summary = "Obtiene las 10 estrellas más cercanas a la estrella dada")

@@ -3,6 +3,7 @@ package com.desarrolloweb.zathura.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,9 +47,17 @@ public class SecConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(authenticationEntryPoint)
 			.and()
 				.authorizeRequests()
-					.antMatchers("/h2/**", "/console/**", "/public/**", "/login/**", "/nave/**", "/modelo-nave/**").permitAll()
+					.antMatchers("/h2/**", "/console/**", "/public/**").permitAll()
+					.antMatchers("/login/**").permitAll()
+					.antMatchers(HttpMethod.POST, "/tripulante").permitAll()
+					.antMatchers(HttpMethod.GET,  "/tripulante/{\\d+}").permitAll()
+					.antMatchers(HttpMethod.POST, "/tripulante/{\\d+}").permitAll()
+					.antMatchers(HttpMethod.GET,  "/modelo-nave").permitAll()
+					.antMatchers(HttpMethod.POST, "/modelo-nave").permitAll()
+					.antMatchers(HttpMethod.GET,  "/nave").permitAll()
+					.antMatchers(HttpMethod.POST, "/nave").permitAll()
+					.antMatchers(HttpMethod.GET,  "/nave/tripulante/{\\d+}/nave/{\\d+}").permitAll()
 					.anyRequest().authenticated()
-					//.anyRequest().permitAll()
 			.and()
 				.formLogin()
 					.successHandler(authenticationSuccessHandler)

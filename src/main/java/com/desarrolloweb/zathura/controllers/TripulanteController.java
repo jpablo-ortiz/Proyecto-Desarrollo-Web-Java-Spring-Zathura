@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,7 +83,6 @@ public class TripulanteController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
-	//TODO - No lleva roles y no debe estar autenticado
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene un tripulante por su id")
 	public Tripulante obtenerTripulante(@PathVariable Long id) throws RecordNotFoundException {
@@ -90,6 +90,7 @@ public class TripulanteController {
 		return tripulanteService.obtenerTripulante(id);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todos los tripulantes")
 	public List<Tripulante> obtenerTripulantes() {
@@ -112,6 +113,7 @@ public class TripulanteController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un tripulante")
 	public void eliminarTripulanteById(@PathVariable Long id) {
@@ -123,7 +125,7 @@ public class TripulanteController {
 	// --------------------------- OTROS --------------------------
 	// ------------------------------------------------------------
 
-	// Obtener los tripulantes por el id de la nave
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/nave/{id}")
 	@Operation(summary = "Obtiene los tripulantes por el id de la nave")
 	public List<Tripulante> obtenerTripulantesPorNave(@PathVariable Long id) {
@@ -131,7 +133,7 @@ public class TripulanteController {
 		return tripulanteService.obtenerTripulantesPorNave(id);
 	}
 
-	// Obtener la estrella actual de la nave del tripulante dado
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{id}/estrella")
 	@Operation(summary = "Obtiene la estrella actual de la nave del tripulante")
 	public Estrella obtenerEstrellaActual(@PathVariable Long id) {
@@ -139,7 +141,7 @@ public class TripulanteController {
 		return tripulanteService.obtenerEstrellaActualPorTripulante(id);
 	}
 
-	// Obtener el planeta actual de la nave del tripulante dado
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{id}/planeta")
 	@Operation(summary = "Obtiene el planeta actual de la nave del tripulante")
 	public Planeta obtenerPlanetaActual(@PathVariable Long id) {
@@ -147,34 +149,25 @@ public class TripulanteController {
 		return tripulanteService.obtenerPlanetaActualPorTripulante(id);
 	}
 
-	// Obtener la nave actual del tripulante dado
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{id}/nave")
 	@Operation(summary = "Obtiene la nave actual del tripulante")
 	public Nave obtenerNaveActual(@PathVariable Long id) {
 		log.info("Obtener la nave actual del tripulante");
 		return tripulanteService.obtenerNaveActualByTripulante(id);
 	}
-	//Mirar
-	//@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
-	// Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta
-	@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")@GetMapping(path = "/{idTripulante}/{idPlaneta}/productos", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Obtiene los productos que se pueden vender dado la nave de un tripulante y un planeta")
 	public String obtenerProductosVendibles(@PathVariable Long idTripulante, @PathVariable Long idPlaneta) throws RecordNotFoundException {
 		log.info("Obtener los productos que se pueden vender dado la nave de un tripulante y un planeta");
 		return tripulanteService.obtenerProductosVendibles(idTripulante, idPlaneta).toString();
 	}
 
-	// Mirar
-	//@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE') or hasRole('NAVEGANTE')")
-    @GetMapping("/{usuario}/login/{password}")
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")@GetMapping("/{usuario}/login/{password}")
     public Tripulante getTripulanteLogin(@PathVariable("usuario") String usuario, @PathVariable("password") String password) {
 		log.info("Obtener el Tripulante por username y contraseña");
 		return tripulanteService.findByUserAndPassword(usuario, password);
     }
-
-
-
-
-
 
 }
