@@ -9,7 +9,6 @@ import com.desarrolloweb.zathura.controllers.EstrellaController;
 import com.desarrolloweb.zathura.controllers.ModeloNaveController;
 import com.desarrolloweb.zathura.controllers.PlanetaController;
 import com.desarrolloweb.zathura.controllers.ProductoController;
-import com.desarrolloweb.zathura.controllers.RutaController;
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
@@ -28,6 +27,7 @@ import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
 import com.desarrolloweb.zathura.repositories.ProductoRepository;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 import com.desarrolloweb.zathura.service.NaveService;
+import com.desarrolloweb.zathura.service.RutaService;
 import com.desarrolloweb.zathura.service.TripulanteService;
 
 import org.apache.commons.text.RandomStringGenerator;
@@ -46,7 +46,7 @@ public class DatabaseInit implements ApplicationRunner {
     private PlanetaController planetaController;
 
     @Autowired
-    private RutaController rutaController;
+    private RutaService rutaService;
 
     @Autowired
     private ProductoController productoController;
@@ -115,8 +115,14 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < totalEstrellas; i++) {
             if (random.nextInt(2) == 1 && estrellasHabitadas > 0) {
                 // Guardar Estrella habitable
-                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextDouble(),
-                        random.nextDouble(), random.nextDouble(), true));
+                estrella = estrellaRepository.save(new Estrella(
+                        randomGen.generate(5, 10),
+                        random.nextInt(2000),
+                        random.nextDouble() * 1000000 + 1,
+                        random.nextDouble() * 1000000 + 1, 
+                        random.nextDouble() * 1000000 + 1, 
+                        true
+                        ));
                 estrellasHabitadas--;
                 estrellas.add(estrella);
                 // Condición de que en cada estrella esten 3 planetas
@@ -127,8 +133,13 @@ public class DatabaseInit implements ApplicationRunner {
             } else {
                 // Guardar Estrella no habitable
                 estrella = estrellaRepository.save(
-                        new Estrella(randomGen.generate(5, 10), random.nextInt(2000), random.nextDouble() * 1000000 + 1,
-                                random.nextDouble() * 1000000 + 1, random.nextDouble() * 1000000 + 1, false));
+                        new Estrella(
+                                randomGen.generate(5, 10),
+                                random.nextInt(2000),
+                                random.nextDouble() * 1000000 + 1,
+                                random.nextDouble() * 1000000 + 1, 
+                                random.nextDouble() * 1000000 + 1, 
+                                false));
                 estrellas.add(estrella);
             }
 
@@ -137,7 +148,7 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < estrellas.size(); i++) {
             for (int j = i + 1; j < estrellas.size(); j++) {
                 Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
-                rutaController.crearRuta(ruta);
+                rutaService.crearRuta(ruta);
             }
         }
     }
@@ -158,7 +169,7 @@ public class DatabaseInit implements ApplicationRunner {
         }
         // Se recorren todos los planetas ya creados
         for (Planeta planetas : planetaRepository.findAll()) {
-            int cantidadProductos = random.nextInt(20);
+            int cantidadProductos = random.nextInt(20) + 2;
 
             List<Producto> temp_prod = (List<Producto>) productos.clone();
             Collections.shuffle(temp_prod);
@@ -185,7 +196,7 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
             modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10),
-                    random.nextDouble() * 2000 + 1, random.nextDouble() * 400 + 1, (double) random.nextInt(200) + 100));
+                    random.nextDouble() * 2000 + 1, random.nextDouble() * 400 + 1, (double) random.nextInt(15000) + 5000));
             modelosnaves.add(modeloNave.getId());
         }
 
@@ -347,7 +358,7 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < estrellas.size(); i++) {
             for (int j = i + 1; j < estrellas.size(); j++) {
                 Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
-                rutaController.crearRuta(ruta);
+                rutaService.crearRuta(ruta);
             }
         }
 

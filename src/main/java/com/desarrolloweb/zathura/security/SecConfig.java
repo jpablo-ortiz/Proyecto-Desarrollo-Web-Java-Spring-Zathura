@@ -19,7 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 // Ver http://www.baeldung.com/securing-a-restful-web-service-with-spring-security
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile(value = { "default", "unit-test" })
+@Profile(value = { "default", "system-test" })
 public class SecConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
