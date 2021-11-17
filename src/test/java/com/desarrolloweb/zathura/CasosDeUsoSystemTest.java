@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
@@ -100,7 +101,7 @@ public class CasosDeUsoSystemTest {
 
         options.merge(DesiredCapabilities.chrome());
 
-        System.setProperty("webdriver.chrome.driver", "C:/ChromeDriver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", new ClassPathResource("src/main/resources/chromedriver.exe").getPath());
         this.browser = new ChromeDriver(options);
         this.wait = new WebDriverWait(browser, 10);
 
