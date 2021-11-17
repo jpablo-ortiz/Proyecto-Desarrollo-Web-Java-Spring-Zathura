@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Producto implements Serializable {
@@ -30,20 +30,17 @@ public class Producto implements Serializable {
 
     private Double peso;
 
-    // @OneToMany(mappedBy = "producto")
-    // List<PlanetaXProducto> productoXPlanetas;
-
     @ManyToMany
     @JoinTable(name = "planetaxproducto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "planeta_id"))
-    @JsonBackReference
+    //@JsonBackReference(value= "planetas_producto")
+    @JsonIgnore
     private List<Planeta> planetas = new ArrayList<>();
 
-    // @OneToMany(mappedBy = "producto")
-    // List<NaveXProducto> productoXNaves;
 
     @ManyToMany
     @JoinTable(name = "navexproducto", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "nave_id"))
-    @JsonBackReference
+    //@JsonBackReference(value= "naves_producto")
+    @JsonIgnore
     private List<Nave> naves = new ArrayList<>();
 
     public Producto() {

@@ -9,6 +9,7 @@ import com.desarrolloweb.zathura.service.ProductoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public class ProductoController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("")
 	@Operation(summary = "Crea un nuevo producto")
 	public Producto crearProducto(@RequestBody Producto productoNueva) {
@@ -62,6 +64,7 @@ public class ProductoController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene un producto por su id")
 	public Producto obtenerProducto(@PathVariable Long id) throws RecordNotFoundException {
@@ -69,6 +72,7 @@ public class ProductoController {
 		return productoService.obtenerProducto(id);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todos los productos")
 	public List<Producto> obtenerProductos() {
@@ -80,6 +84,7 @@ public class ProductoController {
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('COMERCIANTE')")
 	@PostMapping("/{id}")
 	@Operation(summary = "Modifica un producto")
 	public Producto modificarProducto(@RequestBody Producto producto, @PathVariable Long id) {
@@ -90,7 +95,7 @@ public class ProductoController {
 	// ------------------------------------------------------------
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
-
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un producto")
 	public void eliminarProductoById(@PathVariable Long id) {

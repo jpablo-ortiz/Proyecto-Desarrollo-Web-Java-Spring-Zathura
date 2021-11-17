@@ -1,14 +1,18 @@
 package com.desarrolloweb.zathura.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.Nave;
+import com.desarrolloweb.zathura.models.NaveXProducto;
 import com.desarrolloweb.zathura.models.Planeta;
+import com.desarrolloweb.zathura.models.PlanetaXProducto;
 import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +38,19 @@ public class TripulanteService {
 	 * Inyección de dependencia del repositorio de la entidad Tripulante
 	 */
 	@Autowired
-	private TripulanteRepository tripulanteRepository;
+	public TripulanteRepository tripulanteRepository;
 
 	/**
 	 * Inyección de dependencia del servicio de la entidad Nave
 	 */
 	@Autowired
 	private NaveService naveService;
+
+	/**
+	 * Inyección de dependencia del servicio de la entidad Planeta
+	 */
+	@Autowired
+	private PlanetaService planetaService;
 
 	// CRUD - CREATE - READ - UPDATE - DELETE
 
@@ -55,8 +65,15 @@ public class TripulanteService {
 	 *                   del tripulante a crear
 	 * @return Objeto de la entidad Tripulante con la información del tripulante
 	 *         creado
+	 * @throws RecordNotFoundException
 	 */
-	public Tripulante crearTripulante(Tripulante tripulante) {
+	public Tripulante crearTripulante(Tripulante tripulante) throws RecordNotFoundException {
+		Tripulante trip = this.findByUserAndPassword(tripulante.getUsername(), tripulante.getPassword());
+
+		if (trip != null) {
+			throw new RecordNotFoundException("El tripulante ya existe");
+		}
+
 		Nave navePlantilla = tripulante.getNave();
 		if (navePlantilla != null) {
 			try {
@@ -82,6 +99,7 @@ public class TripulanteService {
 	 * @throws RecordNotFoundException Si no existe el tripulante con el
 	 *                                 identificador dado
 	 */
+	 
 	public Tripulante obtenerTripulante(Long id) throws RecordNotFoundException {
 		Tripulante tripulante = tripulanteRepository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("No se encontro tripulante con id: " + id));
@@ -123,7 +141,11 @@ public class TripulanteService {
 				try {
 					navePlantilla = naveService.obtenerNave(navePlantilla.getId());
 				} catch (RecordNotFoundException e) {
-					navePlantilla = naveService.crearNave(navePlantilla);
+					try {
+						navePlantilla = naveService.crearNave(navePlantilla);
+					} catch (RecordNotFoundException e1) {
+						log.error("No se encontro nave con id: " + navePlantilla.getId());
+					}
 				}
 				tripulante.setNave(navePlantilla);
 			}
@@ -162,16 +184,71 @@ public class TripulanteService {
 		return tripulanteRepository.findByNaveId(id);
 	}
 
-    public Estrella obtenerEstrellaActual(Long id) {
+    public Estrella obtenerEstrellaActualPorTripulante(Long id) {
         return tripulanteRepository.findEstrellaByIdTripulante(id);
     }
 
-	public Planeta obtenerPlanetaActual(Long id) {
+	public Planeta obtenerPlanetaActualPorTripulante(Long id) {
 		return tripulanteRepository.findPlanetaByIdTripulante(id);
 	}
 
     public Nave obtenerNaveActualByTripulante(Long id) {
         return tripulanteRepository.findNaveByIdTripulante(id);
+    }
+
+	public JSONObject obtenerProductosVendibles(Long idTripulante, Long idPlaneta) throws RecordNotFoundException {
+		JSONObject mensaje = new JSONObject();
+		List<PlanetaXProducto> productos_permitidos = new ArrayList<>();
+		List<PlanetaXProducto> productos_no_permitidos = new ArrayList<>();
+
+		Nave nave = this.obtenerNaveActualByTripulante(idTripulante);
+
+		List<PlanetaXProducto> planetaXProducto = planetaService.obtenerPlanetaXProductos(idPlaneta);
+		List<NaveXProducto> naveXProducto = naveService.obtenerNaveXProductos(nave.getId());
+
+		for (PlanetaXProducto pxp : planetaXProducto) {
+			boolean permitido = false;
+
+			for (NaveXProducto nxp : naveXProducto) {
+				if (pxp.getProducto().getId().compareTo(nxp.getProducto().getId()) == 0) {
+					productos_permitidos.add(pxp);
+					permitido = true;
+					break;
+				}
+			}
+
+			if (!permitido) {
+				productos_no_permitidos.add(pxp);
+			}
+
+		}
+		productos_no_permitidos.stream().forEach(producto -> {
+			producto.setPlaneta(null);
+			producto.getProducto().setPlanetas(null);
+			producto.getProducto().setNaves(null);
+		});
+		productos_permitidos.stream().forEach(producto -> {
+			producto.setPlaneta(null);
+			producto.getProducto().setPlanetas(null);
+			producto.getProducto().setNaves(null);
+		});
+
+		mensaje.put("productos_permitidos", productos_permitidos);
+		mensaje.put("productos_no_permitidos", productos_no_permitidos);
+
+        return mensaje;
+    }
+
+    public Tripulante obtenerTripulanteByUserName(String username) {
+        return tripulanteRepository.findByUsername(username);
+    }
+
+    public Tripulante findByUserAndPassword(String user, String password) {
+        return tripulanteRepository.findByUserAndPassword(user, password);
+    }
+
+    public Tripulante guardarTripulante(Tripulante tripulante) {
+        return tripulanteRepository.save(tripulante);
     }
 
 }

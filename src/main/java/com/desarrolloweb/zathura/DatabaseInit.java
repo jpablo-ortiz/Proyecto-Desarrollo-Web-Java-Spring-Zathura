@@ -1,16 +1,15 @@
 package com.desarrolloweb.zathura;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import com.desarrolloweb.zathura.controllers.EstrellaController;
 import com.desarrolloweb.zathura.controllers.ModeloNaveController;
-import com.desarrolloweb.zathura.controllers.NaveController;
 import com.desarrolloweb.zathura.controllers.PlanetaController;
 import com.desarrolloweb.zathura.controllers.ProductoController;
-import com.desarrolloweb.zathura.controllers.RutaController;
-import com.desarrolloweb.zathura.controllers.TripulanteController;
+import com.desarrolloweb.zathura.exceptions.RecordNotFoundException;
 import com.desarrolloweb.zathura.models.Estrella;
 import com.desarrolloweb.zathura.models.ModeloNave;
 import com.desarrolloweb.zathura.models.Nave;
@@ -23,11 +22,13 @@ import com.desarrolloweb.zathura.models.Tripulante;
 import com.desarrolloweb.zathura.repositories.EstrellaRepository;
 import com.desarrolloweb.zathura.repositories.ModeloNaveRepository;
 import com.desarrolloweb.zathura.repositories.NaveRepository;
-import com.desarrolloweb.zathura.repositories.NaveXProductoRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaRepository;
 import com.desarrolloweb.zathura.repositories.PlanetaXProductoRepository;
 import com.desarrolloweb.zathura.repositories.ProductoRepository;
 import com.desarrolloweb.zathura.repositories.TripulanteRepository;
+import com.desarrolloweb.zathura.service.NaveService;
+import com.desarrolloweb.zathura.service.RutaService;
+import com.desarrolloweb.zathura.service.TripulanteService;
 
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,7 @@ public class DatabaseInit implements ApplicationRunner {
     private PlanetaController planetaController;
 
     @Autowired
-    private RutaController rutaController;
-
-    @Autowired
-    private NaveController naveController;
-
-    @Autowired
-    private TripulanteController tripulanteController;
+    private RutaService rutaService;
 
     @Autowired
     private ProductoController productoController;
@@ -81,12 +76,15 @@ public class DatabaseInit implements ApplicationRunner {
     private NaveRepository naveRepository;
 
     @Autowired
-    private NaveXProductoRepository naveXProductoRepository;
+    private NaveService naveService;
+
+    @Autowired
+    private TripulanteService tripulanteService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        IniciarDatosAleatoriosBatch();
-        //generarEntrega2();
+        // IniciarDatosAleatoriosBatch();
+        // generarEntrega2();
     }
 
     Random random = new Random();
@@ -117,8 +115,14 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < totalEstrellas; i++) {
             if (random.nextInt(2) == 1 && estrellasHabitadas > 0) {
                 // Guardar Estrella habitable
-                estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextDouble(),
-                        random.nextDouble(), random.nextDouble(), true));
+                estrella = estrellaRepository.save(new Estrella(
+                        randomGen.generate(5, 10),
+                        random.nextInt(2000),
+                        random.nextDouble() * 1000000 + 1,
+                        random.nextDouble() * 1000000 + 1, 
+                        random.nextDouble() * 1000000 + 1, 
+                        true
+                        ));
                 estrellasHabitadas--;
                 estrellas.add(estrella);
                 // Condición de que en cada estrella esten 3 planetas
@@ -126,21 +130,27 @@ public class DatabaseInit implements ApplicationRunner {
                 for (int j = 0; j <= ran; j++)
                     // Guardar planeta
                     planetaRepository.save(new Planeta(randomGen.generate(5, 10), true, estrella));
-            } else{
-                 // Guardar Estrella no habitable
-               estrella = estrellaRepository.save(new Estrella(randomGen.generate(5, 10), random.nextInt(2000),
-               random.nextDouble(), random.nextDouble(), random.nextDouble(), false));
-               estrellas.add(estrella);
+            } else {
+                // Guardar Estrella no habitable
+                estrella = estrellaRepository.save(
+                        new Estrella(
+                                randomGen.generate(5, 10),
+                                random.nextInt(2000),
+                                random.nextDouble() * 1000000 + 1,
+                                random.nextDouble() * 1000000 + 1, 
+                                random.nextDouble() * 1000000 + 1, 
+                                false));
+                estrellas.add(estrella);
             }
-               
+
         }
         // Crear Rutas de todas las estrellas con todas las estrellas
         for (int i = 0; i < estrellas.size(); i++) {
-                for (int j = i + 1; j < estrellas.size(); j++) {
-                    Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
-                    rutaController.crearRuta(ruta);
-                }
+            for (int j = i + 1; j < estrellas.size(); j++) {
+                Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
+                rutaService.crearRuta(ruta);
             }
+        }
     }
 
     /**
@@ -153,19 +163,25 @@ public class DatabaseInit implements ApplicationRunner {
         // Se recorre todos los productos
         for (int i = 0; i < maxProducto; i++) {
             // Se guarda producto
-            Producto producto = productoRepository.save(new Producto(randomGen.generate(5, 10), random.nextDouble(),
-                    random.nextDouble(), random.nextDouble()));
+            Producto producto = productoRepository.save(new Producto(randomGen.generate(5, 10),
+                    random.nextDouble() * 100 + 1, random.nextDouble() * 100 + 1, random.nextDouble() * 100 + 1));
             productos.add(producto);
         }
         // Se recorren todos los planetas ya creados
         for (Planeta planetas : planetaRepository.findAll()) {
-            int cantidadProductos = random.nextInt(20);
+            int cantidadProductos = random.nextInt(20) + 2;
+
+            List<Producto> temp_prod = (List<Producto>) productos.clone();
+            Collections.shuffle(temp_prod);
             for (int i = 0; i < cantidadProductos; i++) {
-                int randomProducto = random.nextInt(maxProducto);
                 // Se guarda relacion muchos a mucho en la tabla intermedia PlanetaxProducto
-                planetaXProductoRepository.save(new PlanetaXProducto(random.nextDouble(), random.nextDouble(),
-                        random.nextDouble() * 100 + 1, random.nextDouble() * 100 + 1, random.nextInt(100001), planetas,
-                        productos.get(randomProducto)));
+                double factorOferta = random.nextDouble() * 1000000 + 1;
+                double factorDemanda = random.nextDouble() * 1000000 + 1;
+                int stock = random.nextInt(100001);
+                double precioVenta = (factorDemanda) / (1 + stock);
+                double precioCompra = (factorOferta) / (1 + stock);
+                planetaXProductoRepository.save(new PlanetaXProducto(precioVenta, precioCompra, factorDemanda,
+                        factorOferta, stock, planetas, temp_prod.get(i)));
             }
         }
     }
@@ -175,10 +191,12 @@ public class DatabaseInit implements ApplicationRunner {
      */
     public void creacionModelosNave() {
         ModeloNave modeloNave;
+
         ArrayList<Long> modelosnaves = new ArrayList<Long>();
         for (int i = 0; i < 20; i++) {
             // se guarda modelo nave
-            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10), random.nextDouble(), random.nextDouble(), random.nextDouble()));
+            modeloNave = modeloNaveRepository.save(new ModeloNave(randomGen.generate(5, 10),
+                    random.nextDouble() * 2000 + 1, random.nextDouble() * 400 + 1, (double) random.nextInt(15000) + 5000));
             modelosnaves.add(modeloNave.getId());
         }
 
@@ -186,7 +204,7 @@ public class DatabaseInit implements ApplicationRunner {
 
         Nave nave = new Nave();
         int ran = 0, ranPlaneta = 0;
-        Double costoR = random.nextDouble() ;
+        random.nextDouble();
         for (int i = 0; i < 10; i++) {
             String nombreNave = randomGen.generate(5, 10);
             ran = random.nextInt(20);
@@ -205,8 +223,7 @@ public class DatabaseInit implements ApplicationRunner {
             // Se guarda el modeloNave
             ModeloNave mod = modeloNaveRepository.findById(modelosnaves.get(ran)).get();
             planeta = planetaRepository.findById((long) ranPlaneta).orElse(null);
-            nave = naveRepository
-                    .save(new Nave(nombreNave, random.nextDouble(), random.nextDouble(), costoR, planeta, mod));
+            nave = naveRepository.save(new Nave(nombreNave, mod.getCargaMax(), 5000.0, 0.0, planeta, mod));
             for (int j = 0; j < random.nextInt(10); j++) {
                 int ranPro = random.nextInt(50000);
                 correcto = true;
@@ -218,10 +235,19 @@ public class DatabaseInit implements ApplicationRunner {
                         correcto = false;
                     }
                 }
-                prod = productoRepository.findById((long) ranPro).orElse(null);
+                // prod = productoRepository.findById((long) ranPro).orElse(null);
                 // Se guarda la relacion muchos a mucho en la tabla intermedia NaveXproducto.
-                naveXProductoRepository.save(
-                        new NaveXProducto(random.nextDouble(), random.nextDouble(), random.nextDouble(), nave, prod));
+                // Double stock = (double) (random.nextInt(10) + 1);
+                // double totalCredito = stock * prod.getCostoCredito();
+                // double totalVolumen = stock * prod.getVolumen();
+                // naveXProductoRepository.save(
+                // new NaveXProducto(
+                // stock,
+                // totalCredito,
+                // totalVolumen,
+                // nave,
+                // prod
+                // ));
             }
 
             // Generación de Tripulantes en las naves ya existentes.
@@ -243,7 +269,7 @@ public class DatabaseInit implements ApplicationRunner {
 
     }
 
-    public void generarEntrega2() {
+    public void generarEntrega2() throws RecordNotFoundException {
         System.out.println("BIENVENIDOOOOO");
 
         List<Estrella> estrellas = new ArrayList<Estrella>();
@@ -332,7 +358,7 @@ public class DatabaseInit implements ApplicationRunner {
         for (int i = 0; i < estrellas.size(); i++) {
             for (int j = i + 1; j < estrellas.size(); j++) {
                 Ruta ruta = new Ruta(estrellas.get(i), estrellas.get(j));
-                rutaController.crearRuta(ruta);
+                rutaService.crearRuta(ruta);
             }
         }
 
@@ -363,28 +389,29 @@ public class DatabaseInit implements ApplicationRunner {
         planeta5 = planetaController.crearPlaneta(planeta5);
         planetas.add(planeta5);
 
-        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500), (double) 50);
+        ModeloNave modeloNave = new ModeloNave(Long.valueOf(1), "Cuchao", Double.valueOf(500), Double.valueOf(500),
+                (double) 50);
         modeloNave = modeloNaveController.crearModeloNave(modeloNave);
 
         Nave nave = new Nave(Long.valueOf(1), "Nave de Kenneth", Double.valueOf(100), Double.valueOf(1500), (double) 0);
         nave.setPlanetaActual(planeta);
         nave.setModeloNave(modeloNave);
-        nave = naveController.crearNave(nave);
+        nave = naveService.crearNave(nave);
 
         Tripulante tripulante = new Tripulante(Long.valueOf(1), "Kenneth", "Kenneth", Boolean.valueOf(true),
                 Boolean.valueOf(false), Boolean.valueOf(false));
         tripulante.setNave(nave);
-        tripulante = tripulanteController.crearTripulante(tripulante);
+        tripulante = tripulanteService.crearTripulante(tripulante);
 
         Tripulante tripulante2 = new Tripulante(Long.valueOf(2), "Juan", "Juan", Boolean.valueOf(false),
                 Boolean.valueOf(true), Boolean.valueOf(false));
         tripulante2.setNave(nave);
-        tripulante2 = tripulanteController.crearTripulante(tripulante2);
+        tripulante2 = tripulanteService.crearTripulante(tripulante2);
 
         Tripulante tripulante3 = new Tripulante(Long.valueOf(3), "Pedro", "Pedro", Boolean.valueOf(false),
                 Boolean.valueOf(false), Boolean.valueOf(true));
         tripulante3.setNave(nave);
-        tripulante3 = tripulanteController.crearTripulante(tripulante3);
+        tripulante3 = tripulanteService.crearTripulante(tripulante3);
 
         Producto producto1 = new Producto(Long.valueOf(1), "Producto 1", Double.valueOf(500), Double.valueOf(100),
                 Double.valueOf(100));

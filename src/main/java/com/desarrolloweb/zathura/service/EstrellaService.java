@@ -144,11 +144,10 @@ public class EstrellaService {
 		estrellaRepository.deleteById(id);
 	}
 
-	
 	/**
 	 * Método que permite obtener las x estrellas más cercanas a la estrella
 	 * 
-	 * @param id Identificador de la entidad Estrella
+	 * @param id       Identificador de la entidad Estrella
 	 * @param cantidad Cantidad de estrellas a obtener
 	 * @return Lista de objetos de tipo Estrella con la información de las 10
 	 *         estrellas más cercanas a la estrella
@@ -189,7 +188,8 @@ public class EstrellaService {
 		return resultado;
 	}
 
-    public boolean verificarViaje(Long idEstrellaO, Long idEstrellaD, Long idTripulante) throws RecordNotFoundException {
+	public boolean verificarViaje(Long idEstrellaO, Long idEstrellaD, Long idTripulante)
+			throws RecordNotFoundException {
 		Ruta ruta = rutaService.obtenerRutaDeEstrellaAEstrella(idEstrellaO, idEstrellaD);
 		Nave nave = tripulanteService.obtenerNaveActualByTripulante(idTripulante);
 
@@ -199,7 +199,7 @@ public class EstrellaService {
 			return false;
 		}
 		return true;
-    }
+	}
 
 	public boolean viajar(Long idEstrellaO, Long idEstrellaD, Long idTripulante) {
 		Ruta ruta = rutaService.obtenerRutaDeEstrellaAEstrella(idEstrellaO, idEstrellaD);
@@ -210,7 +210,7 @@ public class EstrellaService {
 		if (calculoTiempo > nave.getModeloNave().getTiempoLimite()) {
 			return false;
 		}
-		
+
 		nave.setTotalTiempoViaje(nave.getTotalTiempoViaje() + calculoTiempo);
 		naveRepository.save(nave);
 		return true;

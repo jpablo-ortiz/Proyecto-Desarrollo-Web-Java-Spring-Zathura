@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Tripulante implements Serializable {
@@ -29,13 +29,15 @@ public class Tripulante implements Serializable {
     private Boolean comerciante;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
+    // @JsonManagedReference(value= "nave_tripulante")
     private Nave nave;
 
     public Tripulante() {
     }
 
-    public Tripulante(String username, String password, Boolean capitan, Boolean navegante, Boolean comerciante, Nave nave) {
+    public Tripulante(String username, String password, Boolean capitan, Boolean navegante, Boolean comerciante,
+            Nave nave) {
         this.username = username;
         this.password = password;
         this.capitan = capitan;
@@ -44,12 +46,23 @@ public class Tripulante implements Serializable {
         this.nave = nave;
     }
 
-    public Tripulante(Long id, String username, String password, Boolean capitan, Boolean navegante, Boolean comerciante) {
+    public Tripulante(Long id, String username, String password, Boolean capitan, Boolean navegante,
+            Boolean comerciante) {
         this.username = username;
         this.password = password;
         this.capitan = capitan;
         this.navegante = navegante;
         this.comerciante = comerciante;
+    }
+
+    public Tripulante(Long id, String username, String password, Boolean capitan, Boolean navegante,
+            Boolean comerciante, Nave nave) {
+        this.username = username;
+        this.password = password;
+        this.capitan = capitan;
+        this.navegante = navegante;
+        this.comerciante = comerciante;
+        this.nave = nave;
     }
 
     public Long getId() {
@@ -120,41 +133,6 @@ public class Tripulante implements Serializable {
         this.nave = nave;
     }
 
-    public Tripulante id(Long id) {
-        setId(id);
-        return this;
-    }
-
-    public Tripulante username(String username) {
-        setUsername(username);
-        return this;
-    }
-
-    public Tripulante password(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    public Tripulante capitan(Boolean capitan) {
-        setCapitan(capitan);
-        return this;
-    }
-
-    public Tripulante navegante(Boolean navegante) {
-        setNavegante(navegante);
-        return this;
-    }
-
-    public Tripulante comerciante(Boolean comerciante) {
-        setComerciante(comerciante);
-        return this;
-    }
-
-    public Tripulante nave(Nave nave) {
-        setNave(nave);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -163,7 +141,10 @@ public class Tripulante implements Serializable {
             return false;
         }
         Tripulante tripulante = (Tripulante) o;
-        return Objects.equals(id, tripulante.id) && Objects.equals(username, tripulante.username) && Objects.equals(password, tripulante.password) && Objects.equals(capitan, tripulante.capitan) && Objects.equals(navegante, tripulante.navegante) && Objects.equals(comerciante, tripulante.comerciante) && Objects.equals(nave, tripulante.nave);
+        return Objects.equals(id, tripulante.id) && Objects.equals(username, tripulante.username)
+                && Objects.equals(password, tripulante.password) && Objects.equals(capitan, tripulante.capitan)
+                && Objects.equals(navegante, tripulante.navegante)
+                && Objects.equals(comerciante, tripulante.comerciante) && Objects.equals(nave, tripulante.nave);
     }
 
     @Override
@@ -173,15 +154,9 @@ public class Tripulante implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", username='" + getUsername() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", capitan='" + isCapitan() + "'" +
-            ", navegante='" + isNavegante() + "'" +
-            ", comerciante='" + isComerciante() + "'" +
-            ", nave='" + getNave() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", username='" + getUsername() + "'" + ", password='" + getPassword()
+                + "'" + ", capitan='" + isCapitan() + "'" + ", navegante='" + isNavegante() + "'" + ", comerciante='"
+                + isComerciante() + "'" + ", nave='" + getNave() + "'" + "}";
     }
 
 }

@@ -9,6 +9,7 @@ import com.desarrolloweb.zathura.service.ModeloNaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class ModeloNaveController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene un modeloNave por su id")
     public ModeloNave obtenerModeloNave(@PathVariable Long id) throws RecordNotFoundException {
@@ -80,6 +82,7 @@ public class ModeloNaveController {
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("/{id}")
 	@Operation(summary = "Modifica un modeloNave")
 	public ModeloNave modificarModeloNave(@RequestBody ModeloNave modeloNave, @PathVariable Long id) {
@@ -91,6 +94,7 @@ public class ModeloNaveController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una modeloNave")
 	public void eliminarModeloNaveById(@PathVariable Long id) {

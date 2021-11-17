@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ModeloNave implements Serializable {
@@ -29,7 +29,8 @@ public class ModeloNave implements Serializable {
     private Double tiempoLimite;
 
     @OneToMany(mappedBy = "modeloNave")
-    @JsonBackReference
+    //@JsonBackReference(value = "naves_modelo_nave")
+    @JsonIgnore
     private List<Nave> naves = new ArrayList<>();
 
     public ModeloNave() {
@@ -51,14 +52,15 @@ public class ModeloNave implements Serializable {
         this.naves = naves;
     }
 
-    public ModeloNave(String nombreModelo, Double cargaMax, Double velocidadMax,Double tiempoLimite) {
+    public ModeloNave(String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite) {
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
         this.velocidadMax = velocidadMax;
         this.tiempoLimite = tiempoLimite;
     }
-    
-    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite, List<Nave> naves) {
+
+    public ModeloNave(Long id, String nombreModelo, Double cargaMax, Double velocidadMax, Double tiempoLimite,
+            List<Nave> naves) {
         this.id = id;
         this.nombreModelo = nombreModelo;
         this.cargaMax = cargaMax;
@@ -153,7 +155,10 @@ public class ModeloNave implements Serializable {
             return false;
         }
         ModeloNave modeloNave = (ModeloNave) o;
-        return Objects.equals(id, modeloNave.id) && Objects.equals(nombreModelo, modeloNave.nombreModelo) && Objects.equals(cargaMax, modeloNave.cargaMax) && Objects.equals(velocidadMax, modeloNave.velocidadMax) && Objects.equals(tiempoLimite, modeloNave.tiempoLimite) && Objects.equals(naves, modeloNave.naves);
+        return Objects.equals(id, modeloNave.id) && Objects.equals(nombreModelo, modeloNave.nombreModelo)
+                && Objects.equals(cargaMax, modeloNave.cargaMax)
+                && Objects.equals(velocidadMax, modeloNave.velocidadMax)
+                && Objects.equals(tiempoLimite, modeloNave.tiempoLimite) && Objects.equals(naves, modeloNave.naves);
     }
 
     @Override
@@ -163,15 +168,9 @@ public class ModeloNave implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombreModelo='" + getNombreModelo() + "'" +
-            ", cargaMax='" + getCargaMax() + "'" +
-            ", velocidadMax='" + getVelocidadMax() + "'" +
-            ", tiempoLimite='" + getTiempoLimite() + "'" +
-            ", naves='" + getNaves() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombreModelo='" + getNombreModelo() + "'" + ", cargaMax='"
+                + getCargaMax() + "'" + ", velocidadMax='" + getVelocidadMax() + "'" + ", tiempoLimite='"
+                + getTiempoLimite() + "'" + ", naves='" + getNaves() + "'" + "}";
     }
 
-    
 }

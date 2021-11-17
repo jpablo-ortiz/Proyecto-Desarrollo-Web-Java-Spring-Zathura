@@ -11,6 +11,7 @@ import com.desarrolloweb.zathura.service.PlanetaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,7 @@ public class PlanetaController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("")
 	@Operation(summary = "Crea un nuevo planeta")
 	public Planeta crearPlaneta(@RequestBody Planeta planetaNueva) {
@@ -64,6 +66,7 @@ public class PlanetaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene un planeta por su id")
 	public Planeta obtenerPlaneta(@PathVariable Long id) throws RecordNotFoundException {
@@ -71,6 +74,7 @@ public class PlanetaController {
 		return planetaService.obtenerPlaneta(id);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todos los planetas")
 	public List<Planeta> obtenerPlanetas() {
@@ -82,6 +86,7 @@ public class PlanetaController {
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("/{id}")
 	@Operation(summary = "Modifica un planeta")
 	public Planeta modificarPlaneta(@RequestBody Planeta planeta, @PathVariable Long id) {
@@ -93,6 +98,7 @@ public class PlanetaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina un planeta")
 	public void eliminarPlanetaById(@PathVariable Long id) {
@@ -104,7 +110,7 @@ public class PlanetaController {
 	// --------------------------- OTROS --------------------------
 	// ------------------------------------------------------------
 
-	// Obtener los planetas por el id de la nave
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/estrella/{id}")
 	@Operation(summary = "Obtiene los planetas por el id de la estrella")
 	public List<Planeta> obtenerPlanetasPorEstrella(@PathVariable Long id) {
@@ -112,14 +118,15 @@ public class PlanetaController {
 		return planetaService.obtenerPlanetasPorEstrella(id);
 	}
 
-	// Obtener los productos por el id del PLANETA
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/productos/{id}")
 	@Operation(summary = "Obtiene los productos por el id del Planeta")
 	public List<Producto> obtenerProductosPorPlaneta(@PathVariable Long id) {
 		log.info("Obtener productos por ID del planeta");
 		return planetaService.obtenerProductosPorPlaneta(id);
 	}
-
+	
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@GetMapping("/{planetaId}/producto/{productoId}")
 	@Operation(summary = "Obtiene el PlanetaXProducto por el id del Planeta y del producto")
 	public PlanetaXProducto obtenerPlanetaXProducto(@PathVariable Long planetaId, @PathVariable Long productoId) {

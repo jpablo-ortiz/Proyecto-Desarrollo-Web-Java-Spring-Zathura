@@ -10,6 +10,7 @@ import com.desarrolloweb.zathura.service.EstrellaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/estrella")
 @CrossOrigin(origins = "http://localhost:4200")
-public class EstrellaController {
+public class EstrellaController 
+{
 
 	/**
 	 * Objeto que permite el registro de trazas de la ejecución de las operaciones
@@ -52,6 +54,7 @@ public class EstrellaController {
 	// -------------------------- CREATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("")
 	@Operation(summary = "Crea una nueva estrella")
 	public Estrella crearEstrella(@RequestBody Estrella estrellaNueva) {
@@ -63,6 +66,7 @@ public class EstrellaController {
 	// --------------------------- READ ---------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtiene una estrella por su id")
 	public Estrella obtenerEstrella(@PathVariable Long id) throws RecordNotFoundException {
@@ -70,6 +74,7 @@ public class EstrellaController {
 		return estrellaService.obtenerEstrella(id);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("")
 	@Operation(summary = "Obtiene todas las estrellas")
 	public List<Estrella> obtenerEstrellas() {
@@ -81,6 +86,7 @@ public class EstrellaController {
 	// -------------------------- UPDATE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@PostMapping("/{id}")
 	@Operation(summary = "Modifica una estrella")
 	public Estrella modificarEstrella(@RequestBody Estrella estrella, @PathVariable Long id) {
@@ -92,6 +98,7 @@ public class EstrellaController {
 	// -------------------------- DELETE --------------------------
 	// ------------------------------------------------------------
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE') or hasRole('COMERCIANTE')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Elimina una estrella")
 	public void eliminarEstrellaById(@PathVariable Long id) {
@@ -102,7 +109,8 @@ public class EstrellaController {
 	// ------------------------------------------------------------
 	// -------------------------- OTHER ---------------------------
 	// ------------------------------------------------------------
-
+	
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/10nearest/{id}")
 	@Operation(summary = "Obtiene las 10 estrellas más cercanas a la estrella dada")
 	public List<EstrellaPojo> obtener10EstrellasCercanas(@PathVariable Long id) throws RecordNotFoundException {
@@ -110,6 +118,7 @@ public class EstrellaController {
 		return estrellaService.obtenerEstrellasCercanas(id, 10);
 	}
 
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/verificar-viaje/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Verifica si un viaje entre dos estrellas es posible dado un tripulante")
 	public boolean verificarViaje(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,
@@ -117,7 +126,8 @@ public class EstrellaController {
 		log.info("Verificar viaje entre dos estrellas");
 		return estrellaService.verificarViaje(idEstrellaO, idEstrellaD, idTripulante);
 	}
-
+	
+	@PreAuthorize("hasRole('CAPITAN') or hasRole('NAVEGANTE')")
 	@GetMapping("/{idEstrellaO}/viajar/{idEstrellaD}/tripulante/{idTripulante}")
 	@Operation(summary = "Realiza un viaje entre dos estrellas dado un tripulante")
 	public boolean viajar(@PathVariable Long idEstrellaO, @PathVariable Long idEstrellaD,

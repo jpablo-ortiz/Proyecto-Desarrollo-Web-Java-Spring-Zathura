@@ -1,7 +1,6 @@
 package com.desarrolloweb.zathura.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Estrella implements Serializable {
@@ -33,16 +32,19 @@ public class Estrella implements Serializable {
     private Boolean habitado;
 
     @OneToMany(mappedBy = "estrella")
-    @JsonBackReference
-    private List<Planeta> planetas = new ArrayList<>();
+   // @JsonBackReference(value = "planetas")
+    @JsonIgnore
+    private List<Planeta> planetas;
 
     @OneToMany(mappedBy = "estrellaA")
-    @JsonBackReference
-    private List<Ruta> rutasA = new ArrayList<>();
+    //@JsonBackReference(value = "rutas_a")
+    @JsonIgnore
+    private List<Ruta> rutasA;
 
     @OneToMany(mappedBy = "estrellaB")
-    @JsonBackReference
-    private List<Ruta> rutasB = new ArrayList<>();
+    // @JsonBackReference(value = "rutas_b")
+    @JsonIgnore
+    private List<Ruta> rutasB;
 
     public Estrella() {
     }
@@ -60,7 +62,7 @@ public class Estrella implements Serializable {
         this.rutasB = rutasB;
     }
 
-    public Estrella(String nombre,Integer recurso, Double x, Double y, Double z, Boolean habitado) {
+    public Estrella(String nombre, Integer recurso, Double x, Double y, Double z, Boolean habitado) {
         this.nombre = nombre;
         this.recurso = recurso;
         this.x = x;
@@ -68,6 +70,7 @@ public class Estrella implements Serializable {
         this.z = z;
         this.habitado = habitado;
     }
+
     public Estrella(String nombre, Double x, Double y, Double z, Boolean habitado) {
         this.nombre = nombre;
         this.x = x;
